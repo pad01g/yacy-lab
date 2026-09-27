@@ -70,6 +70,16 @@ ol.results li { padding: 9px 0; border-top: 1px solid var(--line); display: grid
 .legend .chip { margin-right: 2px; }
 .log { font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); white-space: pre-wrap; margin: 8px 0 0; max-height: 160px; overflow: auto; }
 a.plain { color: var(--accent); }
+.trust h3 { font-size: 15px; margin: 14px 0 6px; }
+p.small { font-size: 13px; color: var(--muted); margin: 4px 0; }
+.trust .row { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 14px; margin: 6px 0; }
+.trust input[type=number] { width: 64px; font: inherit; padding: 2px 4px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); }
+.trust input[type=text] { width: 140px; font: inherit; padding: 2px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); }
+.trust button.small { padding: 5px 12px; font-size: 13px; }
+.trust button.ghost { background: var(--chip); color: var(--text); }
+.trust .msg { font-size: 13px; min-height: 1.2em; margin-top: 6px; }
+.trust .msg.err { color: var(--bad); }
+.trust .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4px 24px; }
 </style>
 </head>
 <body>
@@ -87,7 +97,7 @@ a.plain { color: var(--accent); }
       </div>
       <div class="tablewrap">
         <table>
-          <thead><tr><th>ノード</th><th>役割</th><th>文書数</th><th>見えている senior</th><th>到達</th><th>種別</th><th>管理画面</th></tr></thead>
+          <thead><tr><th>ノード</th><th>役割</th><th>文書数</th><th>見えている senior</th><th>到達</th><th>種別</th><th>持っている信頼の一覧</th><th>管理画面</th></tr></thead>
           <tbody id="nodes"></tbody>
         </table>
       </div>
@@ -109,6 +119,47 @@ a.plain { color: var(--accent); }
       <label>本家の問い合わせ元 <select id="upOrigin"><option>up-1</option><option>up-2</option><option>up-3</option></select></label>
       <label>改善版の問い合わせ元 <select id="forkOrigin"><option>fork-1</option><option>fork-2</option><option>fork-3</option></select></label>
     </div>
+  </section>
+
+  <section class="panel trust" id="trustPanel">
+    <details id="trustDetails">
+      <summary>コーディネータと信頼の一覧（改善版）</summary>
+      <p class="small">改善版は、利用者が設定したコーディネータの一覧に載った作者の文書だけを使う。ここで問い合わせ元が信頼するコーディネータを選び、コーディネータ A の一覧を書き換えて署名し直せる。変更は数十秒で各ノードに届く（「持っている信頼の一覧」の列で確かめられる）。</p>
+      <div class="grid">
+        <div>
+          <h3>問い合わせ元（<span id="modeNode">fork-1</span>）が信頼するコーディネータ</h3>
+          <div class="row">
+            <label><input type="checkbox" id="useA"> A（デモの運営者）</label>
+            <label><input type="checkbox" id="useB"> B（別の運営者: 一覧は evil-1 だけ）</label>
+          </div>
+          <div class="row"><label>両方のとき <select id="order"><option value="AB">A を優先</option><option value="BA">B を優先</option></select></label></div>
+          <div class="row">コーディネータが無いとき:
+            <label><input type="radio" name="fallback" value="self" checked> 自分の文書だけ（既定）</label>
+            <label><input type="radio" name="fallback" value="signedOnly"> 署名されたピアすべて</label>
+          </div>
+          <div class="row"><button type="button" class="small" id="applyMode">この設定にする</button></div>
+          <p class="small">B も信頼すると evil-1 のスパムが「検証済み」になる。どちらも外すと、他ピアの結果は出なくなる（「署名されたピアすべて」なら evil-1 も含めて出る）。</p>
+        </div>
+        <div>
+          <h3>コーディネータ A の一覧 <span id="listVersion"></span></h3>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>ピア</th><th>信頼</th><th>優先度 0–100</th><th>タグ（, 区切り）</th></tr></thead>
+              <tbody id="entries"></tbody>
+            </table>
+          </div>
+          <div class="row">
+            <label>配り方 <select id="target"><option value="all">全ノードに URL で渡す</option><option value="fork-2">fork-2 にだけ渡す（ピア間の交換で広がる）</option></select></label>
+          </div>
+          <div class="row"><button type="button" class="small" id="publish">署名して新しい版を配る</button> <button type="button" class="small ghost" id="reset">元に戻す</button></div>
+          <h3>A からオペレータへの委任 <span id="delegationState"></span></h3>
+          <div class="row"><button type="button" class="small ghost" id="revoke">委任を失効させる</button> <button type="button" class="small ghost" id="restore">委任し直す</button></div>
+          <p class="small">失効させると、A の一覧は無効になる（A の一覧に載ったピアの結果が消え、自分の文書だけが残る）。</p>
+        </div>
+      </div>
+      <div class="msg" id="trustMsg"></div>
+      <p class="small">鍵: <span id="keys"></span></p>
+    </details>
   </section>
 
   <section class="cols">
@@ -157,7 +208,7 @@ async function refresh() {
     $("nodes").innerHTML = s.nodes.map((n) => `<tr>
       <td>${esc(n.name)}</td><td class="role">${esc(n.role)}</td>
       <td>${n.up ? n.docs : "起動中"}</td><td>${n.up ? n.seniors : "-"}</td>
-      <td>${esc(n.reach)}</td><td>${esc(n.type)}</td>
+      <td>${esc(n.reach)}</td><td>${esc(n.type)}</td><td>${esc(n.trust || "-")}</td>
       <td>${n.ui ? `<a class="plain" href="${esc(n.ui)}" target="_blank" rel="noopener">${esc(n.ui.replace("http://", ""))}</a>` : "（外から届かない）"}</td></tr>`).join("");
     $("log").textContent = s.log.join("\n");
     if (!presetsShown && s.presets) {
@@ -236,6 +287,89 @@ async function searchSide(side, q) {
     }
   }
 }
+
+// ---- コーディネータと信頼の一覧
+const ENTRY_NODES = ["fork-1", "fork-2", "fork-3", "nat-1", "ads-1", "evil-1"];
+let trust = null;
+let entriesDirty = false;
+let modeDirty = false;
+const trustMsg = (text, err) => { const m = $("trustMsg"); m.textContent = text; m.className = "msg" + (err ? " err" : ""); };
+function renderEntries() {
+  const e = trust.A.list.entries;
+  $("entries").innerHTML = ENTRY_NODES.map((n) => `<tr data-node="${n}">
+    <td>${esc(n)}</td>
+    <td><input type="checkbox" class="t" ${e[n]?.trusted ? "checked" : ""}></td>
+    <td><input type="number" class="p" min="0" max="100" value="${esc(e[n]?.priority ?? 100)}"></td>
+    <td><input type="text" class="g" value="${esc((e[n]?.tags ?? []).join(", "))}"></td></tr>`).join("");
+  entriesDirty = false;
+}
+function renderMode() {
+  const node = $("forkOrigin").value;
+  $("modeNode").textContent = node;
+  const m = trust.modes[node] ?? { coordinators: ["A"], fallback: "self" };
+  $("useA").checked = m.coordinators.includes("A");
+  $("useB").checked = m.coordinators.includes("B");
+  $("order").value = m.coordinators[0] === "B" && m.coordinators.includes("A") ? "BA" : "AB";
+  document.querySelector(`input[name=fallback][value=${m.fallback}]`).checked = true;
+  modeDirty = false;
+}
+async function loadTrust(force) {
+  try {
+    const t = await (await fetch("/api/trust")).json();
+    if (!t.ready) { $("trustMsg").textContent = "網の準備が終わると使えます"; return; }
+    const versionChanged = !trust || trust.A.list.version !== t.A.list.version;
+    trust = t;
+    $("listVersion").textContent = `（現在 v${t.A.list.version}）`;
+    $("delegationState").textContent = `（v${t.A.delegation.version}、${t.A.delegation.revoked ? "失効中" : "有効"}）`;
+    $("keys").textContent = `A コーディネータ ${t.A.coordinator} / A オペレータ ${t.A.operator} / B コーディネータ ${t.B.coordinator}`;
+    if (force || (versionChanged && !entriesDirty)) renderEntries();
+    if (force || !modeDirty) renderMode();
+  } catch { /* the server restarts */ }
+}
+$("entries").addEventListener("input", () => (entriesDirty = true));
+for (const id of ["useA", "useB", "order"]) $(id).addEventListener("change", () => (modeDirty = true));
+document.querySelectorAll("input[name=fallback]").forEach((r) => r.addEventListener("change", () => (modeDirty = true)));
+$("forkOrigin").addEventListener("change", () => trust && renderMode());
+$("reset").addEventListener("click", () => trust && renderEntries());
+async function trustPost(action, body, label) {
+  trustMsg(label + "…");
+  for (const b of document.querySelectorAll("#trustPanel button")) b.disabled = true;
+  try {
+    const r = await fetch("/api/trust/" + action, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || r.status);
+    trust = d;
+    trustMsg(label + ": 済み。各ノードに届くまで数十秒かかる。上の「網の状態」の表で確かめてから検索すると確実");
+    await loadTrust(true);
+  } catch (e) {
+    trustMsg(label + ": 失敗 " + e.message, true);
+  } finally {
+    for (const b of document.querySelectorAll("#trustPanel button")) b.disabled = false;
+  }
+}
+$("applyMode").addEventListener("click", () => {
+  const cs = [];
+  if ($("useA").checked) cs.push("A");
+  if ($("useB").checked) cs.push("B");
+  if (cs.length === 2 && $("order").value === "BA") cs.reverse();
+  const fallback = document.querySelector("input[name=fallback]:checked").value;
+  trustPost("mode", { node: $("forkOrigin").value, coordinators: cs, fallback }, `${$("forkOrigin").value} の信頼の設定`);
+});
+$("publish").addEventListener("click", () => {
+  const entries = {};
+  for (const tr of $("entries").querySelectorAll("tr")) {
+    entries[tr.dataset.node] = {
+      trusted: tr.querySelector(".t").checked,
+      priority: Number(tr.querySelector(".p").value),
+      tags: tr.querySelector(".g").value.split(",").map((x) => x.trim()).filter(Boolean),
+    };
+  }
+  trustPost("list", { entries, target: $("target").value }, "一覧の新しい版の配布");
+});
+$("revoke").addEventListener("click", () => trustPost("delegation", { revoked: true, target: $("target").value }, "委任の失効"));
+$("restore").addEventListener("click", () => trustPost("delegation", { revoked: false, target: $("target").value }, "委任のし直し"));
+setInterval(() => loadTrust(false), 5000);
+loadTrust(true);
 
 async function run() {
   const q = $("q").value.trim();

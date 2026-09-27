@@ -1,6 +1,6 @@
 // 信頼・NAT 越えの網を組む部分。試験（trust.ts）とデモ（demo.ts）が共有する。
 //   ノードの起動待ち → コーディネータ鍵・オペレータ鍵を作って信頼の一覧を配る → P2P 網の接続待ち → crawl
-import { generateKeyPairSync, sign, type KeyObject } from "node:crypto";
+import { createPrivateKey, createPublicKey, generateKeyPairSync, sign, type KeyObject } from "node:crypto";
 import { buildCorpus, buildTrustCorpus } from "./corpus.ts";
 import { base, fetchAdmin, mySeed, peers, setConfig, startCrawl, status } from "./yacy.ts";
 
@@ -37,6 +37,11 @@ export type Key = { priv: KeyObject; pk: string };
 export function newKey(): Key {
   const { privateKey, publicKey } = generateKeyPairSync("ed25519");
   return { priv: privateKey, pk: publicKey.export({ format: "jwk" }).x as string };
+}
+export const keyToPem = (k: Key): string => k.priv.export({ type: "pkcs8", format: "pem" }) as string;
+export function keyFromPem(pem: string): Key {
+  const priv = createPrivateKey(pem);
+  return { priv, pk: createPublicKey(priv).export({ format: "jwk" }).x as string };
 }
 function envelope(by: Key, payload: object): object {
   const bytes = Buffer.from(JSON.stringify(payload), "utf8");
@@ -77,7 +82,7 @@ export type TrustNetwork = {
 };
 
 /** 1〜4: ノードの起動待ち、一覧の配布（fork-1 だけに URL で渡す）、網の接続待ち、crawl */
-export async function setupTrustNetwork(opts: { skipCrawl?: boolean; keepExisting?: boolean; progress?: (msg: string) => void } = {}): Promise<TrustNetwork> {
+export async function setupTrustNetwork(opts: { skipCrawl?: boolean; keepExisting?: boolean; distribute?: boolean; progress?: (msg: string) => void } = {}): Promise<TrustNetwork> {
   const progress = opts.progress ?? ((m: string) => log(m));
   // 1. ノードの起動
   for (const n of ALL) await until(`${n} up`, 300_000, async () => ((await status(n)) ? true : undefined));
@@ -96,7 +101,8 @@ export async function setupTrustNetwork(opts: { skipCrawl?: boolean; keepExistin
       { pk: pk("ads-1"), priority: 80, tags: ["ads"] },
     ].filter((m) => !without.some((w) => pk(w) === m.pk));
   // keepExisting（デモの再起動）: ノードがすでに一覧を持っていれば鍵を作り直さない（作り直すと別のコーディネータになる）
-  const existing = opts.keepExisting ? await trustBundle(ORIGIN).catch(() => undefined) : undefined;
+  // distribute=false: the caller distributes its own lists (the demo keeps its keys across restarts)
+  const existing = opts.distribute === false ? { lists: [1], delegations: [] } : opts.keepExisting ? await trustBundle(ORIGIN).catch(() => undefined) : undefined;
   if (existing && existing.lists.length > 0) {
     log("nodes already have a trust list; keeping it");
   } else await putFile("bundle-v1.json", JSON.stringify({ envelopes: [delegation(coordinator, operator, 1), peerList(operator, 1, members())] }));

@@ -40,6 +40,12 @@ YaCy 本家 3 ノード（up-1..3）と改善版 6 ノード（実験 2 と同�
 
 - 各結果に、そのサイトを crawl したノード、正解 / 罠 / スパム / 広告 / NAT の内側の印、改善版では作者の署名の判定（検証済み / 未検証）とタグが付く。
 - 「開放モード」「広告（ads タグ）を除外」は改善版の問い合わせ元ノードの設定（`trust.search.acceptUnverified`, `trust.policy.excludeTags`）を切り替える。
+- 「コーディネータと信頼の一覧」の欄で、信頼の設定を画面から変えられる。
+  - 問い合わせ元が信頼するコーディネータを選ぶ。A（デモの運営者）と B（一覧は evil-1 だけの別の運営者）の両方にすると evil-1 のスパムが「検証済み」になる。どちらも外すと自分の文書だけ、または「署名されたピアすべて」（`trust.signedOnly`）。
+  - コーディネータ A の一覧を編集する（信頼する / しない、優先度、タグ）。署名して新しい版として配る。全ノードに渡すか、fork-2 にだけ渡してピア間の交換（`TV`）で広がるのを見る。
+  - A からオペレータへの委任を失効させる / し直す。
+  - 各ノードが持っている一覧の版は「網の状態」の表に出る。変更が届くまで数十秒かかる。
+  - 鍵と一覧の状態は volume `demo_state` に保存され、デモを再起動しても同じコーディネータのまま（`down -v` で消える）。
 - 結果はまず届いた順に出て、待ち時間（既定 5 秒）の後に順位どおりに並べ直す。
 - 結果のリンクは lab サーバーの頁を画面経由で開く（`*.lab` はホストから名前解決できないため）。
 - 各ノードの YaCy 管理画面: 改善版 http://localhost:8811 〜 8815（fork-1..3, ads-1, evil-1）、本家 http://localhost:8821 〜 8823（admin / yacy）。
@@ -241,6 +247,7 @@ fork-1 の管理画面は http://127.0.0.1:8390 （admin / yacy）。NAT の判�
 | `lab/trust.ts` | 実験 2: 鍵と一覧の作成・配布 → crawl → 検査 → `results/trust-*.md` |
 | `lab/trustlib.ts` | 実験 2 とデモが共有する、信頼の網を組む部分（鍵・一覧の封筒・接続待ち・crawl） |
 | `lab/demo.ts`, `lab/demo/index.html` | デモの画面と API（網の準備、両方の網への検索、頁の表示） |
+| `lab/demotrust.ts` | デモの信頼の設定（コーディネータ A / B の鍵と一覧、署名と配布、問い合わせ元の設定） |
 | `lab/yacy.ts` | YaCy の HTTP API クライアント（Digest 認証、transactionToken） |
 | `yacy/entry.sh`, `yacy/yacy.conf`, `yacy/yacy.trust.conf` | 初回起動時に lab 用の設定を `DATA/SETTINGS/yacy.conf` に置く（`STATIC_IP`, `YACY_CONF` で追加の設定） |
 | `yacy/yacy.network.*.unit` | 閉じた網の定義（クラスタごとに seed list の URL だけ違う） |

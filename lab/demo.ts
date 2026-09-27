@@ -2,9 +2,10 @@
 //   起動すると裏で網を組む: フォーク側は信頼と NAT 越えの試験と同じ構成（trustlib.ts）、upstream 側は 3 ノード。
 //   どちらにも同じサイトを crawl させ、同じクエリを両方の網に global で投げて並べて見せる。
 import { readFileSync } from "node:fs";
-import { createServer, request, type ServerResponse } from "node:http";
+import { createServer, request, type IncomingMessage, type ServerResponse } from "node:http";
 import { judgements, TRUST_QUERIES, TOPICS } from "./corpus.ts";
 import { ALL as FORK_NODES, CRAWL as FORK_CRAWL, crawlSite, LAB, log, putFile, setupTrustNetwork, sleep, until } from "./trustlib.ts";
+import { held, initTrust, publishList, setDelegation, setMode, trustReady, view } from "./demotrust.ts";
 import { base, fetchAdmin, mySeed, peers, search, setConfig, status, type Hit } from "./yacy.ts";
 
 const PORT = Number(process.env.PORT ?? 8800);
@@ -26,7 +27,7 @@ const ROLES: Record<string, string> = {
 const UI_PORTS: Record<string, number> = { "fork-1": 8811, "fork-2": 8812, "fork-3": 8813, "ads-1": 8814, "evil-1": 8815, "up-1": 8821, "up-2": 8822, "up-3": 8823 };
 
 // ---- 状態
-type NodeState = { name: string; side: "fork" | "upstream"; role: string; up: boolean; docs: number; seniors: number; reach: string; type: string; ui: string | null };
+type NodeState = { name: string; side: "fork" | "upstream"; role: string; up: boolean; docs: number; seniors: number; reach: string; type: string; ui: string | null; trust: string };
 const state = {
   phase: "starting" as "starting" | "ready" | "error",
   message: "ノードの起動を待っています",
@@ -55,7 +56,10 @@ async function setupUpstream(): Promise<void> {
 }
 
 async function setupFork(): Promise<void> {
-  const net = await setupTrustNetwork({ keepExisting: true, progress: (m) => (state.fork = m) });
+  // 信頼の一覧はこのデモが自分の鍵で配る（demotrust.ts）。鍵は volume に残るので、再起動しても同じコーディネータになる
+  const net = await setupTrustNetwork({ distribute: false, progress: (m) => (state.fork = m) });
+  state.fork = "信頼の一覧を配布中";
+  await initTrust(Object.fromEntries(FORK_NODES.map((n) => [n, net.pk(n)])));
   // evil-1 に偽の文書を入れる: fork-2 の本物の署名を別の URL・タイトルに付けたもの（署名が合わない）と、署名の無いもの
   state.fork = "evil-1 に偽の文書を投入中";
   const real = (await (
@@ -74,7 +78,6 @@ async function setupFork(): Promise<void> {
   const before = (await status("evil-1")).docs;
   await fetchAdmin(`${base("evil-1")}/IndexImportJsonList_p.html?url=${encodeURIComponent(`${LAB}/files/forged.jsonl`)}`);
   await until("evil-1 imported the forged documents", 120_000, async () => ((await status("evil-1")).docs >= before + 2 ? true : undefined));
-  void net;
   state.fork = "準備完了";
 }
 
@@ -101,7 +104,7 @@ async function pollNodes(): Promise<void> {
   for (;;) {
     await Promise.all(
       [...FORK_NODES.map((n) => [n, "fork"] as const), ...UP_NODES.map((n) => [n, "upstream"] as const)].map(async ([name, side]) => {
-        const s: NodeState = { name, side, role: ROLES[name], up: false, docs: 0, seniors: 0, reach: "-", type: "-", ui: UI_PORTS[name] ? `http://localhost:${UI_PORTS[name]}/` : null };
+        const s: NodeState = { name, side, role: ROLES[name], up: false, docs: 0, seniors: 0, reach: "-", type: "-", ui: UI_PORTS[name] ? `http://localhost:${UI_PORTS[name]}/` : null, trust: "" };
         try {
           const st = await status(name);
           s.up = true;
@@ -110,6 +113,16 @@ async function pollNodes(): Promise<void> {
           s.seniors = ps.filter((p) => p.type === "senior" || p.type === "principal").length;
           s.reach = me.Reach ?? (side === "fork" ? "direct" : "-");
           s.type = me.PeerType ?? "-";
+          if (side === "fork" && trustReady()) {
+            const h = await held(name).catch(() => []);
+            const part = (c: "A" | "B"): string => {
+              const d = h.filter((x) => x.coordinator === c && x.kind === "delegation").map((x) => `委任 v${x.version}${x.revoked ? "（失効）" : ""}`);
+              const l = h.filter((x) => x.coordinator === c && x.kind === "list").map((x) => `一覧 v${x.version}`);
+              const used = ((view() as { modes?: Record<string, { coordinators: string[] }> }).modes?.[name]?.coordinators ?? []).includes(c);
+              return d.length + l.length ? `${c}${used ? "" : "（未使用）"}: ${[...d, ...l].join(" ")}` : "";
+            };
+            s.trust = [part("A"), part("B")].filter(Boolean).join(" / ") || "なし";
+          }
         } catch {
           // まだ起動していない
         }
@@ -227,6 +240,58 @@ for (const t of TOPICS) {
   else PRESETS.push({ q: t.query, hint });
 }
 
+// ---- 信頼の設定（画面の「コーディネータ」の欄）
+const json = (res: ServerResponse, code: number, body: unknown): void =>
+  void res.writeHead(code, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }).end(JSON.stringify(body));
+const readJson = (req: IncomingMessage): Promise<Record<string, unknown>> =>
+  new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (c: Buffer) => {
+      body += c.toString("utf8");
+      if (body.length > 65536) req.destroy();
+    });
+    req.on("end", () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch (e) {
+        reject(e);
+      }
+    });
+    req.on("error", reject);
+  });
+// 一覧の署名と配布は 1 つずつ行う
+let trustQueue: Promise<unknown> = Promise.resolve();
+async function trustAction(req: IncomingMessage, res: ServerResponse, action: string): Promise<void> {
+  // other web pages must not drive the demo: only same-origin JSON requests
+  if (!(req.headers["content-type"] ?? "").startsWith("application/json")) return json(res, 415, { error: "JSON only" });
+  if (phaseOf() !== "ready") return json(res, 409, { error: "準備が終わってから操作してください" });
+  let body: Record<string, unknown>;
+  try {
+    body = await readJson(req);
+  } catch {
+    return json(res, 400, { error: "bad JSON" });
+  }
+  const onlyForkTwo = body.target === "fork-2";
+  const run = async (): Promise<void> => {
+    if (action === "list") await publishList((body.entries ?? {}) as Record<string, object>, onlyForkTwo);
+    else if (action === "delegation") await setDelegation(body.revoked === true, onlyForkTwo);
+    else if (action === "mode") {
+      const node = String(body.node ?? "");
+      await withLock(node, () => setMode(node, { coordinators: body.coordinators as ("A" | "B")[], fallback: body.fallback as "self" | "signedOnly" }));
+    } else throw new Error(`unknown action ${action}`);
+  };
+  const job = trustQueue.then(run, run);
+  trustQueue = job.catch(() => undefined);
+  try {
+    await job;
+    note(`trust: ${action} ${JSON.stringify(body).slice(0, 120)}`);
+    json(res, 200, view());
+  } catch (e) {
+    json(res, 500, { error: (e as Error).message });
+  }
+}
+const phaseOf = (): string => state.phase;
+
 const page = (): string => readFileSync(new URL("./demo/index.html", import.meta.url), "utf8");
 
 createServer((req, res) => {
@@ -239,6 +304,8 @@ createServer((req, res) => {
       .end(JSON.stringify({ phase: state.phase, message: state.message, fork: state.fork, upstream: state.upstream, log: state.log.slice(-12), nodes, presets: PRESETS }));
   }
   if (url.pathname === "/api/search") return void streamSearch(res, url.searchParams);
+  if (url.pathname === "/api/trust" && req.method === "GET") return void json(res, 200, view());
+  if (url.pathname.startsWith("/api/trust/") && req.method === "POST") return void trustAction(req, res, url.pathname.slice("/api/trust/".length));
   if (url.pathname === "/page") return proxyPage(res, url.searchParams.get("url") ?? "");
   res.writeHead(404).end("not found");
 }).listen(PORT, () => note(`demo on :${PORT}`));

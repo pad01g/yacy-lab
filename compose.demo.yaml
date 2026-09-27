@@ -71,6 +71,8 @@ services:
     ports: ["127.0.0.1:8800:8800"]
     volumes:
       - ./lab:/app/lab:ro
+      # コーディネータの鍵と一覧の状態（lab/demotrust.ts）。再起動しても同じ鍵を使う
+      - demo_state:/state
     networks: [pub, natlan, upnet]
 
   relay:
@@ -177,6 +179,7 @@ services:
 
 volumes:
   relay_key:
+  demo_state:
 
 networks:
   pub:

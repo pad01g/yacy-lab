@@ -1,9 +1,10 @@
 // 決定的に生成する評価用コーパス。lab サーバーが HTML として配り、eval が正解集合として読む。
 //
 // 各トピックには 3 種類の頁がある:
-//   relevant:   クエリの全語を本文に含む（正解）
+//   relevant:   クエリの全語を本文に含む（正解）。1 件はタイトルにクエリ語を含まない
 //   paraphrase: 内容は正解だがクエリ語の一部を別の形で書いている（正解に数える。3 トピックのみ）
-//   decoy:      クエリの 1 語だけを title と本文に大量に含む（キーワード詰め込みの罠）
+//   decoy:      クエリの 1 語だけを title と本文に大量に含む（キーワード詰め込みの罠）と、
+//               クエリの全語をタグとして並べただけの頁（全語一致の罠。minimum match では落ちない）
 // 正解は主に beta / gamma に置き、罠は gamma に寄せる。検索は alpha を crawl したノードから global で出すので、
 //   - 他ピアの結果を集めないと正解が揃わない
 //   - gamma のピアは 1 位が罠になり、ピア単位の正規化でその罠が 1.0 に持ち上がる
@@ -356,7 +357,8 @@ export function buildCorpus(): Page[] {
       pages.push({
         site: RELEVANT_SITES[i % RELEVANT_SITES.length],
         path: `/${t.id}/r${i}.html`,
-        title,
+        // one relevant page per topic has the query terms only in the body, not in the title
+        title: i === 1 ? (t.lang === "en" ? "Notes, part 2" : t.lang === "ja" ? "メモ その2" : "笔记 第二部分") : title,
         body: [s[i % s.length], ...filler(t.lang, 3), s[(i + 1) % s.length], ...filler(t.lang, 2), s[(i + 2) % s.length]],
         lang: t.lang,
         topic: t.id,
@@ -375,6 +377,17 @@ export function buildCorpus(): Page[] {
       });
     });
     let d = 0;
+    // a hard negative: a tag list that contains every query term but is not about the topic; minimum match cannot
+    // remove it, only the ranking can put it below the relevant pages
+    pages.push({
+      site: "gamma.lab",
+      path: `/${t.id}/d${d++}.html`,
+      title: t.lang === "en" ? "Tag cloud" : t.lang === "ja" ? "タグ一覧" : "标签云",
+      body: [`${t.lang === "en" ? "Tags" : t.lang === "ja" ? "タグ" : "标签"}: ${t.query.split(/\s+/).join(", ")}`, ...filler(t.lang, 4)],
+      lang: t.lang,
+      topic: t.id,
+      kind: "decoy",
+    });
     for (const decoy of t.decoys) {
       decoy.titles.forEach((title, i) => {
         // 1 語を何度も繰り返す（キーワード詰め込み）
@@ -438,6 +451,8 @@ export const TRUST_QUERIES = {
   spam: "bitcoin lightning channel",
   ads: "kubernetes pod eviction",
   nat: "circuit relay hole punching",
+  // alpha.lab（問い合わせ元 fork-1 自身）にも正解がある
+  revoke: "ERC-4337 bundler",
 } as const;
 
 export function buildTrustCorpus(): TrustPage[] {

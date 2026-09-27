@@ -25,11 +25,12 @@ x-yacy-volumes: &yacy-volumes
   - ./yacy/yacy.trust.conf:/lab/yacy.conf:ro
   - ./yacy/yacy.network.trust.unit:/opt/yacy_search_server/defaults/yacy.network.lab.unit:ro
 
-# YaCy と同じネットワーク名前空間で動き、YaCy の鍵（DATA/SETTINGS/peer.key）を読む
+# YaCy と同じネットワーク名前空間で動き、YaCy の鍵（DATA/SETTINGS/peer.key）と制御 API のトークンを読む。
+# どちらも所有者だけが読めるので、YaCy と同じ uid（yacy イメージの yacy = 100:101）で動かす
 x-sidecar: &sidecar
   image: ${SIDECAR_IMAGE:-yacy-lab/sidecar:latest}
   restart: "no"
-  user: "0" # YaCy の鍵は所有者だけが読める（yacy ユーザー）
+  user: "100:101"
   logging:
     options:
       max-size: "20m"
@@ -49,9 +50,13 @@ services:
         ipv4_address: 172.30.0.2
         aliases: [alpha.lab, beta.lab, gamma.lab, spam.lab, ads.lab, delta.lab, seed.lab]
 
+  # リレーは鍵を volume に保存し、再起動しても同じピア ID で動く。/status は他の sidecar がピア ID を知るために公開する
   relay:
     <<: *sidecar
-    command: ["-relay-service", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
+    user: "1000:1000"
+    command: ["-relay-service", "-key", "/data/relay.key", "-key-create", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
+    volumes:
+      - relay_key:/data
     networks:
       pub:
         ipv4_address: 172.30.0.3
@@ -67,7 +72,7 @@ services:
     <<: *sidecar
     network_mode: "service:fork-1"
     volumes_from: ["fork-1:ro"]
-    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095"]
   fork-2:
     <<: *yacy
     volumes: *yacy-volumes
@@ -78,7 +83,7 @@ services:
     <<: *sidecar
     network_mode: "service:fork-2"
     volumes_from: ["fork-2:ro"]
-    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095"]
   fork-3:
     <<: *yacy
     volumes: *yacy-volumes
@@ -89,7 +94,7 @@ services:
     <<: *sidecar
     network_mode: "service:fork-3"
     volumes_from: ["fork-3:ro"]
-    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095"]
 
   # 信頼集合にいるが、広告を混ぜると宣言しているピア
   ads-1:
@@ -142,7 +147,7 @@ services:
     <<: *sidecar
     network_mode: "service:natbox"
     volumes_from: ["nat-1:ro"]
-    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095", "-reachability", "${NAT_REACHABILITY:-auto}"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095", "-reachability", "${NAT_REACHABILITY:-auto}"]
 
   runner:
     image: node:24-alpine
@@ -155,6 +160,9 @@ services:
     networks:
       pub:
       natlan:
+
+volumes:
+  relay_key:
 
 networks:
   pub:

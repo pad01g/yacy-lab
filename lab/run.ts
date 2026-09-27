@@ -108,7 +108,14 @@ async function crawlAll(nodes: string[]): Promise<void> {
 }
 
 const termsOf = (q: string): string[] => q.toLowerCase().split(/\s+/).filter(Boolean);
-const haystack = (h: Hit): string => `${h.title} ${h.snippet} ${decodeURIComponent(h.url)}`.toLowerCase();
+const decode = (u: string): string => {
+  try {
+    return decodeURIComponent(u);
+  } catch {
+    return u;
+  }
+};
+const haystack = (h: Hit): string => `${h.title} ${h.snippet} ${decode(h.url)}`.toLowerCase();
 
 type Row = {
   id: string;
@@ -131,7 +138,9 @@ async function evaluate(origin: string, js: Judgement[], scenario: string): Prom
     for (const j of js) {
       await search(origin, j.query, "global", 10, scenario).catch(() => undefined); // 1 回目で他ピアへ問い合わせを起こす
       await sleep(Number(values.wait));
-      const { total, hits } = await search(origin, j.query, "global", 10, scenario);
+      // YaCy fixes the order of results when they are first taken; re-sort for the measured answer, so that the
+      // ranking and not the arrival time decides
+      const { total, hits } = await search(origin, j.query, "global", 10, scenario, true);
       const top = hits.slice(0, 10);
       const R = j.relevant.length;
       const rel = new Set(j.relevant);

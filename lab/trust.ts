@@ -180,9 +180,13 @@ async function main(): Promise<void> {
     summary(spamDefault),
   );
 
-  // C4 開放モード: 未検証として後ろに出る。偽の作者の文書は出ない
+  // C4 開放モード: 未検証として後ろに出る。偽の作者の文書は出ない。
+  // 取り込んだ偽の文書は evil-1 の Solr にしか無い。evil-1 が DHT 検索先に選ばれると Solr の問い合わせ先から外れるので、
+  // この間は DHT 検索の最低年齢を 3 日に戻し、全ピアに Solr で問い合わせる
   await setConfig(ORIGIN, "trust.search.acceptUnverified", "true");
+  await setConfig(ORIGIN, "remotesearch.dht.minage", "3");
   const spamOpen = await globalSearch(TRUST_QUERIES.spam, 30);
+  await setConfig(ORIGIN, "remotesearch.dht.minage", "0");
   await setConfig(ORIGIN, "trust.search.acceptUnverified", "false");
   const firstUnverified = spamOpen.findIndex((h) => h.verified !== "true");
   const lastVerified = spamOpen.map((h) => h.verified === "true").lastIndexOf(true);
@@ -202,8 +206,9 @@ async function main(): Promise<void> {
   check("C5b", "excludeTags=ads で ads の作者の結果が消える", !adsExcluded.some((h) => siteOf(h) === "ads.lab") && adsExcluded.length > 0, summary(adsExcluded));
 
   // C6 NAT 越え
-  const probe = (await (await fetch(`${LAB}/probe?target=172.31.0.10:8090`)).json()) as { reachable: boolean };
-  check("C6a", "公開側から nat-1（172.31.0.10:8090）へ直接は届かない", !probe.reachable, JSON.stringify(probe));
+  const probeYacy = (await (await fetch(`${LAB}/probe?target=172.31.0.10:8090`)).json()) as { reachable: boolean };
+  const probeP2p = (await (await fetch(`${LAB}/probe?target=172.31.0.10:4001`)).json()) as { reachable: boolean };
+  check("C6a", "公開側から nat-1 の YaCy（8090）にも libp2p（4001）にも直接は届かない", !probeYacy.reachable && !probeP2p.reachable, JSON.stringify([probeYacy, probeP2p]));
   check("C6b", "nat-1 の seed は Reach=relay で、リレー経由のアドレスを持つ", natSeen.fields.Reach === "relay" && (natSeen.fields.P2PA ?? "").includes("/p2p-circuit"), `Reach=${natSeen.fields.Reach} P2PA=${(natSeen.fields.P2PA ?? "").slice(0, 80)}…`);
   check("C6c", "nat-1 は DHT の保存先を申し出ていない（RDS なし）", !natSeen.fields.RDS, `RDS=${natSeen.fields.RDS ?? "-"}`);
   const natDefault = await globalSearch(TRUST_QUERIES.nat);
@@ -215,8 +220,24 @@ async function main(): Promise<void> {
     return !p || p.fields.Reach === "none" ? true : undefined;
   }, 10000);
   const natLeecher = await globalSearch(TRUST_QUERIES.nat);
-  check("C6e", "nat-1 を leecher にすると delta.lab の頁は見つからない", !natLeecher.some((h) => siteOf(h) === "delta.lab"), summary(natLeecher));
+  const control = await globalSearch(TRUST_QUERIES.spam);
+  check(
+    "C6e",
+    "nat-1 を leecher にすると delta.lab の頁は見つからない（同じ時点で他のクエリは結果が出る）",
+    !natLeecher.some((h) => siteOf(h) === "delta.lab") && control.some((h) => siteOf(h) === "beta.lab"),
+    `nat: ${summary(natLeecher)} / control: ${summary(control)}`,
+  );
   await setConfig("nat-1", "p2p.mode", "auto");
+
+  // C9 公開側のピアはリレー経由にならない（到達できるピアが Reach=relay に張り付かない）
+  const publicReach = (await peers(ORIGIN)).filter((p) => ["fork-2", "fork-3", "ads-1", "evil-1"].some((n) => seeds[n].Hash === p.hash));
+  const myReach = (await mySeed(ORIGIN)).Reach ?? "direct";
+  check(
+    "C9",
+    "公開側のピアはリレー経由（Reach=relay）にならない",
+    myReach !== "relay" && publicReach.length === 4 && publicReach.every((p) => (p.fields.Reach ?? "direct") !== "relay"),
+    `fork-1=${myReach} ` + publicReach.map((p) => `${p.name}=${p.fields.Reach ?? "direct"}`).join(" "),
+  );
 
   // C7 版の交換: v2（fork-3 を外す）を fork-2 にだけ渡す。fork-1 はピア間の交換で v2 を知る
   await putFile("bundle-v2.json", JSON.stringify({ envelopes: [delegation(coordinator, operator, 1), peerList(operator, 2, members(["fork-3"]))] }));
@@ -229,15 +250,22 @@ async function main(): Promise<void> {
   const afterV2 = await globalSearch(TRUST_QUERIES.spam);
   check("C7b", "v2 で外した fork-3 の頁（gamma.lab）が出なくなる", !afterV2.some((h) => siteOf(h) === "gamma.lab") && afterV2.some((h) => siteOf(h) === "beta.lab"), summary(afterV2));
 
-  // C8 失効: コーディネータがオペレータへの委任を失効させる（v2, revoked）
+  // C8 失効: コーディネータがオペレータへの委任を失効させる（v2, revoked）。alpha（fork-1 自身）にも正解があるクエリで比べる
+  const beforeRevoke = await globalSearch(TRUST_QUERIES.revoke);
+  check("C8a", "失効の前は自ピア以外（beta.lab）の結果も出る（C8b の対照）", beforeRevoke.some((h) => siteOf(h) === "alpha.lab") && beforeRevoke.some((h) => siteOf(h) === "beta.lab"), summary(beforeRevoke));
   await putFile("bundle-v3.json", JSON.stringify({ envelopes: [delegation(coordinator, operator, 2, true), peerList(operator, 2, members(["fork-3"]))] }));
   await setConfig("fork-2", "trust.bundle.urls", `${LAB}/files/bundle-v3.json`);
   const b3 = await until("fork-1 learns the revocation", 420_000, async () => {
     const b = await trustBundle(ORIGIN);
     return b.delegations.some((d) => d.revoked) ? b : undefined;
   }, 10000).catch(() => undefined);
-  const afterRevoke = await globalSearch(TRUST_QUERIES.spam);
-  check("C8", "委任を失効させると、そのオペレータの一覧のピアの結果が消え、自ピアの結果だけが残る", !!b3 && afterRevoke.every((h) => siteOf(h) === "alpha.lab"), `${JSON.stringify(b3)} ${summary(afterRevoke)}`);
+  const afterRevoke = await globalSearch(TRUST_QUERIES.revoke);
+  check(
+    "C8b",
+    "委任を失効させると、そのオペレータの一覧のピアの結果が消え、自ピアの結果だけが残る",
+    !!b3 && afterRevoke.length > 0 && afterRevoke.every((h) => siteOf(h) === "alpha.lab"),
+    `${JSON.stringify(b3)} ${summary(afterRevoke)}`,
+  );
 }
 
 let failure: unknown = null;

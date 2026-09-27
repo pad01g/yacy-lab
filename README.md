@@ -1,7 +1,7 @@
 # yacy-lab
 
 YaCy のフォーク [pad01g/yacy_search_server](https://github.com/pad01g/yacy_search_server)（branch `improved-search`）の改善が
-P2P 網で効いているかを、docker compose だけで再現して確かめる実験と、手で触るためのデモ:
+P2P 網で効いているかを、docker compose だけで再現して確かめる実験と、手で触るためのデモ（プロジェクトの説明: https://pad01g.github.io/yacy_search_server/ja/ ）:
 
 | 実験 | compose | 何を確かめるか |
 |---|---|---|

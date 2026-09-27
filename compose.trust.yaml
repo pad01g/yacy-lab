@@ -1,0 +1,169 @@
+# ピアの身元・信頼・NAT 越えの試験（docs/trust-and-nat.md の §10）。フォーク版だけで組む。
+#   docker compose -f compose.trust.yaml -p yacytrust up -d
+#   docker compose -f compose.trust.yaml -p yacytrust run --rm runner
+#
+#                         pub 172.30.0.0/24
+#   lab .2   relay .3   fork-1..3 .11-.13   ads-1 .14   evil-1 .15   router .254
+#                                                                        │ MASQUERADE
+#                         natlan 172.31.0.0/24                            │
+#   natbox .10（nat-1 と nat-1-p2p がこの名前空間を使う） ─── default via router .254
+#
+# pub 側からは natlan へ経路が無い。nat-1 は外向きにしか通信できず、外からは relay 経由でしか届かない。
+
+x-yacy: &yacy
+  image: ${FORK_IMAGE:-yacy-lab/fork:latest}
+  restart: "no"
+  entrypoint: ["/bin/sh", "/lab/entry.sh"]
+  mem_limit: 1100m
+  logging:
+    options:
+      max-size: "20m"
+      max-file: "2"
+
+x-yacy-volumes: &yacy-volumes
+  - ./yacy/entry.sh:/lab/entry.sh:ro
+  - ./yacy/yacy.trust.conf:/lab/yacy.conf:ro
+  - ./yacy/yacy.network.trust.unit:/opt/yacy_search_server/defaults/yacy.network.lab.unit:ro
+
+# YaCy と同じネットワーク名前空間で動き、YaCy の鍵（DATA/SETTINGS/peer.key）を読む
+x-sidecar: &sidecar
+  image: ${SIDECAR_IMAGE:-yacy-lab/sidecar:latest}
+  restart: "no"
+  user: "0" # YaCy の鍵は所有者だけが読める（yacy ユーザー）
+  logging:
+    options:
+      max-size: "20m"
+      max-file: "2"
+
+services:
+  lab:
+    image: node:24-alpine
+    working_dir: /app
+    command: ["node", "--no-warnings", "lab/server.ts"]
+    environment:
+      CLUSTERS: "trust=fork-1,fork-2,fork-3,ads-1,evil-1"
+    volumes:
+      - ./lab:/app/lab:ro
+    networks:
+      pub:
+        ipv4_address: 172.30.0.2
+        aliases: [alpha.lab, beta.lab, gamma.lab, spam.lab, ads.lab, delta.lab, seed.lab]
+
+  relay:
+    <<: *sidecar
+    command: ["-relay-service", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
+    networks:
+      pub:
+        ipv4_address: 172.30.0.3
+
+  fork-1:
+    <<: *yacy
+    volumes: *yacy-volumes
+    ports: ["127.0.0.1:8390:8090"]
+    networks:
+      pub:
+        ipv4_address: 172.30.0.11
+  fork-1-p2p:
+    <<: *sidecar
+    network_mode: "service:fork-1"
+    volumes_from: ["fork-1:ro"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095"]
+  fork-2:
+    <<: *yacy
+    volumes: *yacy-volumes
+    networks:
+      pub:
+        ipv4_address: 172.30.0.12
+  fork-2-p2p:
+    <<: *sidecar
+    network_mode: "service:fork-2"
+    volumes_from: ["fork-2:ro"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095"]
+  fork-3:
+    <<: *yacy
+    volumes: *yacy-volumes
+    networks:
+      pub:
+        ipv4_address: 172.30.0.13
+  fork-3-p2p:
+    <<: *sidecar
+    network_mode: "service:fork-3"
+    volumes_from: ["fork-3:ro"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095"]
+
+  # 信頼集合にいるが、広告を混ぜると宣言しているピア
+  ads-1:
+    <<: *yacy
+    volumes: *yacy-volumes
+    environment:
+      YACY_CONF: "trust.selfTags=ads"
+    networks:
+      pub:
+        ipv4_address: 172.30.0.14
+
+  # 署名はあるが信頼集合にいないピア。スパムを crawl し、信頼ピアを作者と偽った文書を自分の索引に入れる
+  evil-1:
+    <<: *yacy
+    volumes: *yacy-volumes
+    networks:
+      pub:
+        ipv4_address: 172.30.0.15
+
+  router:
+    image: alpine:3.22
+    cap_add: [NET_ADMIN]
+    sysctls:
+      net.ipv4.ip_forward: "1"
+    command: ["sh", "-c", "apk add -q iptables && iptables -t nat -A POSTROUTING -s 172.31.0.0/24 ! -d 172.31.0.0/24 -j MASQUERADE && echo router ready && exec sleep infinity"]
+    networks:
+      pub:
+        ipv4_address: 172.30.0.254
+      natlan:
+        ipv4_address: 172.31.0.254
+
+  # NAT の内側のホスト。既定経路をルーターへ向ける。nat-1 と nat-1-p2p はこの名前空間で動く
+  natbox:
+    image: alpine:3.22
+    cap_add: [NET_ADMIN]
+    command: ["sh", "-c", "ip route replace default via 172.31.0.254 && echo natbox ready && exec sleep infinity"]
+    extra_hosts:
+      - "seed.lab:172.30.0.2"
+      - "delta.lab:172.30.0.2"
+    networks:
+      natlan:
+        ipv4_address: 172.31.0.10
+  nat-1:
+    <<: *yacy
+    volumes: *yacy-volumes
+    network_mode: "service:natbox"
+    environment:
+      STATIC_IP: "172.31.0.10"
+  nat-1-p2p:
+    <<: *sidecar
+    network_mode: "service:natbox"
+    volumes_from: ["nat-1:ro"]
+    command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-relay", "http://172.30.0.3:8095", "-reachability", "${NAT_REACHABILITY:-auto}"]
+
+  runner:
+    image: node:24-alpine
+    profiles: ["run"]
+    working_dir: /app
+    entrypoint: ["node", "--no-warnings", "lab/trust.ts"]
+    volumes:
+      - ./lab:/app/lab:ro
+      - ./results:/app/results
+    networks:
+      pub:
+      natlan:
+
+networks:
+  pub:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+  # internal: true にはしない（internal だとホストの iptables が、ルーター宛てでもサブネット外への転送を捨てる）。
+  # 別の docker network 同士の通信は Docker が分離するので、公開側から natlan へは直接届かない
+  natlan:
+    ipam:
+      config:
+        - subnet: 172.31.0.0/24

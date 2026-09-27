@@ -424,3 +424,64 @@ export function judgements(pages: Page[] = buildCorpus()): Judgement[] {
     decoys: pages.filter((p) => p.topic === t.id && p.kind === "decoy").map(urlOf),
   }));
 }
+
+// ---- 信頼と NAT の試験用コーパス（compose.trust.yaml）
+//   spam.lab:  信頼集合外のピア（evil-1）が crawl する。クエリの全語を含むマルウェア誘導頁（mm も被覆率も通り抜ける）
+//   ads.lab:   信頼集合にいるが ads を宣言したピア（ads-1）が crawl する広告頁
+//   delta.lab: NAT の内側のピア（nat-1）だけが crawl する頁。リレー経由でしか見つからない
+
+export const TRUST_SITES = ["spam.lab", "ads.lab", "delta.lab"] as const;
+
+export type TrustPage = { site: (typeof TRUST_SITES)[number]; path: string; title: string; body: string[] };
+
+export const TRUST_QUERIES = {
+  spam: "bitcoin lightning channel",
+  ads: "kubernetes pod eviction",
+  nat: "circuit relay hole punching",
+} as const;
+
+export function buildTrustCorpus(): TrustPage[] {
+  const pages: TrustPage[] = [];
+  for (let i = 0; i < 5; i++) {
+    pages.push({
+      site: "spam.lab",
+      path: `/doc/${String(i).padStart(3, "0")}.html`,
+      title: `Bitcoin lightning channel free wallet download ${i}`,
+      body: [
+        "Open a bitcoin lightning channel instantly with our free wallet.",
+        "Download the bitcoin lightning channel booster now: http://malware.example/setup.exe",
+        "Every bitcoin lightning channel user needs this tool.",
+      ],
+    });
+    pages.push({
+      site: "spam.lab",
+      path: `/doc/${String(i + 5).padStart(3, "0")}.html`,
+      title: `Kubernetes pod eviction fix tool ${i}`,
+      body: ["Stop kubernetes pod eviction forever: install our agent from http://malware.example/agent.sh", "kubernetes pod eviction solved."],
+    });
+  }
+  for (let i = 0; i < 4; i++) {
+    pages.push({
+      site: "ads.lab",
+      path: `/doc/${String(i).padStart(3, "0")}.html`,
+      title: `Sponsored: kubernetes pod eviction monitoring ${i}`,
+      body: ["Sponsored result. Watch kubernetes pod eviction with our paid dashboard.", "Kubernetes pod eviction alerts for teams."],
+    });
+  }
+  const delta = [
+    "A circuit relay lets two peers behind NAT talk; hole punching then upgrades the relayed connection.",
+    "With circuit relay v2 a peer reserves a slot on the relay before hole punching starts.",
+    "DCUtR coordinates hole punching over the circuit relay connection.",
+    "If hole punching fails, the circuit relay keeps carrying the traffic.",
+  ];
+  delta.forEach((s, i) =>
+    pages.push({ site: "delta.lab", path: `/doc/${String(i).padStart(3, "0")}.html`, title: `Circuit relay and hole punching, part ${i + 1}`, body: [s, delta[(i + 1) % delta.length]] }),
+  );
+  return pages;
+}
+
+export function renderTrustPage(p: TrustPage): string {
+  return renderPage({ site: "alpha.lab", path: p.path, title: p.title, body: p.body, lang: "en", kind: "filler" });
+}
+
+export const trustUrlOf = (p: TrustPage): string => `http://${p.site}${p.path}`;

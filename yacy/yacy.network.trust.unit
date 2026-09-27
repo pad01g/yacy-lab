@@ -1,0 +1,19 @@
+# lab 用の閉じた網。docker network 内の private IP 同士で組み、公開の freeworld とは混ざらない
+# remote Solr 検索の送り先数は (2^partitionExponent) * redundancy / 2 で決まる。
+# partitionExponent = 0 / redundancy = 1 だと 0 台になり global 検索が他ピアへ届かない
+network.unit.name = lab-trust
+network.unit.description = yacy-lab trust and NAT test
+network.unit.domain = local
+network.unit.dht = true
+network.unit.dhtredundancy.junior = 1
+network.unit.dhtredundancy.senior = 2
+network.unit.dht.partitionExponent = 2
+network.unit.remotesearch.maxtime = 3000
+network.unit.remotesearch.maxcount = 20
+network.unit.inspection.searchverify = false
+network.unit.remotecrawl.speed = 600
+network.unit.bootstrap.seedlist0 = http://seed.lab/seed/trust.txt
+network.unit.protocol.control = uncontrolled
+network.unit.access.whitelist = 10\..*,127\..*,172\.(1[6-9]|2[0-9]|3[0-1])\..*,169\.254\..*,192\.168\..*,localhost
+network.unit.access.blacklist =
+greedylearning.enabled = false

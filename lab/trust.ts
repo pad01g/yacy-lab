@@ -1,10 +1,10 @@
 // 身元・信頼・NAT 越えの試験（compose.trust.yaml）。docs/trust-and-nat.md の §10 の確認項目を順に実行する。
 //   docker compose -f compose.trust.yaml -p yacytrust run --rm runner [--skip-crawl]
 // 各項目を PASS / FAIL で記録し、results/trust-<時刻>.md に保存する。1 つでも FAIL なら終了コード 1。
-import { generateKeyPairSync, sign, type KeyObject } from "node:crypto";
+import { createHash, generateKeyPairSync, sign, type KeyObject } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { buildCorpus, TRUST_QUERIES } from "./corpus.ts";
+import { buildCorpus, buildTrustCorpus, TRUST_QUERIES } from "./corpus.ts";
 import { base, fetchAdmin, mySeed, peers, search, setConfig, startCrawl, status, type Hit } from "./yacy.ts";
 
 const { values } = parseArgs({ options: { "skip-crawl": { type: "boolean", default: false } } });
@@ -129,7 +129,9 @@ async function main(): Promise<void> {
       ALL.map(async (n) => {
         const site = CRAWL[n];
         log(n, await startCrawl(n, `http://${site}/`));
-        const expected = site.endsWith("alpha.lab") || site.endsWith("beta.lab") || site.endsWith("gamma.lab") ? corpus.filter((p) => p.site === site).length + 1 : 2;
+        const trustPages = buildTrustCorpus();
+        const expected =
+          (["alpha.lab", "beta.lab", "gamma.lab"].includes(site) ? corpus.filter((p) => p.site === site).length : trustPages.filter((p) => p.site === site).length) + 1; // + 目次頁
         await until(`${n} index ${site}`, 600_000, async () => {
           const s = await status(n);
           return s.docs >= expected && s.loader === 0 && s.localCrawler === 0 ? s : undefined;
@@ -153,6 +155,26 @@ async function main(): Promise<void> {
   const before = (await status("evil-1")).docs;
   await fetchAdmin(`${base("evil-1")}/IndexImportJsonList_p.html?url=${encodeURIComponent(`${LAB}/files/forged.jsonl`)}`);
   await until("evil-1 imported the forged documents", 120_000, async () => ((await status("evil-1")).docs >= before + 2 ? true : undefined));
+  const inEvil = (await (
+    await fetchAdmin(`${base("evil-1")}/solr/select?q=*:*&fq=sku:${encodeURIComponent('"http://spam.lab/forged.html"')}&fl=sku,provenance_s&wt=json`)
+  ).json()) as { response: { docs: { provenance_s?: string }[] } };
+  check("S1", "作者を偽った文書が、流用した署名付きのまま evil-1 の索引にある", inEvil.response.docs[0]?.provenance_s === realDoc?.provenance_s, JSON.stringify(inEvil.response.docs[0] ?? {}).slice(0, 120));
+
+  // 信頼ピア（fork-2）の索引に、信頼集合外の作者（evil-1）が署名した文書を入れる。fork-2 は検索先になるので、
+  // この文書が出ないことは「問い合わせ先から外れたから」ではなく「作者の署名で落とした」ことを示す
+  const evilDoc = (await (
+    await fetchAdmin(`${base("evil-1")}/solr/select?q=*:*&fq=host_s:spam.lab&fq=provenance_s:*&fq=title:bitcoin&fq=-title:forged&fl=sku,title,text_t,provenance_s&rows=1&wt=json`)
+  ).json()) as { response: { docs: { sku: string; title: string[]; text_t?: string; provenance_s: string }[] } };
+  const relayed = evilDoc.response.docs[0];
+  if (!relayed) throw new Error("evil-1 has no signed spam.lab document");
+  await putFile("relayed.jsonl", JSON.stringify({ sku: relayed.sku, title: relayed.title, text_t: relayed.text_t ?? "bitcoin lightning channel", provenance_s: relayed.provenance_s }) + "\n");
+  const beforeFork2 = (await status("fork-2")).docs;
+  await fetchAdmin(`${base("fork-2")}/IndexImportJsonList_p.html?url=${encodeURIComponent(`${LAB}/files/relayed.jsonl`)}`);
+  await until("fork-2 imported the relayed document", 120_000, async () => ((await status("fork-2")).docs >= beforeFork2 + 1 ? true : undefined));
+  const inFork2 = (await (
+    await fetchAdmin(`${base("fork-2")}/solr/select?q=*:*&fq=sku:${encodeURIComponent(JSON.stringify(relayed.sku))}&fl=sku,provenance_s&wt=json`)
+  ).json()) as { response: { docs: { provenance_s?: string }[] } };
+  check("S2", "evil-1 が署名した文書が、そのまま信頼ピア fork-2 の索引にある", inFork2.response.docs[0]?.provenance_s === relayed.provenance_s, `${relayed.sku} ${(relayed.provenance_s ?? "").slice(0, 40)}…`);
 
   // ---- 確認
   // C1 seed の署名
@@ -161,7 +183,10 @@ async function main(): Promise<void> {
     const p = seen.find((x) => x.hash === seeds[n].Hash);
     return p && p.fields.PK === pk(n) && !!p.fields.Sig;
   });
-  check("C1", "他ピアの seed が署名付きで、ピア ID が公開鍵から導かれている", signedAll, seen.map((p) => `${p.name}:${p.fields.PK ? "signed" : "UNSIGNED"}`).join(" "));
+  // YaCy のピア ID = base64url(SHA-256(公開鍵 32 byte)) の先頭 12 文字
+  const hashOf = (pk: string): string => createHash("sha256").update(Buffer.from(pk, "base64url")).digest("base64url").slice(0, 12);
+  const derived = PUBLIC.filter((n) => n !== ORIGIN).every((n) => hashOf(pk(n)) === seeds[n].Hash);
+  check("C1", "他ピアの seed が署名付きで、ピア ID が公開鍵から導かれている", signedAll && derived, seen.map((p) => `${p.name}:${p.fields.PK ? "signed" : "UNSIGNED"}:${p.fields.PK && hashOf(p.fields.PK) === p.hash ? "hash=H(PK)" : "HASH MISMATCH"}`).join(" "));
 
   // C2 一覧の取り込み
   const b1 = await until("fork-1 has the trust list", 180_000, async () => {
@@ -179,6 +204,7 @@ async function main(): Promise<void> {
     spamDefault.length >= 3 && spamDefault.every((h) => trustedSites.has(siteOf(h)) && h.verified === "true"),
     summary(spamDefault),
   );
+  check("C3b", "信頼ピア（fork-2）が持っていても、信頼集合外の作者が署名した文書は出ない", !spamDefault.some((h) => h.url === relayed.sku), `${relayed.sku} ${spamDefault.some((h) => h.url === relayed.sku) ? "SHOWN" : "not shown"}`);
 
   // C4 開放モード: 未検証として後ろに出る。偽の作者の文書は出ない。
   // 取り込んだ偽の文書は evil-1 の Solr にしか無い。evil-1 が DHT 検索先に選ばれると Solr の問い合わせ先から外れるので、
@@ -195,6 +221,7 @@ async function main(): Promise<void> {
   check("C4b", "未検証の結果は検証済みの結果より必ず下", firstUnverified === -1 || lastVerified < firstUnverified, `last verified #${lastVerified}, first unverified #${firstUnverified}`);
   check("C4c", "作者を偽った文書（署名の流用）は開放モードでも出ない", !spamOpen.some((h) => h.url.includes("forged")), spamOpen.filter((h) => h.url.includes("forged")).map((h) => h.url).join(" ") || "absent");
   check("C4d", "署名の無い文書は開放モードでだけ「未検証」で出る", spamOpen.some((h) => h.url.includes("unsigned") && h.verified === "false") && !spamDefault.some((h) => h.url.includes("unsigned")), "unsigned.html");
+  check("C4e", "C3b の対照: 開放モードなら fork-2 の持つ evil-1 作者の文書は「未検証」で出る", spamOpen.some((h) => h.url === relayed.sku && h.verified === "false"), relayed.sku);
 
   // C5 宣言タグ
   const adsDefault = await globalSearch(TRUST_QUERIES.ads);
@@ -265,6 +292,16 @@ async function main(): Promise<void> {
     "委任を失効させると、そのオペレータの一覧のピアの結果が消え、自ピアの結果だけが残る",
     !!b3 && afterRevoke.length > 0 && afterRevoke.every((h) => siteOf(h) === "alpha.lab"),
     `${JSON.stringify(b3)} ${summary(afterRevoke)}`,
+  );
+  // 対照: 他ピアの検索は動いていて、結果は「未検証」に変わっただけ
+  await setConfig(ORIGIN, "trust.search.acceptUnverified", "true");
+  const afterRevokeOpen = await globalSearch(TRUST_QUERIES.revoke);
+  await setConfig(ORIGIN, "trust.search.acceptUnverified", "false");
+  check(
+    "C8c",
+    "失効後も開放モードなら beta.lab の結果は「未検証」として出る（C8b の対照）",
+    afterRevokeOpen.some((h) => siteOf(h) === "beta.lab" && h.verified === "false"),
+    summary(afterRevokeOpen),
   );
 }
 

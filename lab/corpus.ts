@@ -382,7 +382,8 @@ export function buildCorpus(): Page[] {
     pages.push({
       site: "gamma.lab",
       path: `/${t.id}/d${d++}.html`,
-      title: t.lang === "en" ? "Tag cloud" : t.lang === "ja" ? "タグ一覧" : "标签云",
+      // the exact query phrase in the title: the title phrase boost must not lift it above the relevant pages
+      title: `${t.query} ${t.lang === "en" ? "tag archive" : t.lang === "ja" ? "タグ一覧" : "标签云"}`,
       body: [`${t.lang === "en" ? "Tags" : t.lang === "ja" ? "タグ" : "标签"}: ${t.query.split(/\s+/).join(", ")}`, ...filler(t.lang, 4)],
       lang: t.lang,
       topic: t.id,

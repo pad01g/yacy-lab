@@ -39,8 +39,12 @@ export async function setConfig(node: string, key: string, value: string): Promi
   const token = page.headers.get("x-yacy-transaction-token");
   if (!token) throw new Error(`${node}: no X-YaCy-Transaction-Token header from ConfigProperties_p.html`);
   const res = await fetchAdmin(url, { method: "POST", body: new URLSearchParams({ key, value, transactionToken: token }) });
-  await res.arrayBuffer();
+  const html = await res.text();
   if (!res.ok) throw new Error(`${node}: setting ${key} failed with HTTP ${res.status}`);
+  // the answer lists all settings as <option id="k<key>" value="<value>">; read the value back
+  const m = html.match(new RegExp(`id="k${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}" value="([^"]*)"`));
+  const stored = m ? m[1].replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&") : null;
+  if (stored !== value) throw new Error(`${node}: ${key} is ${JSON.stringify(stored)} after setting it to ${JSON.stringify(value)}`);
 }
 
 // ノード名から URL。NAT の内側のノードは名前解決できないので、アドレスを直接指定できるようにする

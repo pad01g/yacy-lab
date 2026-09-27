@@ -11,5 +11,7 @@ if [ ! -f "$DATA/SETTINGS/yacy.conf" ]; then
   echo "staticIP=${STATIC_IP:-$(hostname -i | awk '{print $1}')}" >> "$DATA/SETTINGS/yacy.conf"
   # ノードごとの追加設定（改行区切りの key=value）
   if [ -n "$YACY_CONF" ]; then printf '%s\n' "$YACY_CONF" >> "$DATA/SETTINGS/yacy.conf"; fi
+  # Java のヒープ（例 YACY_XMX=500m）。startYACY.sh は javastart_Xmx の行を 1 つだけ読むので、足さずに置き換える
+  if [ -n "$YACY_XMX" ]; then sed -i "s/^javastart_Xmx=.*/javastart_Xmx=Xmx$YACY_XMX/" "$DATA/SETTINGS/yacy.conf"; fi
 fi
 exec /bin/sh /opt/yacy_search_server/startYACY.sh -f

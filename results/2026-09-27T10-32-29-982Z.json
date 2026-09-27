@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-27T08:48:31.443Z",
+  "at": "2026-09-27T10:32:29.982Z",
   "clusters": [
     "upstream",
     "fork"
@@ -12,7 +12,7 @@
     "solr-only:no-coverage",
     "solr-only:mm=1+no-cov",
     "solr-only:title-boost=0",
-    "solr-only:title-boost=20",
+    "solr-only:no-thin",
     "solr-only:mm=100%"
   ],
   "results": [
@@ -163,24 +163,24 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
+              "url": "http://alpha.lab/doc/005.html",
+              "title": "Postgres roles and privileges",
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/018.html",
-              "title": "Postgres autovacuum tuning: scale factor and cost limit",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://alpha.lab/doc/005.html",
-              "title": "Postgres roles and privileges",
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
               "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/003.html",
               "title": "Car engine tuning shops",
               "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/018.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
             },
             {
               "url": "http://gamma.lab/doc/056.html",
@@ -747,14 +747,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/060.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/019.html",
@@ -768,9 +768,9 @@
           "lang": "en",
           "query": "tokio select cancellation safety",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.6,
           "remote": 1,
           "top": [
@@ -785,11 +785,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/022.html",
-              "title": "tokio select cancellation safety tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/008.html",
               "title": "Writing cancellation safe futures for tokio select",
               "judge": "relevant"
@@ -798,6 +793,11 @@
               "url": "http://gamma.lab/doc/017.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/022.html",
+              "title": "tokio select cancellation safety tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -805,11 +805,11 @@
           "id": "autovacuum",
           "lang": "en",
           "query": "postgres autovacuum tuning",
-          "total": 5,
+          "total": 6,
           "rprec": 0.8,
-          "recall": 0.8,
+          "recall": 1,
           "decoy": 0.2,
-          "allTerms": 0.8,
+          "allTerms": 0.8333333333333334,
           "remote": 1,
           "top": [
             {
@@ -828,13 +828,18 @@
               "judge": "relevant"
             },
             {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Notes, part 2",
+              "judge": "relevant"
+            },
+            {
               "url": "http://gamma.lab/doc/046.html",
               "title": "postgres autovacuum tuning tag archive",
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/029.html",
-              "title": "Notes, part 2",
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Tuning autovacuum in PostgreSQL",
               "judge": "relevant"
             }
           ]
@@ -843,11 +848,11 @@
           "id": "eviction",
           "lang": "en",
           "query": "kubernetes pod eviction",
-          "total": 5,
+          "total": 6,
           "rprec": 0.8,
-          "recall": 0.8,
+          "recall": 1,
           "decoy": 0.2,
-          "allTerms": 0.8,
+          "allTerms": 0.6666666666666666,
           "remote": 1,
           "top": [
             {
@@ -861,8 +866,8 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/027.html",
-              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Notes, part 2",
               "judge": "relevant"
             },
             {
@@ -871,8 +876,13 @@
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/007.html",
-              "title": "Notes, part 2",
+              "url": "http://beta.lab/doc/027.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/037.html",
+              "title": "Why the kubelet evicts pods",
               "judge": "relevant"
             }
           ]
@@ -882,9 +892,9 @@
           "lang": "en",
           "query": "bitcoin lightning channel",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
@@ -904,14 +914,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/052.html",
-              "title": "bitcoin lightning channel tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/031.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "bitcoin lightning channel tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -937,8 +947,8 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/007.html",
-              "title": "Solr edismax: minimum match expressions",
+              "url": "http://gamma.lab/doc/009.html",
+              "title": "Notes, part 2",
               "judge": "relevant"
             },
             {
@@ -947,8 +957,8 @@
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/009.html",
-              "title": "Notes, part 2",
+              "url": "http://beta.lab/doc/007.html",
+              "title": "Solr edismax: minimum match expressions",
               "judge": "relevant"
             }
           ]
@@ -957,28 +967,13 @@
           "id": "vasp",
           "lang": "ja",
           "query": "暗号資産交換業 登録 金融庁",
-          "total": 5,
+          "total": 6,
           "rprec": 0.8,
-          "recall": 0.8,
+          "recall": 1,
           "decoy": 0.2,
-          "allTerms": 0.6,
+          "allTerms": 0.5,
           "remote": 1,
           "top": [
-            {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/059.html",
-              "title": "メモ その2",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://beta.lab/doc/002.html",
-              "title": "金融庁による暗号資産交換業者の登録一覧",
-              "judge": "relevant"
-            },
             {
               "url": "http://beta.lab/doc/019.html",
               "title": "暗号資産交換業者の登録制度について",
@@ -988,6 +983,26 @@
               "url": "http://gamma.lab/doc/041.html",
               "title": "暗号資産交換業者登録と金融庁の監督",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/013.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
             }
           ]
         },
@@ -996,27 +1011,12 @@
           "lang": "ja",
           "query": "ステーブルコイン 規制",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
-            {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/048.html",
-              "title": "メモ その2",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://gamma.lab/doc/057.html",
-              "title": "ステーブルコインの発行と規制",
-              "judge": "relevant"
-            },
             {
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
@@ -1026,6 +1026,21 @@
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/057.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/048.html",
+              "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             }
           ]
         },
@@ -1033,7 +1048,7 @@
           "id": "expo",
           "lang": "ja",
           "query": "大阪 万博",
-          "total": 9,
+          "total": 10,
           "rprec": 0.75,
           "recall": 1,
           "decoy": 0.25,
@@ -1041,18 +1056,8 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/003.html",
-              "title": "メモ その2",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://beta.lab/doc/043.html",
-              "title": "大阪万博への行き方",
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
               "judge": "relevant"
             },
             {
@@ -1061,8 +1066,18 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "大阪万博への行き方",
               "judge": "relevant"
             }
           ]
@@ -1079,13 +1094,8 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/006.html",
-              "title": "メモ その2",
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "Pythonで学ぶ機械学習入門",
               "judge": "relevant"
             },
             {
@@ -1094,9 +1104,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/033.html",
-              "title": "Pythonで学ぶ機械学習入門",
+              "url": "http://gamma.lab/doc/006.html",
+              "title": "メモ その2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/020.html",
@@ -1117,21 +1132,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/039.html",
-              "title": "笔记 第二部分",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://beta.lab/doc/015.html",
-              "title": "区块链钱包安全指南",
-              "judge": "relevant"
-            },
-            {
               "url": "http://beta.lab/doc/024.html",
               "title": "区块链钱包的工作原理",
               "judge": "relevant"
@@ -1140,29 +1140,44 @@
               "url": "http://gamma.lab/doc/045.html",
               "title": "区块链钱包与私钥",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "笔记 第二部分",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/015.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
             }
           ]
         }
       ],
       "all": {
-        "rprec": 0.7681818181818181,
-        "recall": 0.9454545454545453,
-        "decoy": 0.2318181818181818,
-        "allTerms": 0.7666666666666665,
+        "rprec": 0.8363636363636363,
+        "recall": 1,
+        "decoy": 0.16363636363636364,
+        "allTerms": 0.7484848484848484,
         "remote": 0.9848484848484849
       },
       "en": {
-        "rprec": 0.775,
-        "recall": 0.9333333333333332,
-        "decoy": 0.225,
-        "allTerms": 0.7722222222222221,
+        "rprec": 0.8583333333333334,
+        "recall": 1,
+        "decoy": 0.1416666666666667,
+        "allTerms": 0.7555555555555555,
         "remote": 0.9722222222222223
       },
       "cjk": {
-        "rprec": 0.76,
-        "recall": 0.96,
-        "decoy": 0.24,
-        "allTerms": 0.76,
+        "rprec": 0.8099999999999999,
+        "recall": 1,
+        "decoy": 0.19,
+        "allTerms": 0.74,
         "remote": 1
       }
     },
@@ -1381,11 +1396,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://alpha.lab/doc/017.html",
-              "title": "Kubernetes release notes",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/010.html",
               "title": "Kubernetes pod eviction under node pressure",
               "judge": "relevant"
@@ -1393,6 +1403,11 @@
             {
               "url": "http://gamma.lab/doc/015.html",
               "title": "kubernetes pod eviction tag archive",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://alpha.lab/doc/017.html",
+              "title": "Kubernetes release notes",
               "judge": "decoy"
             },
             {
@@ -1887,11 +1902,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/019.html",
               "title": "Choosing an ERC-4337 bundler provider",
               "judge": "relevant"
@@ -1905,6 +1915,11 @@
               "url": "http://gamma.lab/doc/071.html",
               "title": "Account abstraction: the ERC-4337 bundler role",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/060.html",
@@ -1968,14 +1983,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/018.html",
               "title": "Postgres autovacuum tuning: scale factor and cost limit",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/056.html",
@@ -2049,11 +2064,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://beta.lab/doc/008.html",
-              "title": "Opening a bitcoin lightning channel",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/032.html",
               "title": "Bitcoin lightning channel liquidity",
               "judge": "relevant"
@@ -2061,6 +2071,11 @@
             {
               "url": "http://beta.lab/doc/000.html",
               "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Opening a bitcoin lightning channel",
               "judge": "relevant"
             },
             {
@@ -2092,11 +2107,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/029.html",
               "title": "Solr edismax minimum match (mm) explained",
               "judge": "relevant"
@@ -2105,6 +2115,11 @@
               "url": "http://gamma.lab/doc/043.html",
               "title": "Why Solr edismax minimum match returns too many results",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/009.html",
@@ -2125,14 +2140,14 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/019.html",
@@ -2168,11 +2183,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
@@ -2181,6 +2191,11 @@
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/057.html",
@@ -2211,16 +2226,6 @@
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/043.html",
-              "title": "大阪万博への行き方",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/011.html",
               "title": "大阪万博の入場チケット",
               "judge": "relevant"
@@ -2228,6 +2233,16 @@
             {
               "url": "http://gamma.lab/doc/003.html",
               "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
               "judge": "relevant"
             }
           ]
@@ -2244,11 +2259,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
@@ -2257,6 +2267,11 @@
               "url": "http://beta.lab/doc/023.html",
               "title": "機械学習の入門書まとめ",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/033.html",
@@ -2282,11 +2297,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/015.html",
               "title": "区块链钱包安全指南",
               "judge": "relevant"
@@ -2295,6 +2305,11 @@
               "url": "http://beta.lab/doc/024.html",
               "title": "区块链钱包的工作原理",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/045.html",
@@ -2504,7 +2519,7 @@
           "id": "erc4337",
           "lang": "en",
           "query": "ERC-4337 bundler",
-          "total": 8,
+          "total": 10,
           "rprec": 0.8,
           "recall": 1,
           "decoy": 0.2,
@@ -2527,14 +2542,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/060.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/019.html",
@@ -2548,9 +2563,9 @@
           "lang": "en",
           "query": "tokio select cancellation safety",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.6,
           "remote": 1,
           "top": [
@@ -2565,11 +2580,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/022.html",
-              "title": "tokio select cancellation safety tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/008.html",
               "title": "Writing cancellation safe futures for tokio select",
               "judge": "relevant"
@@ -2578,6 +2588,11 @@
               "url": "http://gamma.lab/doc/017.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/022.html",
+              "title": "tokio select cancellation safety tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -2608,14 +2623,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/029.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -2646,14 +2661,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/015.html",
-              "title": "kubernetes pod eviction tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/007.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/015.html",
+              "title": "kubernetes pod eviction tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -2662,9 +2677,9 @@
           "lang": "en",
           "query": "bitcoin lightning channel",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
@@ -2684,14 +2699,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/052.html",
-              "title": "bitcoin lightning channel tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/031.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "bitcoin lightning channel tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -2700,9 +2715,9 @@
           "lang": "en",
           "query": "solr edismax minimum match",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
@@ -2722,14 +2737,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://gamma.lab/doc/009.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -2745,16 +2760,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/059.html",
-              "title": "メモ その2",
-              "judge": "relevant"
-            },
-            {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
               "judge": "relevant"
@@ -2768,6 +2773,16 @@
               "url": "http://gamma.lab/doc/041.html",
               "title": "暗号資産交換業者登録と金融庁の監督",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             }
           ]
         },
@@ -2776,27 +2791,12 @@
           "lang": "ja",
           "query": "ステーブルコイン 規制",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
-            {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/048.html",
-              "title": "メモ その2",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://gamma.lab/doc/057.html",
-              "title": "ステーブルコインの発行と規制",
-              "judge": "relevant"
-            },
             {
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
@@ -2806,6 +2806,21 @@
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/057.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/048.html",
+              "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             }
           ]
         },
@@ -2813,21 +2828,16 @@
           "id": "expo",
           "lang": "ja",
           "query": "大阪 万博",
-          "total": 7,
-          "rprec": 0.75,
+          "total": 6,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/003.html",
-              "title": "メモ その2",
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
               "judge": "relevant"
             },
             {
@@ -2841,9 +2851,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "メモ その2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
+              "judge": "decoy"
             }
           ]
         },
@@ -2852,27 +2867,12 @@
           "lang": "ja",
           "query": "機械学習 入門",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
-            {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/006.html",
-              "title": "メモ その2",
-              "judge": "relevant"
-            },
-            {
-              "url": "http://beta.lab/doc/023.html",
-              "title": "機械学習の入門書まとめ",
-              "judge": "relevant"
-            },
             {
               "url": "http://gamma.lab/doc/033.html",
               "title": "Pythonで学ぶ機械学習入門",
@@ -2882,6 +2882,21 @@
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/006.html",
+              "title": "メモ その2",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             }
           ]
         },
@@ -2890,20 +2905,15 @@
           "lang": "zh",
           "query": "区块链 钱包",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/039.html",
-              "title": "笔记 第二部分",
+              "url": "http://beta.lab/doc/024.html",
+              "title": "区块链钱包的工作原理",
               "judge": "relevant"
             },
             {
@@ -2912,36 +2922,41 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/024.html",
-              "title": "区块链钱包的工作原理",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/045.html",
               "title": "区块链钱包与私钥",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "笔记 第二部分",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             }
           ]
         }
       ],
       "all": {
-        "rprec": 0.7681818181818181,
+        "rprec": 0.9272727272727272,
         "recall": 0.9454545454545453,
-        "decoy": 0.2318181818181818,
+        "decoy": 0.07272727272727274,
         "allTerms": 0.7666666666666665,
         "remote": 0.9848484848484849
       },
       "en": {
-        "rprec": 0.775,
+        "rprec": 0.9,
         "recall": 0.9333333333333332,
-        "decoy": 0.225,
+        "decoy": 0.10000000000000002,
         "allTerms": 0.7722222222222221,
         "remote": 0.9722222222222223
       },
       "cjk": {
-        "rprec": 0.76,
+        "rprec": 0.96,
         "recall": 0.96,
-        "decoy": 0.24,
+        "decoy": 0.04,
         "allTerms": 0.76,
         "remote": 1
       }
@@ -2967,11 +2982,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/019.html",
               "title": "Choosing an ERC-4337 bundler provider",
               "judge": "relevant"
@@ -2985,6 +2995,11 @@
               "url": "http://gamma.lab/doc/071.html",
               "title": "Account abstraction: the ERC-4337 bundler role",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/060.html",
@@ -3002,8 +3017,8 @@
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/047.html",
-              "title": "Bundler install troubleshooting",
+              "url": "http://gamma.lab/doc/050.html",
+              "title": "Bundler lockfile format",
               "judge": "decoy"
             },
             {
@@ -3045,24 +3060,24 @@
               "judge": "relevant"
             },
             {
-              "url": "http://alpha.lab/doc/027.html",
-              "title": "Safety data sheet guide",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/026.html",
               "title": "Tokio tutorial: spawning tasks",
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/004.html",
-              "title": "Tokio console overview",
+              "url": "http://alpha.lab/doc/027.html",
+              "title": "Safety data sheet guide",
               "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/017.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "Tokio console overview",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/024.html",
@@ -3093,14 +3108,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/018.html",
               "title": "Postgres autovacuum tuning: scale factor and cost limit",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/056.html",
@@ -3113,6 +3128,11 @@
               "judge": "relevant"
             },
             {
+              "url": "http://alpha.lab/doc/003.html",
+              "title": "Car engine tuning shops",
+              "judge": "decoy"
+            },
+            {
               "url": "http://beta.lab/doc/003.html",
               "title": "Tuning autovacuum in PostgreSQL",
               "judge": "relevant"
@@ -3123,18 +3143,13 @@
               "judge": "decoy"
             },
             {
-              "url": "http://alpha.lab/doc/003.html",
-              "title": "Car engine tuning shops",
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Piano tuning prices",
               "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/032.html",
               "title": "Postgres backup with pg_dump",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/076.html",
-              "title": "Piano tuning prices",
               "judge": "decoy"
             }
           ]
@@ -3186,18 +3201,18 @@
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/039.html",
-              "title": "Kubernetes dashboard setup",
+              "url": "http://gamma.lab/doc/068.html",
+              "title": "Tenant eviction notice template",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/000.html",
+              "title": "Eviction law for landlords",
               "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/013.html",
               "title": "Kubernetes certification tips",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/068.html",
-              "title": "Tenant eviction notice template",
               "judge": "decoy"
             }
           ]
@@ -3214,11 +3229,6 @@
           "remote": 0.8,
           "top": [
             {
-              "url": "http://beta.lab/doc/008.html",
-              "title": "Opening a bitcoin lightning channel",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/032.html",
               "title": "Bitcoin lightning channel liquidity",
               "judge": "relevant"
@@ -3226,6 +3236,11 @@
             {
               "url": "http://beta.lab/doc/000.html",
               "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Opening a bitcoin lightning channel",
               "judge": "relevant"
             },
             {
@@ -3239,28 +3254,28 @@
               "judge": "relevant"
             },
             {
-              "url": "http://alpha.lab/doc/008.html",
-              "title": "Bitcoin halving history",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/014.html",
               "title": "Lightning photography tips",
               "judge": "decoy"
             },
             {
+              "url": "http://alpha.lab/doc/008.html",
+              "title": "Bitcoin halving history",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Lightning safety during storms",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "Lightning strike statistics",
+              "judge": "decoy"
+            },
+            {
               "url": "http://beta.lab/doc/040.html",
               "title": "Bitcoin mining difficulty",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/042.html",
-              "title": "Bitcoin ETF news",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/035.html",
-              "title": "Bitcoin price today",
               "judge": "decoy"
             }
           ]
@@ -3282,11 +3297,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/029.html",
               "title": "Solr edismax minimum match (mm) explained",
               "judge": "relevant"
@@ -3297,14 +3307,14 @@
               "judge": "relevant"
             },
             {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
+            },
+            {
               "url": "http://gamma.lab/doc/009.html",
               "title": "Notes, part 2",
               "judge": "relevant"
-            },
-            {
-              "url": "http://alpha.lab/doc/025.html",
-              "title": "Tennis match schedule",
-              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/021.html",
@@ -3312,13 +3322,18 @@
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/054.html",
-              "title": "Match highlights",
+              "url": "http://alpha.lab/doc/025.html",
+              "title": "Tennis match schedule",
               "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/065.html",
               "title": "Solr installation guide",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Solr admin UI",
               "judge": "decoy"
             },
             {
@@ -3340,14 +3355,14 @@
           "remote": 0.8,
           "top": [
             {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/019.html",
@@ -3403,11 +3418,6 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
@@ -3416,6 +3426,11 @@
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/012.html",
@@ -3461,9 +3476,9 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
             },
             {
               "url": "http://beta.lab/doc/043.html",
@@ -3471,9 +3486,9 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
-              "judge": "relevant"
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/016.html",
@@ -3519,11 +3534,6 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
@@ -3532,6 +3542,11 @@
               "url": "http://beta.lab/doc/023.html",
               "title": "機械学習の入門書まとめ",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/000.html",
@@ -3577,11 +3592,6 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/015.html",
               "title": "区块链钱包安全指南",
               "judge": "relevant"
@@ -3590,6 +3600,11 @@
               "url": "http://beta.lab/doc/024.html",
               "title": "区块链钱包的工作原理",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/022.html",
@@ -3667,11 +3682,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/019.html",
               "title": "Choosing an ERC-4337 bundler provider",
               "judge": "relevant"
@@ -3685,6 +3695,11 @@
               "url": "http://gamma.lab/doc/071.html",
               "title": "Account abstraction: the ERC-4337 bundler role",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/060.html",
@@ -3829,11 +3844,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://beta.lab/doc/008.html",
-              "title": "Opening a bitcoin lightning channel",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/032.html",
               "title": "Bitcoin lightning channel liquidity",
               "judge": "relevant"
@@ -3841,6 +3851,11 @@
             {
               "url": "http://beta.lab/doc/000.html",
               "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Opening a bitcoin lightning channel",
               "judge": "relevant"
             },
             {
@@ -3872,11 +3887,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/029.html",
               "title": "Solr edismax minimum match (mm) explained",
               "judge": "relevant"
@@ -3885,6 +3895,11 @@
               "url": "http://gamma.lab/doc/043.html",
               "title": "Why Solr edismax minimum match returns too many results",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/009.html",
@@ -3905,11 +3920,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
               "judge": "relevant"
@@ -3923,6 +3933,11 @@
               "url": "http://beta.lab/doc/013.html",
               "title": "暗号資産交換業者の登録審査の実務",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/041.html",
@@ -3948,11 +3963,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
@@ -3961,6 +3971,11 @@
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/057.html",
@@ -3986,9 +4001,9 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
             },
             {
               "url": "http://beta.lab/doc/043.html",
@@ -3996,9 +4011,9 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
-              "judge": "relevant"
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/011.html",
@@ -4024,11 +4039,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
@@ -4037,6 +4047,11 @@
               "url": "http://beta.lab/doc/023.html",
               "title": "機械学習の入門書まとめ",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/033.html",
@@ -4062,11 +4077,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/015.html",
               "title": "区块链钱包安全指南",
               "judge": "relevant"
@@ -4075,6 +4085,11 @@
               "url": "http://beta.lab/doc/024.html",
               "title": "区块链钱包的工作原理",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/045.html",
@@ -4132,11 +4147,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/019.html",
               "title": "Choosing an ERC-4337 bundler provider",
               "judge": "relevant"
@@ -4152,6 +4162,11 @@
               "judge": "relevant"
             },
             {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
+            },
+            {
               "url": "http://gamma.lab/doc/060.html",
               "title": "Notes, part 2",
               "judge": "relevant"
@@ -4162,6 +4177,11 @@
               "judge": "decoy"
             },
             {
+              "url": "http://gamma.lab/doc/001.html",
+              "title": "Bundler::Fetcher - Ruby Bundler documentation",
+              "judge": "decoy"
+            },
+            {
               "url": "http://gamma.lab/doc/040.html",
               "title": "ERC-4337 news roundup",
               "judge": "decoy"
@@ -4169,11 +4189,6 @@
             {
               "url": "http://alpha.lab/doc/002.html",
               "title": "ERC-4337 adoption statistics",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/001.html",
-              "title": "Bundler::Fetcher - Ruby Bundler documentation",
               "judge": "decoy"
             }
           ]
@@ -4195,8 +4210,8 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/022.html",
-              "title": "tokio select cancellation safety tag archive",
+              "url": "http://alpha.lab/doc/026.html",
+              "title": "Tokio tutorial: spawning tasks",
               "judge": "decoy"
             },
             {
@@ -4205,8 +4220,8 @@
               "judge": "decoy"
             },
             {
-              "url": "http://alpha.lab/doc/026.html",
-              "title": "Tokio tutorial: spawning tasks",
+              "url": "http://gamma.lab/doc/022.html",
+              "title": "tokio select cancellation safety tag archive",
               "judge": "decoy"
             },
             {
@@ -4230,14 +4245,14 @@
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/074.html",
-              "title": "Workplace safety checklist",
+              "url": "http://gamma.lab/doc/019.html",
+              "title": "Tokio vs async-std benchmarks",
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/021.html",
-              "title": "Food safety basics",
-              "judge": "decoy"
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Lightning safety during storms",
+              "judge": "other"
             }
           ]
         },
@@ -4258,8 +4273,13 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
+              "url": "http://beta.lab/doc/018.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/003.html",
+              "title": "Car engine tuning shops",
               "judge": "decoy"
             },
             {
@@ -4268,14 +4288,9 @@
               "judge": "decoy"
             },
             {
-              "url": "http://alpha.lab/doc/003.html",
-              "title": "Car engine tuning shops",
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
               "judge": "decoy"
-            },
-            {
-              "url": "http://beta.lab/doc/018.html",
-              "title": "Postgres autovacuum tuning: scale factor and cost limit",
-              "judge": "relevant"
             },
             {
               "url": "http://gamma.lab/doc/056.html",
@@ -4293,13 +4308,13 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/032.html",
-              "title": "Postgres backup with pg_dump",
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Piano tuning prices",
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/076.html",
-              "title": "Piano tuning prices",
+              "url": "http://beta.lab/doc/032.html",
+              "title": "Postgres backup with pg_dump",
               "judge": "decoy"
             }
           ]
@@ -4331,11 +4346,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/015.html",
-              "title": "kubernetes pod eviction tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/017.html",
               "title": "Kubernetes release notes",
               "judge": "decoy"
@@ -4346,13 +4356,18 @@
               "judge": "decoy"
             },
             {
+              "url": "http://gamma.lab/doc/015.html",
+              "title": "kubernetes pod eviction tag archive",
+              "judge": "decoy"
+            },
+            {
               "url": "http://gamma.lab/doc/007.html",
               "title": "Notes, part 2",
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/039.html",
-              "title": "Kubernetes dashboard setup",
+              "url": "http://gamma.lab/doc/068.html",
+              "title": "Tenant eviction notice template",
               "judge": "decoy"
             },
             {
@@ -4361,8 +4376,8 @@
               "judge": "decoy"
             },
             {
-              "url": "http://gamma.lab/doc/068.html",
-              "title": "Tenant eviction notice template",
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes dashboard setup",
               "judge": "decoy"
             }
           ]
@@ -4379,11 +4394,6 @@
           "remote": 0.8,
           "top": [
             {
-              "url": "http://beta.lab/doc/008.html",
-              "title": "Opening a bitcoin lightning channel",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/032.html",
               "title": "Bitcoin lightning channel liquidity",
               "judge": "relevant"
@@ -4394,8 +4404,13 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/052.html",
-              "title": "bitcoin lightning channel tag archive",
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/014.html",
+              "title": "Lightning photography tips",
               "judge": "decoy"
             },
             {
@@ -4404,8 +4419,8 @@
               "judge": "decoy"
             },
             {
-              "url": "http://alpha.lab/doc/014.html",
-              "title": "Lightning photography tips",
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "bitcoin lightning channel tag archive",
               "judge": "decoy"
             },
             {
@@ -4414,18 +4429,18 @@
               "judge": "relevant"
             },
             {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "Lightning strike statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Lightning safety during storms",
+              "judge": "decoy"
+            },
+            {
               "url": "http://beta.lab/doc/040.html",
               "title": "Bitcoin mining difficulty",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/042.html",
-              "title": "Bitcoin ETF news",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/035.html",
-              "title": "Bitcoin price today",
               "judge": "decoy"
             }
           ]
@@ -4435,9 +4450,9 @@
           "lang": "en",
           "query": "solr edismax minimum match",
           "total": 12,
-          "rprec": 0.5,
+          "rprec": 0.75,
           "recall": 1,
-          "decoy": 0.5,
+          "decoy": 0.25,
           "allTerms": 0.4,
           "remote": 0.8,
           "top": [
@@ -4447,24 +4462,9 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/029.html",
               "title": "Solr edismax minimum match (mm) explained",
               "judge": "relevant"
-            },
-            {
-              "url": "http://alpha.lab/doc/025.html",
-              "title": "Tennis match schedule",
-              "judge": "decoy"
-            },
-            {
-              "url": "http://alpha.lab/doc/021.html",
-              "title": "Solr cloud collections",
-              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/043.html",
@@ -4472,14 +4472,24 @@
               "judge": "relevant"
             },
             {
+              "url": "http://alpha.lab/doc/021.html",
+              "title": "Solr cloud collections",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://alpha.lab/doc/025.html",
+              "title": "Tennis match schedule",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
+            },
+            {
               "url": "http://gamma.lab/doc/009.html",
               "title": "Notes, part 2",
               "judge": "relevant"
-            },
-            {
-              "url": "http://gamma.lab/doc/054.html",
-              "title": "Match highlights",
-              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/065.html",
@@ -4489,6 +4499,11 @@
             {
               "url": "http://gamma.lab/doc/034.html",
               "title": "Solr schema design",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Solr admin UI",
               "judge": "decoy"
             }
           ]
@@ -4504,11 +4519,6 @@
           "allTerms": 0.3,
           "remote": 0.8,
           "top": [
-            {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
             {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
@@ -4528,6 +4538,11 @@
               "url": "http://beta.lab/doc/013.html",
               "title": "暗号資産交換業者の登録審査の実務",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/030.html",
@@ -4568,11 +4583,6 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
@@ -4586,6 +4596,11 @@
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/046.html",
@@ -4626,9 +4641,9 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
             },
             {
               "url": "http://beta.lab/doc/043.html",
@@ -4636,13 +4651,13 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
-              "judge": "relevant"
-            },
-            {
               "url": "http://alpha.lab/doc/016.html",
               "title": "大阪城の歴史",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
               "judge": "decoy"
             },
             {
@@ -4684,13 +4699,13 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "機械学習の入門書まとめ",
               "judge": "relevant"
             },
             {
@@ -4699,9 +4714,9 @@
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/023.html",
-              "title": "機械学習の入門書まとめ",
-              "judge": "relevant"
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/036.html",
@@ -4742,13 +4757,13 @@
           "remote": 0.8888888888888888,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/015.html",
               "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/024.html",
+              "title": "区块链钱包的工作原理",
               "judge": "relevant"
             },
             {
@@ -4757,9 +4772,9 @@
               "judge": "decoy"
             },
             {
-              "url": "http://beta.lab/doc/024.html",
-              "title": "区块链钱包的工作原理",
-              "judge": "relevant"
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/038.html",
@@ -4772,11 +4787,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/039.html",
-              "title": "笔记 第二部分",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/051.html",
               "title": "真皮钱包推荐",
               "judge": "decoy"
@@ -4785,21 +4795,26 @@
               "url": "http://gamma.lab/doc/037.html",
               "title": "钱包丢失怎么办",
               "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "笔记 第二部分",
+              "judge": "relevant"
             }
           ]
         }
       ],
       "all": {
-        "rprec": 0.5363636363636364,
+        "rprec": 0.5590909090909091,
         "recall": 0.9590909090909091,
-        "decoy": 0.4636363636363636,
+        "decoy": 0.44090909090909086,
         "allTerms": 0.41616161616161623,
         "remote": 0.8232323232323232
       },
       "en": {
-        "rprec": 0.55,
+        "rprec": 0.5916666666666667,
         "recall": 0.9249999999999999,
-        "decoy": 0.44999999999999996,
+        "decoy": 0.40833333333333327,
         "allTerms": 0.4166666666666667,
         "remote": 0.7833333333333332
       },
@@ -4820,9 +4835,9 @@
           "lang": "en",
           "query": "ERC-4337 bundler",
           "total": 6,
-          "rprec": 0.8,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.2,
+          "decoy": 0,
           "allTerms": 0.8333333333333334,
           "remote": 0.8333333333333334,
           "top": [
@@ -4830,11 +4845,6 @@
               "url": "http://beta.lab/doc/016.html",
               "title": "ERC-4337 bundler mempool rules",
               "judge": "relevant"
-            },
-            {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
             },
             {
               "url": "http://alpha.lab/doc/019.html",
@@ -4855,6 +4865,11 @@
               "url": "http://gamma.lab/doc/060.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -4913,11 +4928,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/018.html",
               "title": "Postgres autovacuum tuning: scale factor and cost limit",
               "judge": "relevant"
@@ -4926,6 +4936,11 @@
               "url": "http://gamma.lab/doc/056.html",
               "title": "Autovacuum tuning checklist for Postgres 16",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/029.html",
@@ -4951,6 +4966,11 @@
           "remote": 1,
           "top": [
             {
+              "url": "http://beta.lab/doc/010.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
               "url": "http://beta.lab/doc/027.html",
               "title": "Kubernetes pod eviction and PodDisruptionBudget",
               "judge": "relevant"
@@ -4961,19 +4981,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/010.html",
-              "title": "Kubernetes pod eviction under node pressure",
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Notes, part 2",
               "judge": "relevant"
             },
             {
               "url": "http://gamma.lab/doc/015.html",
               "title": "kubernetes pod eviction tag archive",
               "judge": "decoy"
-            },
-            {
-              "url": "http://gamma.lab/doc/007.html",
-              "title": "Notes, part 2",
-              "judge": "relevant"
             },
             {
               "url": "http://beta.lab/doc/037.html",
@@ -4987,17 +5002,12 @@
           "lang": "en",
           "query": "bitcoin lightning channel",
           "total": 5,
-          "rprec": 0.75,
+          "rprec": 1,
           "recall": 1,
-          "decoy": 0.25,
+          "decoy": 0,
           "allTerms": 0.8,
           "remote": 1,
           "top": [
-            {
-              "url": "http://beta.lab/doc/008.html",
-              "title": "Opening a bitcoin lightning channel",
-              "judge": "relevant"
-            },
             {
               "url": "http://gamma.lab/doc/032.html",
               "title": "Bitcoin lightning channel liquidity",
@@ -5009,14 +5019,19 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/052.html",
-              "title": "bitcoin lightning channel tag archive",
-              "judge": "decoy"
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
             },
             {
               "url": "http://gamma.lab/doc/031.html",
               "title": "Notes, part 2",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "bitcoin lightning channel tag archive",
+              "judge": "decoy"
             }
           ]
         },
@@ -5037,11 +5052,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/029.html",
               "title": "Solr edismax minimum match (mm) explained",
               "judge": "relevant"
@@ -5050,6 +5060,11 @@
               "url": "http://gamma.lab/doc/043.html",
               "title": "Why Solr edismax minimum match returns too many results",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/009.html",
@@ -5070,14 +5085,14 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/019.html",
@@ -5113,11 +5128,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
@@ -5126,6 +5136,11 @@
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/057.html",
@@ -5151,9 +5166,9 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
             },
             {
               "url": "http://beta.lab/doc/043.html",
@@ -5161,9 +5176,9 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
-              "judge": "relevant"
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/011.html",
@@ -5189,11 +5204,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
@@ -5202,6 +5212,11 @@
               "url": "http://beta.lab/doc/023.html",
               "title": "機械学習の入門書まとめ",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/033.html",
@@ -5227,11 +5242,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/015.html",
               "title": "区块链钱包安全指南",
               "judge": "relevant"
@@ -5240,6 +5250,11 @@
               "url": "http://beta.lab/doc/024.html",
               "title": "区块链钱包的工作原理",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/045.html",
@@ -5255,16 +5270,16 @@
         }
       ],
       "all": {
-        "rprec": 0.7681818181818181,
+        "rprec": 0.809090909090909,
         "recall": 1,
-        "decoy": 0.2318181818181818,
+        "decoy": 0.19090909090909092,
         "allTerms": 0.7484848484848484,
         "remote": 0.9848484848484849
       },
       "en": {
-        "rprec": 0.775,
+        "rprec": 0.85,
         "recall": 1,
-        "decoy": 0.225,
+        "decoy": 0.15,
         "allTerms": 0.7555555555555555,
         "remote": 0.9722222222222223
       },
@@ -5278,7 +5293,7 @@
     },
     {
       "cluster": "fork",
-      "scenario": "solr-only:title-boost=20",
+      "scenario": "solr-only:no-thin",
       "rows": [
         {
           "id": "erc4337",
@@ -5654,14 +5669,14 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://beta.lab/doc/023.html",
@@ -5762,11 +5777,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/077.html",
-              "title": "ERC-4337 bundler tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://alpha.lab/doc/019.html",
               "title": "Choosing an ERC-4337 bundler provider",
               "judge": "relevant"
@@ -5780,6 +5790,11 @@
               "url": "http://gamma.lab/doc/071.html",
               "title": "Account abstraction: the ERC-4337 bundler role",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "ERC-4337 bundler tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/060.html",
@@ -5843,14 +5858,14 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/046.html",
-              "title": "postgres autovacuum tuning tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/018.html",
               "title": "Postgres autovacuum tuning: scale factor and cost limit",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "postgres autovacuum tuning tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/056.html",
@@ -5914,11 +5929,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://beta.lab/doc/008.html",
-              "title": "Opening a bitcoin lightning channel",
-              "judge": "relevant"
-            },
-            {
               "url": "http://gamma.lab/doc/032.html",
               "title": "Bitcoin lightning channel liquidity",
               "judge": "relevant"
@@ -5926,6 +5936,11 @@
             {
               "url": "http://beta.lab/doc/000.html",
               "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Opening a bitcoin lightning channel",
               "judge": "relevant"
             },
             {
@@ -5957,11 +5972,6 @@
               "judge": "relevant"
             },
             {
-              "url": "http://gamma.lab/doc/044.html",
-              "title": "solr edismax minimum match tag archive",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/029.html",
               "title": "Solr edismax minimum match (mm) explained",
               "judge": "relevant"
@@ -5970,6 +5980,11 @@
               "url": "http://gamma.lab/doc/043.html",
               "title": "Why Solr edismax minimum match returns too many results",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "solr edismax minimum match tag archive",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/009.html",
@@ -5990,11 +6005,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/078.html",
-              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/002.html",
               "title": "金融庁による暗号資産交換業者の登録一覧",
               "judge": "relevant"
@@ -6003,6 +6013,11 @@
               "url": "http://beta.lab/doc/019.html",
               "title": "暗号資産交換業者の登録制度について",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "暗号資産交換業 登録 金融庁 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/041.html",
@@ -6028,11 +6043,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/028.html",
-              "title": "ステーブルコイン 規制 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/035.html",
               "title": "ステーブルコイン規制の最新動向",
               "judge": "relevant"
@@ -6041,6 +6051,11 @@
               "url": "http://beta.lab/doc/005.html",
               "title": "ステーブルコインに対する規制の論点",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "ステーブルコイン 規制 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/057.html",
@@ -6066,9 +6081,9 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/002.html",
-              "title": "大阪 万博 タグ一覧",
-              "judge": "decoy"
+              "url": "http://beta.lab/doc/022.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
             },
             {
               "url": "http://beta.lab/doc/043.html",
@@ -6076,9 +6091,9 @@
               "judge": "relevant"
             },
             {
-              "url": "http://beta.lab/doc/022.html",
-              "title": "大阪万博の見どころ",
-              "judge": "relevant"
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪 万博 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/011.html",
@@ -6104,11 +6119,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/079.html",
-              "title": "機械学習 入門 タグ一覧",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/020.html",
               "title": "機械学習入門：最初の一歩",
               "judge": "relevant"
@@ -6117,6 +6127,11 @@
               "url": "http://beta.lab/doc/023.html",
               "title": "機械学習の入門書まとめ",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/079.html",
+              "title": "機械学習 入門 タグ一覧",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/033.html",
@@ -6142,11 +6157,6 @@
           "remote": 1,
           "top": [
             {
-              "url": "http://gamma.lab/doc/063.html",
-              "title": "区块链 钱包 标签云",
-              "judge": "decoy"
-            },
-            {
               "url": "http://beta.lab/doc/015.html",
               "title": "区块链钱包安全指南",
               "judge": "relevant"
@@ -6155,6 +6165,11 @@
               "url": "http://beta.lab/doc/024.html",
               "title": "区块链钱包的工作原理",
               "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "区块链 钱包 标签云",
+              "judge": "decoy"
             },
             {
               "url": "http://gamma.lab/doc/045.html",

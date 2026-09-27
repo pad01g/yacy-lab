@@ -1,0 +1,247 @@
+// デモ用のフロントエンド（compose.demo.yaml）。http://localhost:8800 で開く。
+//   起動すると裏で網を組む: フォーク側は信頼と NAT 越えの試験と同じ構成（trustlib.ts）、upstream 側は 3 ノード。
+//   どちらにも同じサイトを crawl させ、同じクエリを両方の網に global で投げて並べて見せる。
+import { readFileSync } from "node:fs";
+import { createServer, request, type ServerResponse } from "node:http";
+import { judgements, TRUST_QUERIES, TOPICS } from "./corpus.ts";
+import { ALL as FORK_NODES, CRAWL as FORK_CRAWL, crawlSite, LAB, log, putFile, setupTrustNetwork, sleep, until } from "./trustlib.ts";
+import { base, fetchAdmin, mySeed, peers, search, setConfig, status, type Hit } from "./yacy.ts";
+
+const PORT = Number(process.env.PORT ?? 8800);
+const UP_NODES = ["up-1", "up-2", "up-3"];
+// upstream 側: 同じサイトを持たせる。up-2 は広告頁、up-3 はスパム頁も持つ（本家には信頼の仕組みが無いので、網の誰かが持てば出る）
+const UP_CRAWL: Record<string, string[]> = { "up-1": ["alpha.lab"], "up-2": ["beta.lab", "ads.lab"], "up-3": ["gamma.lab", "spam.lab"] };
+const ROLES: Record<string, string> = {
+  "fork-1": "信頼集合（alpha.lab）",
+  "fork-2": "信頼集合（beta.lab）",
+  "fork-3": "信頼集合（gamma.lab）",
+  "ads-1": "信頼集合・ads タグ（ads.lab）",
+  "evil-1": "署名あり・信頼集合外（spam.lab と偽の文書）",
+  "nat-1": "NAT の内側・リレー経由（delta.lab）",
+  "up-1": "upstream（alpha.lab）",
+  "up-2": "upstream（beta.lab, ads.lab）",
+  "up-3": "upstream（gamma.lab, spam.lab）",
+};
+// ホストから開ける管理画面（compose.demo.yaml の ports）
+const UI_PORTS: Record<string, number> = { "fork-1": 8811, "fork-2": 8812, "fork-3": 8813, "ads-1": 8814, "evil-1": 8815, "up-1": 8821, "up-2": 8822, "up-3": 8823 };
+
+// ---- 状態
+type NodeState = { name: string; side: "fork" | "upstream"; role: string; up: boolean; docs: number; seniors: number; reach: string; type: string; ui: string | null };
+const state = {
+  phase: "starting" as "starting" | "ready" | "error",
+  message: "ノードの起動を待っています",
+  fork: "待機中",
+  upstream: "待機中",
+  log: [] as string[],
+  nodes: new Map<string, NodeState>(),
+};
+const note = (msg: string): void => {
+  log(msg);
+  state.log.push(`${new Date().toISOString().slice(11, 19)} ${msg}`);
+  if (state.log.length > 40) state.log.shift();
+};
+
+// ---- 網を組む
+async function setupUpstream(): Promise<void> {
+  for (const n of UP_NODES) await until(`${n} up`, 300_000, async () => ((await status(n)) ? true : undefined));
+  await until("upstream peers connected", 600_000, async () => {
+    const counts = await Promise.all(UP_NODES.map(async (n) => (await peers(n)).filter((p) => p.type === "senior" || p.type === "principal").length));
+    state.upstream = `P2P 網の接続待ち（${UP_NODES.map((n, i) => `${n}=${counts[i]}`).join(" ")}）`;
+    return counts.every((c) => c >= UP_NODES.length - 1) ? true : undefined;
+  }, 5000);
+  state.upstream = "crawl 中";
+  await Promise.all(UP_NODES.map(async (n) => { for (const site of UP_CRAWL[n]) await crawlSite(n, site); }));
+  state.upstream = "準備完了";
+}
+
+async function setupFork(): Promise<void> {
+  const net = await setupTrustNetwork({ keepExisting: true, progress: (m) => (state.fork = m) });
+  // evil-1 に偽の文書を入れる: fork-2 の本物の署名を別の URL・タイトルに付けたもの（署名が合わない）と、署名の無いもの
+  state.fork = "evil-1 に偽の文書を投入中";
+  const real = (await (
+    await fetchAdmin(`${base("fork-2")}/solr/select?q=*:*&fq=host_s:beta.lab&fq=provenance_s:*&fl=provenance_s&rows=1&wt=json`)
+  ).json()) as { response: { docs: { provenance_s: string }[] } };
+  const docs = [
+    { sku: "http://spam.lab/forged.html", title: ["Bitcoin lightning channel (forged author)"], text_t: "bitcoin lightning channel forged page claiming fork-2 as author", provenance_s: real.response.docs[0]?.provenance_s ?? "" },
+    { sku: "http://spam.lab/unsigned.html", title: ["Bitcoin lightning channel (unsigned)"], text_t: "bitcoin lightning channel page without author signature" },
+  ];
+  const present = (await (await fetchAdmin(`${base("evil-1")}/solr/select?q=*:*&fq=sku:${encodeURIComponent('"http://spam.lab/unsigned.html"')}&rows=0&wt=json`)).json()) as { response: { numFound: number } };
+  if (present.response.numFound > 0) {
+    state.fork = "準備完了";
+    return;
+  }
+  await putFile("forged.jsonl", docs.map((d) => JSON.stringify(d)).join("\n") + "\n");
+  const before = (await status("evil-1")).docs;
+  await fetchAdmin(`${base("evil-1")}/IndexImportJsonList_p.html?url=${encodeURIComponent(`${LAB}/files/forged.jsonl`)}`);
+  await until("evil-1 imported the forged documents", 120_000, async () => ((await status("evil-1")).docs >= before + 2 ? true : undefined));
+  void net;
+  state.fork = "準備完了";
+}
+
+async function setup(): Promise<void> {
+  const tasks = [
+    setupFork().catch((e: Error) => { state.fork = `失敗: ${e.message}`; throw e; }),
+    setupUpstream().catch((e: Error) => { state.upstream = `失敗: ${e.message}`; throw e; }),
+  ];
+  state.message = "網を組んでいます（数分〜十数分かかります）";
+  try {
+    await Promise.all(tasks);
+    state.phase = "ready";
+    state.message = "準備完了。検索できます";
+    note("setup finished");
+  } catch (e) {
+    state.phase = "error";
+    state.message = `準備に失敗しました: ${(e as Error).message}（docker compose logs で各ノードを確認してください）`;
+    note(state.message);
+  }
+}
+
+// ノードの状態は 5 秒ごとにまとめて取る（画面の更新はこの結果を返すだけ）
+async function pollNodes(): Promise<void> {
+  for (;;) {
+    await Promise.all(
+      [...FORK_NODES.map((n) => [n, "fork"] as const), ...UP_NODES.map((n) => [n, "upstream"] as const)].map(async ([name, side]) => {
+        const s: NodeState = { name, side, role: ROLES[name], up: false, docs: 0, seniors: 0, reach: "-", type: "-", ui: UI_PORTS[name] ? `http://localhost:${UI_PORTS[name]}/` : null };
+        try {
+          const st = await status(name);
+          s.up = true;
+          s.docs = st.docs;
+          const [ps, me] = await Promise.all([peers(name), mySeed(name)]);
+          s.seniors = ps.filter((p) => p.type === "senior" || p.type === "principal").length;
+          s.reach = me.Reach ?? (side === "fork" ? "direct" : "-");
+          s.type = me.PeerType ?? "-";
+        } catch {
+          // まだ起動していない
+        }
+        state.nodes.set(name, s);
+      }),
+    );
+    await sleep(5000);
+  }
+}
+
+// ---- 検索
+const judged = new Map<string, { relevant: Set<string>; decoys: Set<string> }>();
+for (const j of judgements()) judged.set(j.query, { relevant: new Set(j.relevant), decoys: new Set(j.decoys) });
+
+const SITE_KIND: Record<string, string> = { "spam.lab": "スパム", "ads.lab": "広告", "delta.lab": "NAT の内側" };
+function crawledBy(side: "fork" | "upstream", site: string): string {
+  if (side === "fork") return Object.entries(FORK_CRAWL).find(([, s]) => s === site)?.[0] ?? (site === "spam.lab" ? "evil-1" : "?");
+  return Object.entries(UP_CRAWL).find(([, s]) => s.includes(site))?.[0] ?? "?";
+}
+function enrich(side: "fork" | "upstream", query: string, hits: Hit[]): object[] {
+  const j = judged.get(query);
+  return hits.map((h, i) => {
+    const site = (() => { try { return new URL(h.url).host; } catch { return ""; } })();
+    const judge = j?.relevant.has(h.url) ? "relevant" : j?.decoys.has(h.url) ? "decoy" : SITE_KIND[site] ? "trustsite" : "other";
+    return { rank: i + 1, title: h.title, url: h.url, snippet: h.snippet, site, crawledBy: crawledBy(side, site), kind: SITE_KIND[site] ?? null, judge, verified: h.verified ?? null, trust: h.trust ?? null, tags: h.trustTags ?? "" };
+  });
+}
+
+// 設定は問い合わせ元ノードごとに 1 つしか持てないので、同じノードへの検索は順に行う
+const locks = new Map<string, Promise<void>>();
+async function withLock<T>(node: string, f: () => Promise<T>): Promise<T> {
+  const prev = locks.get(node) ?? Promise.resolve();
+  let release!: () => void;
+  const next = new Promise<void>((r) => (release = r));
+  locks.set(node, prev.then(() => next));
+  await prev;
+  try {
+    return await f();
+  } finally {
+    release();
+  }
+}
+const current = new Map<string, Record<string, string>>();
+async function ensureConfig(node: string, cfg: Record<string, string>): Promise<void> {
+  const have = current.get(node) ?? {};
+  for (const [k, v] of Object.entries(cfg)) if (have[k] !== v) {
+    await setConfig(node, k, v);
+    have[k] = v;
+  }
+  current.set(node, have);
+}
+
+let round = 0;
+async function streamSearch(res: ServerResponse, p: URLSearchParams): Promise<void> {
+  const side = p.get("side") === "upstream" ? "upstream" : "fork";
+  const nodes = side === "fork" ? ["fork-1", "fork-2", "fork-3"] : UP_NODES;
+  const origin = nodes.includes(p.get("origin") ?? "") ? p.get("origin")! : nodes[0];
+  const query = (p.get("q") ?? "").trim().slice(0, 200);
+  const open = p.get("open") === "1";
+  const noads = p.get("noads") === "1";
+  const wait = Math.min(10000, Math.max(1000, Number(p.get("wait") ?? 5000) || 5000));
+  res.writeHead(200, { "content-type": "application/x-ndjson; charset=utf-8", "cache-control": "no-store" });
+  if (!query) return void res.end(JSON.stringify({ error: "クエリが空です" }) + "\n");
+  const key = `demo${++round}`; // 毎回新しい検索にする（YaCy は同じ検索を 10 分キャッシュする）
+  try {
+    await withLock(origin, async () => {
+      if (side === "fork") await ensureConfig(origin, { "trust.search.acceptUnverified": open ? "true" : "false", "trust.policy.excludeTags": noads ? "ads" : "" });
+      const t0 = Date.now();
+      const first = await search(origin, query, "global", 20, key);
+      res.write(JSON.stringify({ pass: 1, ms: Date.now() - t0, origin, hits: enrich(side, query, first.hits) }) + "\n");
+      await sleep(Math.max(0, wait - (Date.now() - t0)));
+      let final = await search(origin, query, "global", 20, key, true);
+      // YaCy can briefly list nothing while results that arrived late are still being moved into the result list
+      if (final.hits.length === 0 && first.hits.length === 0) {
+        await sleep(1500);
+        final = await search(origin, query, "global", 20, key, true);
+      }
+      res.write(JSON.stringify({ pass: 2, ms: Date.now() - t0, origin, hits: enrich(side, query, final.hits) }) + "\n");
+    });
+  } catch (e) {
+    res.write(JSON.stringify({ error: (e as Error).message }) + "\n");
+  }
+  res.end();
+}
+
+// 結果の URL（http://beta.lab/... など）はホストから名前解決できないので、lab サーバーから取って見せる
+function proxyPage(res: ServerResponse, target: string): void {
+  let u: URL;
+  try {
+    u = new URL(target);
+  } catch {
+    return void res.writeHead(400).end("bad url");
+  }
+  if (u.protocol !== "http:" || !u.hostname.endsWith(".lab")) return void res.writeHead(400).end("only http://*.lab/ pages");
+  const req = request({ host: "seed.lab", port: 80, path: u.pathname + u.search, headers: { host: u.hostname } }, (up) => {
+    res.writeHead(up.statusCode ?? 502, { "content-type": up.headers["content-type"] ?? "text/html" });
+    up.pipe(res);
+  });
+  req.on("error", (e) => res.writeHead(502).end(e.message));
+  req.end();
+}
+
+const PRESETS: { q: string; hint: string }[] = [
+  { q: TRUST_QUERIES.spam, hint: "スパム頁。本家は網の誰かが持てば出る。改善版は既定で出さず、開放モードでも「未検証」として下に置く。偽の作者の文書は開放モードでも出ない" },
+  { q: TRUST_QUERIES.ads, hint: "広告を宣言したピアの頁には ads タグが付く。「広告を除外」で消える" },
+  { q: TRUST_QUERIES.nat, hint: "NAT の内側のピア（nat-1）だけが持つ頁。改善版はリレー経由で届く。本家には NAT の内側のピアに届く仕組みが無いので、本家側の網には入れていない（0 件になる）" },
+];
+for (const t of TOPICS) {
+  const hint =
+    t.lang === "en"
+      ? "罠頁（1 語だけの詰め込み頁・中身の薄いタグ一覧頁）と正解の並び"
+      : "日本語・中国語。本家は Solr では引けるが罠頁が上位に来る。本家の単語索引（RWI）では句読点までが 1 語になり引けない";
+  const known = PRESETS.find((p) => p.q === t.query);
+  if (known) known.hint += `。${hint}`;
+  else PRESETS.push({ q: t.query, hint });
+}
+
+const page = (): string => readFileSync(new URL("./demo/index.html", import.meta.url), "utf8");
+
+createServer((req, res) => {
+  const url = new URL(req.url ?? "/", "http://localhost");
+  if (url.pathname === "/") return void res.writeHead(200, { "content-type": "text/html; charset=utf-8" }).end(page());
+  if (url.pathname === "/api/state") {
+    const nodes = [...FORK_NODES, ...UP_NODES].map((n) => state.nodes.get(n)).filter(Boolean);
+    return void res
+      .writeHead(200, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" })
+      .end(JSON.stringify({ phase: state.phase, message: state.message, fork: state.fork, upstream: state.upstream, log: state.log.slice(-12), nodes, presets: PRESETS }));
+  }
+  if (url.pathname === "/api/search") return void streamSearch(res, url.searchParams);
+  if (url.pathname === "/page") return proxyPage(res, url.searchParams.get("url") ?? "");
+  res.writeHead(404).end("not found");
+}).listen(PORT, () => note(`demo on :${PORT}`));
+
+void pollNodes();
+void setup();

@@ -1,39 +1,14 @@
 // 身元・信頼・NAT 越えの試験（compose.trust.yaml）。docs/trust-and-nat.md の §10 の確認項目を順に実行する。
 //   docker compose -f compose.trust.yaml -p yacytrust run --rm runner [--skip-crawl]
 // 各項目を PASS / FAIL で記録し、results/trust-<時刻>.md に保存する。1 つでも FAIL なら終了コード 1。
-import { createHash, generateKeyPairSync, sign, type KeyObject } from "node:crypto";
+import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { buildCorpus, buildTrustCorpus, TRUST_QUERIES } from "./corpus.ts";
-import { base, fetchAdmin, mySeed, peers, search, setConfig, startCrawl, status, type Hit } from "./yacy.ts";
+import { TRUST_QUERIES } from "./corpus.ts";
+import { ALL, delegation, LAB, log, ORIGIN, peerList, PUBLIC, putFile, setupTrustNetwork, sleep, trustBundle, until } from "./trustlib.ts";
+import { base, fetchAdmin, mySeed, peers, search, setConfig, status, type Hit } from "./yacy.ts";
 
 const { values } = parseArgs({ options: { "skip-crawl": { type: "boolean", default: false } } });
-
-const PUBLIC = ["fork-1", "fork-2", "fork-3", "ads-1", "evil-1"];
-const ALL = [...PUBLIC, "nat-1"];
-const ORIGIN = "fork-1";
-const LAB = "http://seed.lab";
-const CRAWL: Record<string, string> = {
-  "fork-1": "alpha.lab",
-  "fork-2": "beta.lab",
-  "fork-3": "gamma.lab",
-  "ads-1": "ads.lab",
-  "evil-1": "spam.lab",
-  "nat-1": "delta.lab",
-};
-
-const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
-const log = (...a: unknown[]): void => console.error(new Date().toISOString().slice(11, 19), ...a);
-
-async function until<T>(what: string, timeoutMs: number, probe: () => Promise<T | undefined>, everyMs = 3000): Promise<T> {
-  const deadline = Date.now() + timeoutMs;
-  for (;;) {
-    const v = await probe().catch(() => undefined);
-    if (v !== undefined) return v;
-    if (Date.now() > deadline) throw new Error(`timeout: ${what}`);
-    await sleep(everyMs);
-  }
-}
 
 // ---- 結果の記録
 type Check = { id: string; title: string; ok: boolean; detail: string };
@@ -41,40 +16,6 @@ const checks: Check[] = [];
 function check(id: string, title: string, ok: boolean, detail: string): void {
   checks.push({ id, title, ok, detail });
   log(ok ? "PASS" : "FAIL", id, title, "-", detail);
-}
-
-// ---- 信頼の一覧（docs/trust-and-nat.md §3 の封筒）
-const b64u = (b: Buffer): string => b.toString("base64url");
-type Key = { priv: KeyObject; pk: string };
-function newKey(): Key {
-  const { privateKey, publicKey } = generateKeyPairSync("ed25519");
-  return { priv: privateKey, pk: publicKey.export({ format: "jwk" }).x as string };
-}
-function envelope(by: Key, payload: object): object {
-  const bytes = Buffer.from(JSON.stringify(payload), "utf8");
-  return { payload: b64u(bytes), signer: by.pk, sig: b64u(sign(null, bytes, by.priv)) };
-}
-const NETWORK = "lab-trust";
-const delegation = (by: Key, op: Key, version: number, revoked = false): object =>
-  envelope(by, { type: "yacy-delegation-v1", network: NETWORK, operator: op.pk, version, revoked });
-const peerList = (by: Key, version: number, peers: { pk: string; priority: number; tags: string[] }[]): object =>
-  envelope(by, { type: "yacy-peerlist-v1", network: NETWORK, version, peers });
-
-async function putFile(name: string, body: string): Promise<void> {
-  const res = await fetch(`${LAB}/files/${name}`, { method: "PUT", body });
-  if (!res.ok) throw new Error(`PUT ${name}: HTTP ${res.status}`);
-}
-
-async function trustBundle(node: string): Promise<{ lists: number[]; delegations: { version: number; revoked: boolean }[] }> {
-  const json = (await (await fetch(`${base(node)}/yacy/trust.json`)).json()) as { envelopes: { payload: string }[] };
-  const lists: number[] = [];
-  const delegations: { version: number; revoked: boolean }[] = [];
-  for (const e of json.envelopes) {
-    const p = JSON.parse(Buffer.from(e.payload, "base64url").toString("utf8")) as { type: string; version: number; revoked?: boolean };
-    if (p.type === "yacy-peerlist-v1") lists.push(p.version);
-    else delegations.push({ version: p.version, revoked: p.revoked === true });
-  }
-  return { lists, delegations };
 }
 
 // ---- 検索
@@ -89,57 +30,8 @@ const siteOf = (h: Hit): string => new URL(h.url).host;
 const summary = (hits: Hit[]): string => hits.map((h) => `${siteOf(h)}${h.verified === "false" ? "(unverified)" : ""}${h.trustTags ? `[${h.trustTags}]` : ""}`).join(" ") || "(no results)";
 
 async function main(): Promise<void> {
-  // 1. ノードの起動
-  for (const n of ALL) await until(`${n} up`, 300_000, async () => ((await status(n)) ? true : undefined));
-  const seeds: Record<string, Record<string, string>> = {};
-  for (const n of ALL) seeds[n] = await mySeed(n);
-  const pk = (n: string): string => seeds[n].PK;
-  log("peer keys", Object.fromEntries(ALL.map((n) => [n, `${seeds[n].Hash} ${pk(n)?.slice(0, 10)}…`])));
-
-  // 2. 信頼の一覧を作って配る: fork-1..3 と nat-1 は優先度 100、ads-1 は 80 で ads タグ。evil-1 は載せない
-  const coordinator = newKey();
-  const operator = newKey();
-  const members = (without: string[] = []) =>
-    [
-      ...["fork-1", "fork-2", "fork-3", "nat-1"].map((n) => ({ pk: pk(n), priority: 100, tags: [] as string[] })),
-      { pk: pk("ads-1"), priority: 80, tags: ["ads"] },
-    ].filter((m) => !without.some((w) => pk(w) === m.pk));
-  await putFile("bundle-v1.json", JSON.stringify({ envelopes: [delegation(coordinator, operator, 1), peerList(operator, 1, members())] }));
-  for (const n of ALL) {
-    await setConfig(n, "trust.coordinators", coordinator.pk);
-    await setConfig(n, "trust.bundle.urls", `${LAB}/files/bundle-v1.json`);
-  }
-
-  // 3. P2P 網: 公開側のノードは互いを senior として知り、fork-1 は nat-1 をリレー経由の senior として知る
-  await until("public peers connected", 600_000, async () => {
-    const counts = await Promise.all(PUBLIC.map(async (n) => (await peers(n)).filter((p) => p.type === "senior" || p.type === "principal").length));
-    log("senior peers seen:", PUBLIC.map((n, i) => `${n}=${counts[i]}`).join(" "));
-    return counts.every((c) => c >= PUBLIC.length - 1) ? true : undefined;
-  }, 5000);
-  const natSeen = await until("fork-1 sees nat-1 through the relay", 600_000, async () => {
-    const p = (await peers(ORIGIN)).find((x) => x.hash === seeds["nat-1"].Hash);
-    log("nat-1 as seen by fork-1:", p ? `${p.type} Reach=${p.fields.Reach ?? "-"}` : "unknown");
-    return p && (p.type === "senior" || p.type === "principal") && p.fields.Reach === "relay" ? p : undefined;
-  }, 10000);
-
-  // 4. crawl
-  if (!values["skip-crawl"]) {
-    const corpus = buildCorpus();
-    await Promise.all(
-      ALL.map(async (n) => {
-        const site = CRAWL[n];
-        log(n, await startCrawl(n, `http://${site}/`));
-        const trustPages = buildTrustCorpus();
-        const expected =
-          (["alpha.lab", "beta.lab", "gamma.lab"].includes(site) ? corpus.filter((p) => p.site === site).length : trustPages.filter((p) => p.site === site).length) + 1; // + 目次頁
-        await until(`${n} index ${site}`, 600_000, async () => {
-          const s = await status(n);
-          return s.docs >= expected && s.loader === 0 && s.localCrawler === 0 ? s : undefined;
-        });
-        log(n, "indexed", site, await status(n));
-      }),
-    );
-  }
+  // 1〜4. ノードの起動待ち、信頼の一覧の配布、網の接続待ち、crawl（trustlib.ts）
+  const { seeds, pk, coordinator, operator, members, natSeen } = await setupTrustNetwork({ skipCrawl: values["skip-crawl"] });
 
   // 5. evil-1 に偽の文書を入れる: fork-2 の本物の署名を別の URL・タイトルに付けたもの（INVALID）と、署名の無いもの（UNSIGNED）
   const real = (await (
@@ -240,6 +132,21 @@ async function main(): Promise<void> {
   check("C6c", "nat-1 は DHT の保存先を申し出ていない（RDS なし）", !natSeen.fields.RDS, `RDS=${natSeen.fields.RDS ?? "-"}`);
   const natDefault = await globalSearch(TRUST_QUERIES.nat);
   check("C6d", "fork-1 の global 検索で nat-1 だけが持つ delta.lab の頁が見つかる", natDefault.some((h) => siteOf(h) === "delta.lab"), summary(natDefault));
+  // fork-1 から nat-1 への peer ping（トンネル経由の hello）も通り、nat-1 が接続中のまま保たれる。
+  // 通らないと fork-1 は 1 分ごとに nat-1 を切断扱いにし、その間の検索で delta.lab が出なくなる
+  const samples: string[] = [];
+  for (let i = 0; i < 16; i++) {
+    const p = (await peers(ORIGIN)).find((x) => x.hash === seeds["nat-1"].Hash);
+    samples.push(p ? p.type : "absent");
+    await sleep(10_000);
+  }
+  const natAgain = await globalSearch(TRUST_QUERIES.nat);
+  check(
+    "C6f",
+    "fork-1 は nat-1 を 150 秒間ずっと接続中の senior として保ち、その後の検索でも delta.lab が見つかる",
+    samples.every((t) => t === "senior" || t === "principal") && natAgain.some((h) => siteOf(h) === "delta.lab"),
+    `${samples.join(",")} / ${summary(natAgain)}`,
+  );
   // leecher にすると外から届かなくなる
   await setConfig("nat-1", "p2p.mode", "leecher");
   await until("fork-1 sees nat-1 as leecher", 240_000, async () => {

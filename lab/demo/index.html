@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YaCy 検索デモ</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #dde1e8;
+  --accent: #2f5bd3; --accent-soft: #e6ecfb;
+  --good: #1d7a46; --good-soft: #e3f4ea; --bad: #b3261e; --bad-soft: #fbe5e3;
+  --warn: #8a5a00; --warn-soft: #fbf0d9; --info: #1f5f8b; --info-soft: #e1eef7; --chip: #eef0f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171d; --panel: #1c2028; --text: #e4e7ee; --muted: #9aa3b4; --line: #2e3440;
+    --accent: #7ea2ff; --accent-soft: #232d45;
+    --good: #6fd29b; --good-soft: #1b3326; --bad: #ff8a80; --bad-soft: #3a1f1e;
+    --warn: #f0c060; --warn-soft: #3a3020; --info: #7cc0ec; --info-soft: #1c2d3b; --chip: #2a2f3a;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+header { padding: 20px 24px 8px; max-width: 1400px; margin: 0 auto; }
+h1 { font-size: 20px; margin: 0 0 4px; }
+.sub { color: var(--muted); margin: 0; }
+main { max-width: 1400px; margin: 0 auto; padding: 8px 24px 40px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; }
+.pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.pill.starting { background: var(--warn-soft); color: var(--warn); }
+.pill.ready { background: var(--good-soft); color: var(--good); }
+.pill.error { background: var(--bad-soft); color: var(--bad); }
+details summary { cursor: pointer; font-weight: 600; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 10px; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td.role { white-space: normal; }
+.tablewrap { overflow-x: auto; }
+.progress { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin-top: 8px; font-size: 14px; }
+.progress b { color: var(--muted); font-weight: 600; }
+form { display: flex; gap: 8px; flex-wrap: wrap; }
+input[type=search] { flex: 1 1 320px; font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); }
+button { font: inherit; font-weight: 600; padding: 9px 18px; border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+button:disabled { opacity: .5; cursor: default; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.presets button { background: var(--chip); color: var(--text); font-weight: 500; padding: 4px 10px; font-size: 13px; }
+.hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; min-height: 1.2em; }
+.options { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; font-size: 14px; align-items: center; }
+.options label { display: inline-flex; gap: 6px; align-items: center; }
+select { font: inherit; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+.col h2 { font-size: 16px; margin: 0 0 2px; }
+.col .desc { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.meta { font-size: 13px; color: var(--muted); margin-bottom: 8px; min-height: 1.3em; }
+ol.results { list-style: none; margin: 0; padding: 0; }
+ol.results li { padding: 9px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 28px 1fr; gap: 0 6px; }
+.rank { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; padding-right: 4px; }
+.title a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.title a:hover { text-decoration: underline; }
+.url { color: var(--muted); font-size: 12px; word-break: break-all; }
+.snippet { font-size: 13px; margin-top: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.chip { font-size: 12px; padding: 1px 7px; border-radius: 5px; background: var(--chip); color: var(--text); }
+.chip.relevant, .chip.verified { background: var(--good-soft); color: var(--good); }
+.chip.decoy, .chip.spam, .chip.unverified { background: var(--bad-soft); color: var(--bad); }
+.chip.ads { background: var(--warn-soft); color: var(--warn); }
+.chip.nat { background: var(--info-soft); color: var(--info); }
+.empty { color: var(--muted); font-size: 14px; padding: 10px 0; }
+.legend { font-size: 13px; color: var(--muted); }
+.legend .chip { margin-right: 2px; }
+.log { font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); white-space: pre-wrap; margin: 8px 0 0; max-height: 160px; overflow: auto; }
+a.plain { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>YaCy 複数ノード検索デモ <span id="phase" class="pill starting">起動中</span></h1>
+  <p class="sub">同じサイトを crawl した 2 つの閉じた P2P 網（YaCy 本家 3 ノード / 改善版 6 ノード + リレー）に、同じクエリを global 検索で投げて並べる</p>
+</header>
+<main>
+  <section class="panel" id="setup">
+    <details id="setupDetails" open>
+      <summary>網の状態: <span id="message">…</span></summary>
+      <div class="progress">
+        <b>改善版</b><span id="forkProgress">…</span>
+        <b>本家</b><span id="upProgress">…</span>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>ノード</th><th>役割</th><th>文書数</th><th>見えている senior</th><th>到達</th><th>種別</th><th>管理画面</th></tr></thead>
+          <tbody id="nodes"></tbody>
+        </table>
+      </div>
+      <pre class="log" id="log"></pre>
+    </details>
+  </section>
+
+  <section class="panel">
+    <form id="form">
+      <input type="search" id="q" placeholder="検索語（例: bitcoin lightning channel）" autocomplete="off">
+      <button id="go" type="submit">両方で検索</button>
+    </form>
+    <div class="presets" id="presets"></div>
+    <p class="hint" id="hint"></p>
+    <div class="options">
+      <label title="信頼集合外の作者や署名の無い文書も「未検証」として、検証済みの後ろに出す（trust.search.acceptUnverified）"><input type="checkbox" id="open"> 開放モード（未検証の結果も出す）</label>
+      <label title="ads を宣言した作者の文書を捨てる（trust.policy.excludeTags=ads）"><input type="checkbox" id="noads"> 広告（ads タグ）を除外</label>
+      <label>他ピアを待つ時間 <select id="wait"><option value="3000">3 秒</option><option value="5000" selected>5 秒</option><option value="10000">10 秒</option></select></label>
+      <label>本家の問い合わせ元 <select id="upOrigin"><option>up-1</option><option>up-2</option><option>up-3</option></select></label>
+      <label>改善版の問い合わせ元 <select id="forkOrigin"><option>fork-1</option><option>fork-2</option><option>fork-3</option></select></label>
+    </div>
+  </section>
+
+  <section class="cols">
+    <div class="panel col">
+      <h2>YaCy 本家（upstream）</h2>
+      <p class="desc">信頼の仕組みが無い。網の誰かが持っている頁はすべて結果に混ざる。上のオプションは効かない</p>
+      <div class="meta" id="upMeta"></div>
+      <ol class="results" id="upResults"><li class="empty">検索するとここに結果が出ます</li></ol>
+    </div>
+    <div class="panel col">
+      <h2>改善版（pad01g/yacy_search_server improved-search）</h2>
+      <p class="desc">作者の署名を検証し、コーディネータの一覧に載った作者の文書だけを使う。NAT の内側のピアにもリレー経由で届く</p>
+      <div class="meta" id="forkMeta"></div>
+      <ol class="results" id="forkResults"><li class="empty">検索するとここに結果が出ます</li></ol>
+    </div>
+  </section>
+
+  <section class="panel legend">
+    <span class="chip relevant">正解</span> そのクエリの正解頁
+    <span class="chip decoy">罠</span> 1 語だけの詰め込み頁・中身の薄いタグ一覧頁
+    <span class="chip spam">スパム</span> 信頼集合外のピアが持つ頁
+    <span class="chip ads">広告</span> 広告を宣言したピアの頁
+    <span class="chip nat">NAT の内側</span> NAT の内側のピアだけが持つ頁
+    <span class="chip verified">検証済み</span> / <span class="chip unverified">未検証</span> 作者の署名の判定（改善版のみ）
+    · ノード名は、その頁のサイトを crawl したノード。結果の 1 回目は届いた順、最後に順位どおりに並べ直す
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+let ready = false;
+let presetsShown = false;
+let collapsed = false;
+const hints = new Map();
+
+async function refresh() {
+  try {
+    const s = await (await fetch("/api/state")).json();
+    ready = s.phase === "ready";
+    const phase = $("phase");
+    phase.className = "pill " + s.phase;
+    phase.textContent = s.phase === "ready" ? "準備完了" : s.phase === "error" ? "エラー" : "準備中";
+    $("message").textContent = s.message;
+    $("forkProgress").textContent = s.fork;
+    $("upProgress").textContent = s.upstream;
+    $("nodes").innerHTML = s.nodes.map((n) => `<tr>
+      <td>${esc(n.name)}</td><td class="role">${esc(n.role)}</td>
+      <td>${n.up ? n.docs : "起動中"}</td><td>${n.up ? n.seniors : "-"}</td>
+      <td>${esc(n.reach)}</td><td>${esc(n.type)}</td>
+      <td>${n.ui ? `<a class="plain" href="${esc(n.ui)}" target="_blank" rel="noopener">${esc(n.ui.replace("http://", ""))}</a>` : "（外から届かない）"}</td></tr>`).join("");
+    $("log").textContent = s.log.join("\n");
+    if (!presetsShown && s.presets) {
+      presetsShown = true;
+      for (const p of s.presets) hints.set(p.q, p.hint);
+      $("presets").innerHTML = s.presets.map((p) => `<button type="button" data-q="${esc(p.q)}">${esc(p.q)}</button>`).join("");
+    }
+    $("go").disabled = !ready;
+    if (ready && !collapsed) { collapsed = true; $("setupDetails").open = false; }
+  } catch {
+    $("message").textContent = "デモのサーバーに接続できません";
+  }
+}
+setInterval(refresh, 4000);
+refresh();
+
+$("presets").addEventListener("click", (e) => {
+  const q = e.target.closest("button")?.dataset.q;
+  if (!q) return;
+  $("q").value = q;
+  $("hint").textContent = hints.get(q) ?? "";
+  if (ready) run();
+});
+$("q").addEventListener("input", () => ($("hint").textContent = hints.get($("q").value.trim()) ?? ""));
+$("form").addEventListener("submit", (e) => { e.preventDefault(); if (ready) run(); });
+
+function render(side, data, final) {
+  const list = $(side + "Results");
+  if (!data.hits.length) { list.innerHTML = `<li class="empty">${final ? "結果なし" : "まだ届いていません…"}</li>`; return; }
+  list.innerHTML = data.hits.map((h) => {
+    const chips = [`<span class="chip">${esc(h.crawledBy)}</span>`];
+    if (h.judge === "relevant") chips.push(`<span class="chip relevant">正解</span>`);
+    if (h.judge === "decoy") chips.push(`<span class="chip decoy">罠</span>`);
+    if (h.kind === "スパム") chips.push(`<span class="chip spam">スパム</span>`);
+    if (h.kind === "広告") chips.push(`<span class="chip ads">広告</span>`);
+    if (h.kind === "NAT の内側") chips.push(`<span class="chip nat">NAT の内側</span>`);
+    if (side === "fork" && h.verified) chips.push(h.verified === "true" ? `<span class="chip verified">検証済み (${esc(h.trust)})</span>` : `<span class="chip unverified">未検証 (${esc(h.trust)})</span>`);
+    if (h.tags) chips.push(`<span class="chip ads">タグ: ${esc(h.tags)}</span>`);
+    return `<li><span class="rank">${h.rank}</span><div>
+      <div class="title"><a href="/page?url=${encodeURIComponent(h.url)}" target="_blank" rel="noopener">${esc(h.title || h.url)}</a></div>
+      <div class="url">${esc(h.url)}</div>
+      ${h.snippet ? `<div class="snippet">${esc(h.snippet)}</div>` : ""}
+      <div class="chips">${chips.join("")}</div></div></li>`;
+  }).join("");
+}
+
+async function searchSide(side, q) {
+  const meta = $(side + "Meta");
+  const origin = $(side === "fork" ? "forkOrigin" : "upOrigin").value;
+  const params = new URLSearchParams({ side: side === "fork" ? "fork" : "upstream", q, origin, open: $("open").checked ? "1" : "0", noads: $("noads").checked ? "1" : "0", wait: $("wait").value });
+  meta.textContent = `${origin} から検索中…`;
+  $(side + "Results").innerHTML = `<li class="empty">検索中…</li>`;
+  const res = await fetch("/api/search?" + params);
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let buf = "";
+  let firstLine = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    let i;
+    while ((i = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, i); buf = buf.slice(i + 1);
+      if (!line.trim()) continue;
+      const d = JSON.parse(line);
+      if (d.error) { meta.textContent = "エラー: " + d.error; $(side + "Results").innerHTML = ""; return; }
+      if (d.pass === 1) {
+        firstLine = `1 回目 ${d.ms} ms: ${d.hits.length} 件（届いた順）`;
+        meta.textContent = `${d.origin} から / ${firstLine} → 他ピアを待っています…`;
+        render(side, d, false);
+      } else {
+        meta.textContent = `${d.origin} から / ${firstLine} → 最終 ${d.ms} ms: ${d.hits.length} 件（順位どおり）`;
+        render(side, d, true);
+      }
+    }
+  }
+}
+
+async function run() {
+  const q = $("q").value.trim();
+  if (!q) return;
+  $("go").disabled = true;
+  try {
+    await Promise.all([searchSide("up", q), searchSide("fork", q)]);
+  } finally {
+    $("go").disabled = !ready;
+  }
+}
+</script>
+</body>
+</html>

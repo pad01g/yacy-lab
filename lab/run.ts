@@ -34,7 +34,7 @@ const { values } = parseArgs({
     "skip-crawl": { type: "boolean", default: false },
     wait: { type: "string", default: "6000" }, // global search の 1 回目から計測までの待ち時間
     label: { type: "string", default: "" },
-    scenarios: { type: "string", default: "default,solr-only,rwi-only,solr-only:mm=1,solr-only:no-coverage,solr-only:mm=1+no-cov,solr-only:title-boost=0,solr-only:title-boost=20,solr-only:mm=100%" },
+    scenarios: { type: "string", default: "default,solr-only,rwi-only,solr-only:mm=1,solr-only:no-coverage,solr-only:mm=1+no-cov,solr-only:title-boost=0,solr-only:no-thin,solr-only:mm=100%" },
   },
 });
 
@@ -55,6 +55,7 @@ const FORK_DEFAULTS = {
   "search.ranking.solr.mm.cjk": "2<-1 5<80%",
   "search.ranking.coverage.exponent": "2",
   "search.ranking.solr.titlePhraseBoost": "20",
+  "search.ranking.thin.words": "100",
 };
 type Scenario = { config: Record<string, string>; forkOnly?: boolean };
 const SCENARIOS: Record<string, Scenario> = {
@@ -65,7 +66,7 @@ const SCENARIOS: Record<string, Scenario> = {
   "solr-only:no-coverage": { config: { ...SOLR_ONLY, ...NO_COVERAGE }, forkOnly: true },
   "solr-only:mm=1+no-cov": { config: { ...SOLR_ONLY, ...MM_1, ...NO_COVERAGE }, forkOnly: true },
   "solr-only:title-boost=0": { config: { ...SOLR_ONLY, "search.ranking.solr.titlePhraseBoost": "0" }, forkOnly: true },
-  "solr-only:title-boost=20": { config: { ...SOLR_ONLY, "search.ranking.solr.titlePhraseBoost": "20" }, forkOnly: true },
+  "solr-only:no-thin": { config: { ...SOLR_ONLY, "search.ranking.thin.words": "0" }, forkOnly: true },
   "solr-only:mm=100%": { config: { ...SOLR_ONLY, "search.ranking.solr.mm": "100%", "search.ranking.solr.mm.cjk": "100%" }, forkOnly: true },
 };
 const scenarios = values.scenarios.split(",").filter((s) => s in SCENARIOS);

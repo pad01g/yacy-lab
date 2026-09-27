@@ -1,0 +1,4908 @@
+{
+  "at": "2026-09-27T03:15:26.995Z",
+  "clusters": [
+    "upstream",
+    "fork"
+  ],
+  "scenarios": [
+    "default",
+    "solr-only",
+    "rwi-only",
+    "solr-only:mm=1",
+    "solr-only:no-coverage",
+    "solr-only:mm=1+no-cov",
+    "solr-only:mm=100%"
+  ],
+  "results": [
+    {
+      "cluster": "upstream",
+      "scenario": "default",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 12,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/031.html",
+              "title": "ERC-4337 adoption statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/053.html",
+              "title": "ERC-4337 news roundup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/025.html",
+              "title": "Bundler::Injector - Ruby Bundler",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "Bundler::Fetcher - Ruby Bundler documentation",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/062.html",
+              "title": "Bundler install troubleshooting",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 12,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.3,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/008.html",
+              "title": "Tokio vs async-std benchmarks",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/075.html",
+              "title": "Food safety basics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/042.html",
+              "title": "Safety data sheet guide",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/068.html",
+              "title": "Tokio runtime configuration",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/070.html",
+              "title": "Tokio console overview",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/080.html",
+              "title": "Tokio tutorial: spawning tasks",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 13,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://alpha.lab/doc/012.html",
+              "title": "Postgres JSONB operators",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/041.html",
+              "title": "Tuning autovacuum in PostgreSQL",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/061.html",
+              "title": "Piano tuning prices",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/012.html",
+              "title": "Car engine tuning shops",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/071.html",
+              "title": "Postgres installation on Ubuntu",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/013.html",
+              "title": "Postgres roles and privileges",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0.2,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/000.html",
+              "title": "Kubernetes certification tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/032.html",
+              "title": "Tenant eviction notice template",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/041.html",
+              "title": "Kubernetes release notes",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "Kubernetes dashboard setup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/057.html",
+              "title": "Eviction law for landlords",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/034.html",
+              "title": "Kubernetes the hard way",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 11,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/023.html",
+              "title": "Bitcoin ETF news",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/001.html",
+              "title": "Lightning strike statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "Lightning photography tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/022.html",
+              "title": "Lightning safety during storms",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/015.html",
+              "title": "Bitcoin halving history",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/000.html",
+              "title": "Bitcoin price today",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 11,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/006.html",
+              "title": "Solr schema design",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Match highlights",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/065.html",
+              "title": "Tennis match schedule",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/056.html",
+              "title": "Solr cloud collections",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/009.html",
+              "title": "Solr admin UI",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/024.html",
+              "title": "Solr installation guide",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.2,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/004.html",
+              "title": "無料会員登録キャンペーン",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/073.html",
+              "title": "金融庁の組織図",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/064.html",
+              "title": "金融庁の人事異動",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/018.html",
+              "title": "ポイントカード登録",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/006.html",
+              "title": "メールアドレス登録方法",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/003.html",
+              "title": "道路工事による規制情報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/072.html",
+              "title": "マラソン大会の規制区間",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/069.html",
+              "title": "花火大会の交通規制",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/040.html",
+              "title": "交通規制のお知らせ",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/005.html",
+              "title": "大阪の天気予報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/035.html",
+              "title": "大阪の夜景スポット",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/017.html",
+              "title": "大阪城の歴史",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪のたこ焼き名店",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/021.html",
+              "title": "ギター入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/019.html",
+              "title": "囲碁入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/045.html",
+              "title": "将棋入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/016.html",
+              "title": "茶道入門",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/013.html",
+              "title": "钱包丢失怎么办",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/014.html",
+              "title": "真皮钱包推荐",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/060.html",
+              "title": "女士长款钱包",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "男士钱包品牌",
+              "judge": "decoy"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.7863636363636363,
+        "recall": 0.9818181818181819,
+        "decoy": 0.2136363636363636,
+        "allTerms": 0.4272727272727273,
+        "remote": 0.890909090909091
+      },
+      "en": {
+        "rprec": 0.8083333333333332,
+        "recall": 0.9666666666666667,
+        "decoy": 0.19166666666666665,
+        "allTerms": 0.4166666666666667,
+        "remote": 0.9
+      },
+      "cjk": {
+        "rprec": 0.76,
+        "recall": 1,
+        "decoy": 0.24,
+        "allTerms": 0.44000000000000006,
+        "remote": 0.8800000000000001
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "default",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 0.8,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.75,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.9454545454545453,
+        "recall": 0.9454545454545453,
+        "decoy": 0,
+        "allTerms": 0.9318181818181818,
+        "remote": 0.9818181818181819
+      },
+      "en": {
+        "rprec": 0.9333333333333332,
+        "recall": 0.9333333333333332,
+        "decoy": 0,
+        "allTerms": 0.9583333333333334,
+        "remote": 0.9666666666666667
+      },
+      "cjk": {
+        "rprec": 0.96,
+        "recall": 0.96,
+        "decoy": 0,
+        "allTerms": 0.9,
+        "remote": 1
+      }
+    },
+    {
+      "cluster": "upstream",
+      "scenario": "solr-only",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 12,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/031.html",
+              "title": "ERC-4337 adoption statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/053.html",
+              "title": "ERC-4337 news roundup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/025.html",
+              "title": "Bundler::Injector - Ruby Bundler",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "Bundler::Fetcher - Ruby Bundler documentation",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/062.html",
+              "title": "Bundler install troubleshooting",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 12,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.3,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/008.html",
+              "title": "Tokio vs async-std benchmarks",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/075.html",
+              "title": "Food safety basics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/042.html",
+              "title": "Safety data sheet guide",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/068.html",
+              "title": "Tokio runtime configuration",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/070.html",
+              "title": "Tokio console overview",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/080.html",
+              "title": "Tokio tutorial: spawning tasks",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 13,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/012.html",
+              "title": "Postgres JSONB operators",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/041.html",
+              "title": "Tuning autovacuum in PostgreSQL",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/061.html",
+              "title": "Piano tuning prices",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/012.html",
+              "title": "Car engine tuning shops",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/071.html",
+              "title": "Postgres installation on Ubuntu",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/013.html",
+              "title": "Postgres roles and privileges",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0.2,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/000.html",
+              "title": "Kubernetes certification tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/032.html",
+              "title": "Tenant eviction notice template",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/041.html",
+              "title": "Kubernetes release notes",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "Kubernetes dashboard setup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/057.html",
+              "title": "Eviction law for landlords",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/034.html",
+              "title": "Kubernetes the hard way",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 11,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/023.html",
+              "title": "Bitcoin ETF news",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/001.html",
+              "title": "Lightning strike statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "Lightning photography tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/022.html",
+              "title": "Lightning safety during storms",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/015.html",
+              "title": "Bitcoin halving history",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/000.html",
+              "title": "Bitcoin price today",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 11,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/006.html",
+              "title": "Solr schema design",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Match highlights",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/065.html",
+              "title": "Tennis match schedule",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/056.html",
+              "title": "Solr cloud collections",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/009.html",
+              "title": "Solr admin UI",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/024.html",
+              "title": "Solr installation guide",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.2,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/004.html",
+              "title": "無料会員登録キャンペーン",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/073.html",
+              "title": "金融庁の組織図",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/064.html",
+              "title": "金融庁の人事異動",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/018.html",
+              "title": "ポイントカード登録",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/006.html",
+              "title": "メールアドレス登録方法",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/003.html",
+              "title": "道路工事による規制情報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/072.html",
+              "title": "マラソン大会の規制区間",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/069.html",
+              "title": "花火大会の交通規制",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/040.html",
+              "title": "交通規制のお知らせ",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/005.html",
+              "title": "大阪の天気予報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/035.html",
+              "title": "大阪の夜景スポット",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/017.html",
+              "title": "大阪城の歴史",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪のたこ焼き名店",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/021.html",
+              "title": "ギター入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/019.html",
+              "title": "囲碁入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/045.html",
+              "title": "将棋入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/016.html",
+              "title": "茶道入門",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/013.html",
+              "title": "钱包丢失怎么办",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/014.html",
+              "title": "真皮钱包推荐",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/060.html",
+              "title": "女士长款钱包",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "男士钱包品牌",
+              "judge": "decoy"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.7863636363636363,
+        "recall": 0.9818181818181819,
+        "decoy": 0.2136363636363636,
+        "allTerms": 0.4272727272727273,
+        "remote": 0.890909090909091
+      },
+      "en": {
+        "rprec": 0.8083333333333332,
+        "recall": 0.9666666666666667,
+        "decoy": 0.19166666666666665,
+        "allTerms": 0.4166666666666667,
+        "remote": 0.9
+      },
+      "cjk": {
+        "rprec": 0.76,
+        "recall": 1,
+        "decoy": 0.24,
+        "allTerms": 0.44000000000000006,
+        "remote": 0.8800000000000001
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "solr-only",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 0.8,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.75,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/041.html",
+              "title": "Tuning autovacuum in PostgreSQL",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.8,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/018.html",
+              "title": "Why the kubelet evicts pods",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.4,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.9045454545454544,
+        "remote": 0.9818181818181819
+      },
+      "en": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.9249999999999999,
+        "remote": 0.9666666666666667
+      },
+      "cjk": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.8800000000000001,
+        "remote": 1
+      }
+    },
+    {
+      "cluster": "upstream",
+      "scenario": "rwi-only",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 1,
+          "rprec": 0.2,
+          "recall": 0.2,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 0,
+          "top": [
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 0,
+          "rprec": 0,
+          "recall": 0,
+          "decoy": 0,
+          "allTerms": 0,
+          "remote": 0,
+          "top": []
+        }
+      ],
+      "all": {
+        "rprec": 0.018181818181818184,
+        "recall": 0.018181818181818184,
+        "decoy": 0,
+        "allTerms": 0.09090909090909091,
+        "remote": 0
+      },
+      "en": {
+        "rprec": 0.03333333333333333,
+        "recall": 0.03333333333333333,
+        "decoy": 0,
+        "allTerms": 0.16666666666666666,
+        "remote": 0
+      },
+      "cjk": {
+        "rprec": 0,
+        "recall": 0,
+        "decoy": 0,
+        "allTerms": 0,
+        "remote": 0
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "rwi-only",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 7,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 0.8,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.75,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.9454545454545453,
+        "recall": 0.9454545454545453,
+        "decoy": 0,
+        "allTerms": 0.9318181818181818,
+        "remote": 0.9818181818181819
+      },
+      "en": {
+        "rprec": 0.9333333333333332,
+        "recall": 0.9333333333333332,
+        "decoy": 0,
+        "allTerms": 0.9583333333333334,
+        "remote": 0.9666666666666667
+      },
+      "cjk": {
+        "rprec": 0.96,
+        "recall": 0.96,
+        "decoy": 0,
+        "allTerms": 0.9,
+        "remote": 1
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "solr-only:mm=1",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 12,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/031.html",
+              "title": "ERC-4337 adoption statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/053.html",
+              "title": "ERC-4337 news roundup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/025.html",
+              "title": "Bundler::Injector - Ruby Bundler",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "Bundler::Fetcher - Ruby Bundler documentation",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/062.html",
+              "title": "Bundler install troubleshooting",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 12,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.3,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/008.html",
+              "title": "Tokio vs async-std benchmarks",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/075.html",
+              "title": "Food safety basics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/042.html",
+              "title": "Safety data sheet guide",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/068.html",
+              "title": "Tokio runtime configuration",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/070.html",
+              "title": "Tokio console overview",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/080.html",
+              "title": "Tokio tutorial: spawning tasks",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 13,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/012.html",
+              "title": "Postgres JSONB operators",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/041.html",
+              "title": "Tuning autovacuum in PostgreSQL",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/061.html",
+              "title": "Piano tuning prices",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/012.html",
+              "title": "Car engine tuning shops",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/071.html",
+              "title": "Postgres installation on Ubuntu",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/013.html",
+              "title": "Postgres roles and privileges",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/000.html",
+              "title": "Kubernetes certification tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/018.html",
+              "title": "Why the kubelet evicts pods",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/032.html",
+              "title": "Tenant eviction notice template",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/041.html",
+              "title": "Kubernetes release notes",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "Kubernetes dashboard setup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/057.html",
+              "title": "Eviction law for landlords",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 11,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/023.html",
+              "title": "Bitcoin ETF news",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/001.html",
+              "title": "Lightning strike statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "Lightning photography tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/022.html",
+              "title": "Lightning safety during storms",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/015.html",
+              "title": "Bitcoin halving history",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/000.html",
+              "title": "Bitcoin price today",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 11,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/006.html",
+              "title": "Solr schema design",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Match highlights",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/065.html",
+              "title": "Tennis match schedule",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/056.html",
+              "title": "Solr cloud collections",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/009.html",
+              "title": "Solr admin UI",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/024.html",
+              "title": "Solr installation guide",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 12,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.2,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/004.html",
+              "title": "無料会員登録キャンペーン",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/073.html",
+              "title": "金融庁の組織図",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/064.html",
+              "title": "金融庁の人事異動",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/033.html",
+              "title": "住所変更と再登録",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/048.html",
+              "title": "会員登録のご案内",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 8,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/003.html",
+              "title": "道路工事による規制情報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/069.html",
+              "title": "花火大会の交通規制",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/040.html",
+              "title": "交通規制のお知らせ",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/072.html",
+              "title": "マラソン大会の規制区間",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 8,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/005.html",
+              "title": "大阪の天気予報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/017.html",
+              "title": "大阪城の歴史",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪のたこ焼き名店",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/035.html",
+              "title": "大阪の夜景スポット",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 8,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/021.html",
+              "title": "ギター入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/019.html",
+              "title": "囲碁入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/045.html",
+              "title": "将棋入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/016.html",
+              "title": "茶道入門",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 8,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/013.html",
+              "title": "钱包丢失怎么办",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/014.html",
+              "title": "真皮钱包推荐",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/060.html",
+              "title": "女士长款钱包",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "男士钱包品牌",
+              "judge": "decoy"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.9636363636363636,
+        "recall": 1,
+        "decoy": 0.03636363636363637,
+        "allTerms": 0.4272727272727273,
+        "remote": 0.890909090909091
+      },
+      "en": {
+        "rprec": 0.9333333333333332,
+        "recall": 1,
+        "decoy": 0.06666666666666667,
+        "allTerms": 0.4166666666666667,
+        "remote": 0.9
+      },
+      "cjk": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.44000000000000006,
+        "remote": 0.8800000000000001
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "solr-only:no-coverage",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 0.8,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.75,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/041.html",
+              "title": "Tuning autovacuum in PostgreSQL",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.8,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/018.html",
+              "title": "Why the kubelet evicts pods",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.4,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.9045454545454544,
+        "remote": 0.9818181818181819
+      },
+      "en": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.9249999999999999,
+        "remote": 0.9666666666666667
+      },
+      "cjk": {
+        "rprec": 1,
+        "recall": 1,
+        "decoy": 0,
+        "allTerms": 0.8800000000000001,
+        "remote": 1
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "solr-only:mm=1+no-cov",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 12,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/031.html",
+              "title": "ERC-4337 adoption statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/053.html",
+              "title": "ERC-4337 news roundup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/025.html",
+              "title": "Bundler::Injector - Ruby Bundler",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/063.html",
+              "title": "Bundler::Fetcher - Ruby Bundler documentation",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/062.html",
+              "title": "Bundler install troubleshooting",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 12,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.3,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/008.html",
+              "title": "Tokio vs async-std benchmarks",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/075.html",
+              "title": "Food safety basics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/042.html",
+              "title": "Safety data sheet guide",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/068.html",
+              "title": "Tokio runtime configuration",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/070.html",
+              "title": "Tokio console overview",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/080.html",
+              "title": "Tokio tutorial: spawning tasks",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 13,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0.2,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/012.html",
+              "title": "Postgres JSONB operators",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/061.html",
+              "title": "Piano tuning prices",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/012.html",
+              "title": "Car engine tuning shops",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/071.html",
+              "title": "Postgres installation on Ubuntu",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/013.html",
+              "title": "Postgres roles and privileges",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/038.html",
+              "title": "Postgres backup with pg_dump",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0.2,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/000.html",
+              "title": "Kubernetes certification tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/032.html",
+              "title": "Tenant eviction notice template",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/041.html",
+              "title": "Kubernetes release notes",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/044.html",
+              "title": "Kubernetes dashboard setup",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/057.html",
+              "title": "Eviction law for landlords",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/034.html",
+              "title": "Kubernetes the hard way",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 11,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/023.html",
+              "title": "Bitcoin ETF news",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/001.html",
+              "title": "Lightning strike statistics",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/077.html",
+              "title": "Lightning photography tips",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/022.html",
+              "title": "Lightning safety during storms",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/015.html",
+              "title": "Bitcoin halving history",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/000.html",
+              "title": "Bitcoin price today",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 11,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.4,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/006.html",
+              "title": "Solr schema design",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/020.html",
+              "title": "Match highlights",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/065.html",
+              "title": "Tennis match schedule",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/056.html",
+              "title": "Solr cloud collections",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/009.html",
+              "title": "Solr admin UI",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/024.html",
+              "title": "Solr installation guide",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 12,
+          "rprec": 0.8,
+          "recall": 1,
+          "decoy": 0.2,
+          "allTerms": 0.2,
+          "remote": 0.9,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/004.html",
+              "title": "無料会員登録キャンペーン",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/004.html",
+              "title": "暗号資産交換業者の登録審査の実務",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/073.html",
+              "title": "金融庁の組織図",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/064.html",
+              "title": "金融庁の人事異動",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/033.html",
+              "title": "住所変更と再登録",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/048.html",
+              "title": "会員登録のご案内",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/003.html",
+              "title": "道路工事による規制情報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/069.html",
+              "title": "花火大会の交通規制",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/040.html",
+              "title": "交通規制のお知らせ",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/072.html",
+              "title": "マラソン大会の規制区間",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/005.html",
+              "title": "大阪の天気予報",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/017.html",
+              "title": "大阪城の歴史",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/002.html",
+              "title": "大阪のたこ焼き名店",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/035.html",
+              "title": "大阪の夜景スポット",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/021.html",
+              "title": "ギター入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/019.html",
+              "title": "囲碁入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/045.html",
+              "title": "将棋入門",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/016.html",
+              "title": "茶道入門",
+              "judge": "decoy"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 8,
+          "rprec": 0.75,
+          "recall": 1,
+          "decoy": 0.25,
+          "allTerms": 0.5,
+          "remote": 0.875,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/013.html",
+              "title": "钱包丢失怎么办",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/014.html",
+              "title": "真皮钱包推荐",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/060.html",
+              "title": "女士长款钱包",
+              "judge": "decoy"
+            },
+            {
+              "url": "http://gamma.lab/doc/046.html",
+              "title": "男士钱包品牌",
+              "judge": "decoy"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.7863636363636363,
+        "recall": 0.9636363636363636,
+        "decoy": 0.2136363636363636,
+        "allTerms": 0.41818181818181815,
+        "remote": 0.890909090909091
+      },
+      "en": {
+        "rprec": 0.8083333333333332,
+        "recall": 0.9333333333333332,
+        "decoy": 0.19166666666666665,
+        "allTerms": 0.39999999999999997,
+        "remote": 0.9
+      },
+      "cjk": {
+        "rprec": 0.76,
+        "recall": 1,
+        "decoy": 0.24,
+        "allTerms": 0.44000000000000006,
+        "remote": 0.8800000000000001
+      }
+    },
+    {
+      "cluster": "fork",
+      "scenario": "solr-only:mm=100%",
+      "rows": [
+        {
+          "id": "erc4337",
+          "lang": "en",
+          "query": "ERC-4337 bundler",
+          "total": 5,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 0.8,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/025.html",
+              "title": "ERC-4337 bundler mempool rules",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://alpha.lab/doc/020.html",
+              "title": "Choosing an ERC-4337 bundler provider",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/030.html",
+              "title": "Running your own ERC-4337 bundler",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/051.html",
+              "title": "Account abstraction: the ERC-4337 bundler role",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/043.html",
+              "title": "How an ERC-4337 bundler packs UserOperations",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "tokio",
+          "lang": "en",
+          "query": "tokio select cancellation safety",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/012.html",
+              "title": "Cancellation safety in tokio::select!",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/078.html",
+              "title": "Why tokio select needs cancellation safety",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/007.html",
+              "title": "Writing cancellation safe futures for tokio select",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/026.html",
+              "title": "Tokio select loops and cancellation safety",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "autovacuum",
+          "lang": "en",
+          "query": "postgres autovacuum tuning",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/008.html",
+              "title": "Postgres autovacuum tuning for large tables",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/076.html",
+              "title": "Autovacuum tuning checklist for Postgres 16",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/032.html",
+              "title": "A practical guide to autovacuum tuning in Postgres",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/005.html",
+              "title": "Postgres autovacuum tuning: scale factor and cost limit",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "eviction",
+          "lang": "en",
+          "query": "kubernetes pod eviction",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/017.html",
+              "title": "Kubernetes pod eviction and PodDisruptionBudget",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/059.html",
+              "title": "Understanding Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/029.html",
+              "title": "Debugging Kubernetes pod eviction",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/039.html",
+              "title": "Kubernetes pod eviction under node pressure",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "lightning",
+          "lang": "en",
+          "query": "bitcoin lightning channel",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/036.html",
+              "title": "Opening a bitcoin lightning channel",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/003.html",
+              "title": "Bitcoin lightning channel liquidity",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/042.html",
+              "title": "Closing a bitcoin lightning channel safely",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/047.html",
+              "title": "Bitcoin lightning channel capacity explained",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "edismax",
+          "lang": "en",
+          "query": "solr edismax minimum match",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/003.html",
+              "title": "Solr edismax: minimum match expressions",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/021.html",
+              "title": "Why Solr edismax minimum match returns too many results",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/011.html",
+              "title": "Solr edismax minimum match (mm) explained",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/052.html",
+              "title": "Tuning minimum match in Solr edismax",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "vasp",
+          "lang": "ja",
+          "query": "暗号資産交換業 登録 金融庁",
+          "total": 4,
+          "rprec": 0.8,
+          "recall": 0.8,
+          "decoy": 0,
+          "allTerms": 0.5,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/023.html",
+              "title": "金融庁による暗号資産交換業者の登録一覧",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/055.html",
+              "title": "暗号資産交換業者登録と金融庁の監督",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/033.html",
+              "title": "暗号資産交換業の登録申請の流れ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/002.html",
+              "title": "暗号資産交換業者の登録制度について",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "stablecoin",
+          "lang": "ja",
+          "query": "ステーブルコイン 規制",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/007.html",
+              "title": "ステーブルコイン規制の最新動向",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/028.html",
+              "title": "日本のステーブルコイン規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/054.html",
+              "title": "ステーブルコインの発行と規制",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/001.html",
+              "title": "ステーブルコインに対する規制の論点",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "expo",
+          "lang": "ja",
+          "query": "大阪 万博",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/019.html",
+              "title": "大阪万博の見どころ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/038.html",
+              "title": "大阪万博への行き方",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/067.html",
+              "title": "大阪万博の入場チケット",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/011.html",
+              "title": "大阪・関西万博のパビリオン案内",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "ml",
+          "lang": "ja",
+          "query": "機械学習 入門",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/000.html",
+              "title": "機械学習入門：最初の一歩",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/039.html",
+              "title": "Pythonで学ぶ機械学習入門",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/028.html",
+              "title": "機械学習の入門書まとめ",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/036.html",
+              "title": "はじめての機械学習入門講座",
+              "judge": "relevant"
+            }
+          ]
+        },
+        {
+          "id": "wallet",
+          "lang": "zh",
+          "query": "区块链 钱包",
+          "total": 4,
+          "rprec": 1,
+          "recall": 1,
+          "decoy": 0,
+          "allTerms": 1,
+          "remote": 1,
+          "top": [
+            {
+              "url": "http://beta.lab/doc/030.html",
+              "title": "区块链钱包安全指南",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/008.html",
+              "title": "区块链钱包与私钥",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://beta.lab/doc/014.html",
+              "title": "区块链钱包的工作原理",
+              "judge": "relevant"
+            },
+            {
+              "url": "http://gamma.lab/doc/027.html",
+              "title": "如何选择区块链钱包",
+              "judge": "relevant"
+            }
+          ]
+        }
+      ],
+      "all": {
+        "rprec": 0.9454545454545453,
+        "recall": 0.9454545454545453,
+        "decoy": 0,
+        "allTerms": 0.9545454545454546,
+        "remote": 0.9818181818181819
+      },
+      "en": {
+        "rprec": 0.9333333333333332,
+        "recall": 0.9333333333333332,
+        "decoy": 0,
+        "allTerms": 1,
+        "remote": 0.9666666666666667
+      },
+      "cjk": {
+        "rprec": 0.96,
+        "recall": 0.96,
+        "decoy": 0,
+        "allTerms": 0.9,
+        "remote": 1
+      }
+    }
+  ]
+}

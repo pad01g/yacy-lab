@@ -84,8 +84,10 @@ If you find a change that helps, share it: issues and pull requests at https://g
 
 ## Pitfalls
 
-- `index_status` reports `crawlerPaused` when the machine is busy: YaCy's crawler waits while the load average is
-  above `50_localcrawl_loadprereq`. Wait, or raise that value in `ConfigProperties_p.html`.
+- On a busy machine YaCy pauses work while the load average is high: the crawler above `50_localcrawl_loadprereq`
+  (`index_status` then reports `crawlerPaused`), and peer pings, which also fetch the trust lists, above
+  `30_peerping_loadprereq` (default 4). Raise them in `ConfigProperties_p.html` and **restart the container**
+  (`docker restart yacy`): YaCy reads these limits only at start.
 - A new peer without a public address is `virgin` and publishes no seed. It can still crawl and search its own index.
 - `search` finds only what is indexed. Zero results usually means "not crawled yet", not "does not exist".
 - Crawl only sites you may crawl. YaCy honours robots.txt.

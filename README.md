@@ -1,5 +1,7 @@
 # yacy-lab
 
+**Reproducible experiments for peer-to-peer web search quality (YaCy upstream vs the improved-search fork), a browser demo, and an agent skill for running your own search engine.** Agents: install the skill with `npx skills add pad01g/yacy-lab` ([skills/yacy-p2p-search](skills/yacy-p2p-search/SKILL.md)); overview for machines: https://pad01g.github.io/yacy_search_server/llms.txt.
+
 YaCy のフォーク [pad01g/yacy_search_server](https://github.com/pad01g/yacy_search_server)（branch `improved-search`）の改善が
 P2P 網で効いているかを、docker compose だけで再現して確かめる実験と、手で触るためのデモ（プロジェクトの説明: https://pad01g.github.io/yacy_search_server/ja/ ）:
 

@@ -138,17 +138,20 @@ export async function setupTrustNetwork(opts: { skipCrawl?: boolean; keepExistin
 export async function crawlSite(node: string, site: string): Promise<void> {
   const corpusPages = [...buildCorpus(), ...buildTrustCorpus()].filter((p) => p.site === site).length;
   // already indexed (e.g. the demo was restarted): crawling again would not add documents
-  const have = (await (await fetchAdmin(`${base(node)}/solr/select?q=*:*&fq=host_s:${encodeURIComponent(site)}&rows=0&wt=json`)).json()) as { response: { numFound: number } };
-  if (have.response.numFound >= corpusPages) {
-    log(node, "already has", site, have.response.numFound);
+  // the corpus pages plus the index page of the site; counted per host, so that a crawl cut short by a restart
+  // finishes too (a new crawl of the same URLs adds no documents)
+  const expected = corpusPages + 1;
+  const indexed = async (): Promise<number> =>
+    ((await (await fetchAdmin(`${base(node)}/solr/select?q=*:*&fq=host_s:${encodeURIComponent(site)}&rows=0&wt=json`)).json()) as { response: { numFound: number } }).response.numFound;
+  const have = await indexed();
+  if (have >= expected) {
+    log(node, "already has", site, have);
     return;
   }
-  const before = (await status(node)).docs;
   log(node, await startCrawl(node, `http://${site}/`));
-  const expected = before + corpusPages + 1; // + 目次頁
   await until(`${node} index ${site}`, 600_000, async () => {
     const s = await status(node);
-    return s.docs >= expected && s.loader === 0 && s.localCrawler === 0 ? s : undefined;
+    return (await indexed()) >= expected && s.loader === 0 && s.localCrawler === 0 ? s : undefined;
   });
   log(node, "indexed", site, await status(node));
 }

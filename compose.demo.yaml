@@ -2,6 +2,8 @@
 # 同じサイトを crawl させてから、ブラウザで両方の網に同じクエリを投げて比べる。
 #   docker compose -f compose.demo.yaml -p yacydemo up -d
 #   → http://localhost:8800 （準備の進み具合もここに出る。準備には 10 分ほどかかる）
+#   各ノードの YaCy 管理画面も開くなら: docker compose -f compose.demo.yaml -f compose.demo.admin.yaml -p yacydemo up -d
+#   （管理画面は既定のパスワード admin / yacy のまま。ほかの Web ページから DNS rebinding で操作されうるので、既定では公開しない）
 #   docker compose -f compose.demo.yaml -p yacydemo down -v
 # compose.trust.yaml と同じサブネットを使うので、信頼の試験と同時には動かせない。
 #
@@ -10,9 +12,10 @@
 #   upnet:                lab / up-1..3 / demo
 
 x-yacy: &yacy
-  restart: "no"
+  restart: unless-stopped
   entrypoint: ["/bin/sh", "/lab/entry.sh"]
-  mem_limit: 900m
+  # heap 500 MB plus Solr / Lucene memory outside the heap: 900 MB was too little (a node was killed)
+  mem_limit: 1100m
   logging:
     options:
       max-size: "20m"
@@ -41,7 +44,7 @@ x-upstream: &upstream
 
 x-sidecar: &sidecar
   image: ${SIDECAR_IMAGE:-yacy-lab/sidecar:latest}
-  restart: "no"
+  restart: unless-stopped
   user: "100:101"
   logging:
     options:
@@ -66,6 +69,7 @@ services:
 
   demo:
     image: node:24-alpine
+    restart: unless-stopped
     working_dir: /app
     command: ["node", "--no-warnings", "lab/demo.ts"]
     ports: ["127.0.0.1:8800:8800"]
@@ -78,7 +82,7 @@ services:
   relay:
     <<: *sidecar
     user: "1000:1000"
-    command: ["-relay-service", "-key", "/data/relay.key", "-key-create", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
+    command: ["-relay-service", "-relay-open", "-key", "/data/relay.key", "-key-create", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
     volumes:
       - relay_key:/data
     networks:
@@ -87,7 +91,6 @@ services:
 
   fork-1:
     <<: *fork
-    ports: ["127.0.0.1:8811:8090"]
     networks:
       pub:
         ipv4_address: 172.30.0.11
@@ -98,7 +101,6 @@ services:
     command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095"]
   fork-2:
     <<: *fork
-    ports: ["127.0.0.1:8812:8090"]
     networks:
       pub:
         ipv4_address: 172.30.0.12
@@ -109,7 +111,6 @@ services:
     command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095"]
   fork-3:
     <<: *fork
-    ports: ["127.0.0.1:8813:8090"]
     networks:
       pub:
         ipv4_address: 172.30.0.13
@@ -120,7 +121,6 @@ services:
     command: ["-key", "/opt/yacy_search_server/DATA/SETTINGS/peer.key", "-token-file", "/opt/yacy_search_server/DATA/SETTINGS/sidecar.token", "-relay", "http://172.30.0.3:8095"]
   ads-1:
     <<: *fork
-    ports: ["127.0.0.1:8814:8090"]
     environment:
       YACY_XMX: "500m"
       YACY_CONF: "trust.selfTags=ads"
@@ -129,7 +129,6 @@ services:
         ipv4_address: 172.30.0.14
   evil-1:
     <<: *fork
-    ports: ["127.0.0.1:8815:8090"]
     networks:
       pub:
         ipv4_address: 172.30.0.15
@@ -169,13 +168,10 @@ services:
 
   up-1:
     <<: *upstream
-    ports: ["127.0.0.1:8821:8090"]
   up-2:
     <<: *upstream
-    ports: ["127.0.0.1:8822:8090"]
   up-3:
     <<: *upstream
-    ports: ["127.0.0.1:8823:8090"]
 
 volumes:
   relay_key:

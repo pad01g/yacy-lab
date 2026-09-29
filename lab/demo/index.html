@@ -191,6 +191,8 @@ p.small { font-size: 13px; color: var(--muted); margin: 4px 0; }
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 let ready = false;
+let searching = false;
+let controller = null;
 let presetsShown = false;
 let collapsed = false;
 const hints = new Map();
@@ -198,10 +200,10 @@ const hints = new Map();
 async function refresh() {
   try {
     const s = await (await fetch("/api/state")).json();
-    ready = s.phase === "ready";
+    ready = s.phase === "ready" || s.phase === "degraded";
     const phase = $("phase");
-    phase.className = "pill " + s.phase;
-    phase.textContent = s.phase === "ready" ? "準備完了" : s.phase === "error" ? "エラー" : "準備中";
+    phase.className = "pill " + (s.phase === "degraded" ? "error" : s.phase);
+    phase.textContent = s.phase === "ready" ? "準備完了" : s.phase === "degraded" ? "一部停止" : s.phase === "error" ? "エラー" : "準備中";
     $("message").textContent = s.message;
     $("forkProgress").textContent = s.fork;
     $("upProgress").textContent = s.upstream;
@@ -216,7 +218,7 @@ async function refresh() {
       for (const p of s.presets) hints.set(p.q, p.hint);
       $("presets").innerHTML = s.presets.map((p) => `<button type="button" data-q="${esc(p.q)}">${esc(p.q)}</button>`).join("");
     }
-    $("go").disabled = !ready;
+    $("go").disabled = !ready || searching;
     if (ready && !collapsed) { collapsed = true; $("setupDetails").open = false; }
   } catch {
     $("message").textContent = "デモのサーバーに接続できません";
@@ -258,10 +260,10 @@ function render(side, data, final) {
 async function searchSide(side, q) {
   const meta = $(side + "Meta");
   const origin = $(side === "fork" ? "forkOrigin" : "upOrigin").value;
-  const params = new URLSearchParams({ side: side === "fork" ? "fork" : "upstream", q, origin, open: $("open").checked ? "1" : "0", noads: $("noads").checked ? "1" : "0", wait: $("wait").value });
+  const body = { side: side === "fork" ? "fork" : "upstream", q, origin, open: $("open").checked ? "1" : "0", noads: $("noads").checked ? "1" : "0", wait: $("wait").value };
   meta.textContent = `${origin} から検索中…`;
   $(side + "Results").innerHTML = `<li class="empty">検索中…</li>`;
-  const res = await fetch("/api/search?" + params);
+  const res = await fetch("/api/search", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: controller.signal });
   const reader = res.body.getReader();
   const dec = new TextDecoder();
   let buf = "";
@@ -373,11 +375,16 @@ loadTrust(true);
 
 async function run() {
   const q = $("q").value.trim();
-  if (!q) return;
+  if (!q || searching) return;
+  searching = true;
+  controller = new AbortController();
   $("go").disabled = true;
   try {
     await Promise.all([searchSide("up", q), searchSide("fork", q)]);
+  } catch (e) {
+    if (e.name !== "AbortError") $("forkMeta").textContent = "エラー: " + e.message;
   } finally {
+    searching = false;
     $("go").disabled = !ready;
   }
 }

@@ -115,31 +115,74 @@ export function trustReady(): boolean {
   return state !== null;
 }
 
+/**
+ * run a change of the state; if signing or distributing fails, the content is as before. Version numbers and the
+ * bundle counter are never taken back: some nodes may already hold the new versions, and reusing a version for
+ * other content would make them keep the wrong list.
+ */
+async function transaction(change: (s: State) => void, targets: string[], after?: () => Promise<void>): Promise<void> {
+  if (!state) throw new Error("準備中です");
+  const s = state;
+  const saved = structuredClone({ delegation: s.delegation, list: s.list, modes: s.modes });
+  try {
+    change(s);
+    if (after) await after();
+    await publish(targets);
+  } catch (e) {
+    const failedDelegation = s.delegation.version;
+    const failedList = s.list.version;
+    s.modes = saved.modes;
+    s.list = { ...saved.list, version: failedList };
+    s.delegation = { ...saved.delegation, version: failedDelegation };
+    // the old content again under versions above the failed ones, so that nodes that got the change go back too
+    if (failedDelegation !== saved.delegation.version) s.delegation.version++;
+    if (failedList !== saved.list.version) s.list.version++;
+    save();
+    // nodes that already got the change get the old content back (best effort: it may fail for the same reason)
+    if (failedDelegation !== saved.delegation.version || failedList !== saved.list.version)
+      await publish(targets).catch((x) => log("cannot publish the restored lists", (x as Error).message));
+    throw e;
+  }
+}
+
 /** coordinator A publishes a new version of its list */
 export async function publishList(entries: Record<string, Partial<Entry>>, onlyForkTwo: boolean): Promise<void> {
-  if (!state) throw new Error("準備中です");
-  for (const node of Object.keys(DEFAULT_ENTRIES)) state.list.entries[node] = cleanEntry(entries[node], state.list.entries[node] ?? DEFAULT_ENTRIES[node]);
-  state.list.version++;
-  await publish(onlyForkTwo ? ["fork-2"] : ALL);
+  await transaction(
+    (s) => {
+      for (const node of Object.keys(DEFAULT_ENTRIES)) s.list.entries[node] = cleanEntry(entries[node], s.list.entries[node] ?? DEFAULT_ENTRIES[node]);
+      s.list.version++;
+    },
+    onlyForkTwo ? ["fork-2"] : ALL,
+  );
 }
 
 /** coordinator A revokes or restores its delegation to the operator (a newer version wins) */
 export async function setDelegation(revoked: boolean, onlyForkTwo: boolean): Promise<void> {
-  if (!state) throw new Error("準備中です");
-  state.delegation = { version: state.delegation.version + 1, revoked };
-  // after a restore the list must be sent again: lists that arrived while the operator was revoked were refused
-  if (!revoked) state.list.version++;
-  await publish(onlyForkTwo ? ["fork-2"] : ALL);
+  await transaction(
+    (s) => {
+      s.delegation = { version: s.delegation.version + 1, revoked };
+      // after a restore the list must be sent again: lists that arrived while the operator was revoked were refused
+      if (!revoked) s.list.version++;
+    },
+    onlyForkTwo ? ["fork-2"] : ALL,
+  );
 }
 
 /** which coordinators a node trusts; the node gets the lists again, because it only stored those of its coordinators */
 export async function setMode(node: string, mode: Partial<Mode>): Promise<void> {
-  if (!state) throw new Error("準備中です");
   if (!ALL.includes(node)) throw new Error(`unknown node ${node}`);
   const coords = (Array.isArray(mode.coordinators) ? mode.coordinators : []).filter((c): c is "A" | "B" => c === "A" || c === "B");
-  state.modes[node] = { coordinators: [...new Set(coords)], fallback: mode.fallback === "signedOnly" ? "signedOnly" : "self" };
-  await applyMode(node);
-  await publish([node]);
+  await transaction(
+    (s) => {
+      s.modes[node] = { coordinators: [...new Set(coords)], fallback: mode.fallback === "signedOnly" ? "signedOnly" : "self" };
+    },
+    [node],
+    () => applyMode(node),
+  ).catch(async (e) => {
+    // the node may have taken part of the new settings: set the stored (restored) mode again
+    await applyMode(node).catch((x) => log("cannot restore the mode of", node, (x as Error).message));
+    throw e;
+  });
 }
 
 type Held = { coordinator: "A" | "B" | "?"; kind: "delegation" | "list"; version: number; revoked: boolean };

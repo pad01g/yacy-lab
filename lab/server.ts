@@ -57,8 +57,11 @@ const readBody = (req: IncomingMessage): Promise<string> =>
 // host:port に TCP で届くか（NAT の内側のピアに外から直接つながらないことの確認用）
 const probe = (target: string): Promise<boolean> =>
   new Promise((resolve) => {
-    const [host, port] = target.split(":");
-    const sock = connect({ host, port: Number(port), timeout: 2000 });
+    const [host, portText] = target.split(":");
+    const port = Number(portText);
+    // a bad port makes net.connect throw synchronously, which would end this process
+    if (!host || !Number.isInteger(port) || port < 1 || port > 65535) return resolve(false);
+    const sock = connect({ host, port, timeout: 2000 });
     sock.on("connect", () => {
       sock.destroy();
       resolve(true);
@@ -84,7 +87,14 @@ async function seedLines(nodes: string[]): Promise<string> {
   return lines.filter(Boolean).join("\n") + "\n";
 }
 
-createServer(async (req, res) => {
+createServer((req, res) => {
+  handle(req, res).catch((e: Error) => {
+    if (!res.headersSent) res.writeHead(500, { "content-type": "text/plain" });
+    res.end(`error: ${e.message}\n`);
+  });
+}).listen(PORT, () => console.log(`lab server on :${PORT}, ${pages.length} pages, clusters: ${[...CLUSTERS.keys()].join(", ")}`));
+
+async function handle(req: IncomingMessage, res: import("node:http").ServerResponse): Promise<void> {
   const host = (req.headers.host ?? "").split(":")[0];
   const path = (req.url ?? "/").split("?")[0];
   const send = (status: number, type: string, body: string): void => {
@@ -119,4 +129,4 @@ createServer(async (req, res) => {
   const html = site.get(path);
   if (!html) return send(404, "text/plain", "not found\n");
   send(200, "text/html; charset=utf-8", html);
-}).listen(PORT, () => console.log(`lab server on :${PORT}, ${pages.length} pages, clusters: ${[...CLUSTERS.keys()].join(", ")}`));
+}

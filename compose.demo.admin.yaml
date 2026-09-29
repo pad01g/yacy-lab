@@ -1,0 +1,15 @@
+# compose.demo.yaml に重ねると、各ノードの YaCy 管理画面をホストの 127.0.0.1 に公開する（admin / yacy）。
+#   docker compose -f compose.demo.yaml -f compose.demo.admin.yaml -p yacydemo up -d
+# 既定のパスワードのままなので、使い終わったら外す。
+services:
+  demo:
+    environment:
+      DEMO_ADMIN_PORTS: "1"
+  fork-1: { ports: ["127.0.0.1:8811:8090"] }
+  fork-2: { ports: ["127.0.0.1:8812:8090"] }
+  fork-3: { ports: ["127.0.0.1:8813:8090"] }
+  ads-1: { ports: ["127.0.0.1:8814:8090"] }
+  evil-1: { ports: ["127.0.0.1:8815:8090"] }
+  up-1: { ports: ["127.0.0.1:8821:8090"] }
+  up-2: { ports: ["127.0.0.1:8822:8090"] }
+  up-3: { ports: ["127.0.0.1:8823:8090"] }

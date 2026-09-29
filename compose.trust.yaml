@@ -29,7 +29,8 @@ x-yacy-volumes: &yacy-volumes
 # どちらも所有者だけが読めるので、YaCy と同じ uid（yacy イメージの yacy = 100:101）で動かす
 x-sidecar: &sidecar
   image: ${SIDECAR_IMAGE:-yacy-lab/sidecar:latest}
-  restart: "no"
+  # a sidecar exits when its YaCy restarted (it was left in the old network namespace) and starts again in the new one
+  restart: on-failure
   user: "100:101"
   logging:
     options:
@@ -54,7 +55,7 @@ services:
   relay:
     <<: *sidecar
     user: "1000:1000"
-    command: ["-relay-service", "-key", "/data/relay.key", "-key-create", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
+    command: ["-relay-service", "-relay-open", "-key", "/data/relay.key", "-key-create", "-reachability", "public", "-http", "0.0.0.0:8095", "-listen", "/ip4/0.0.0.0/tcp/4001"]
     volumes:
       - relay_key:/data
     networks:

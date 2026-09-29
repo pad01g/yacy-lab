@@ -1,7 +1,7 @@
 // 身元・信頼・NAT 越えの試験（compose.trust.yaml）。docs/trust-and-nat.md の §10 の確認項目を順に実行する。
 //   docker compose -f compose.trust.yaml -p yacytrust run --rm runner [--skip-crawl]
 // 各項目を PASS / FAIL で記録し、results/trust-<時刻>.md に保存する。1 つでも FAIL なら終了コード 1。
-import { createHash } from "node:crypto";
+import { createHash, createPublicKey, verify } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { TRUST_QUERIES } from "./corpus.ts";
@@ -71,14 +71,26 @@ async function main(): Promise<void> {
   // ---- 確認
   // C1 seed の署名
   const seen = await peers(ORIGIN);
+  // the signature over the signed core of the seed, as YaCy builds it (SeedSignature.canonical): the relayed copy that
+  // fork-1 holds must still verify
+  const CORE = ["BDate", "Name", "P2PA", "PK", "Port", "PortSSL", "RDS", "Reach", "SigT", "Tags"];
+  const verifies = (f: Record<string, string>): boolean => {
+    try {
+      const canonical = "yacy-seed-v1\n" + `Hash=${f.Hash}\n` + CORE.filter((k) => f[k] !== undefined).map((k) => `${k}=${f[k]}\n`).join("");
+      const key = createPublicKey({ key: { kty: "OKP", crv: "Ed25519", x: f.PK }, format: "jwk" });
+      return verify(null, Buffer.from(canonical, "utf8"), key, Buffer.from(f.Sig, "base64url"));
+    } catch {
+      return false;
+    }
+  };
   const signedAll = PUBLIC.filter((n) => n !== ORIGIN).every((n) => {
     const p = seen.find((x) => x.hash === seeds[n].Hash);
-    return p && p.fields.PK === pk(n) && !!p.fields.Sig;
+    return p && p.fields.PK === pk(n) && verifies(p.fields);
   });
   // YaCy のピア ID = base64url(SHA-256(公開鍵 32 byte)) の先頭 12 文字
   const hashOf = (pk: string): string => createHash("sha256").update(Buffer.from(pk, "base64url")).digest("base64url").slice(0, 12);
   const derived = PUBLIC.filter((n) => n !== ORIGIN).every((n) => hashOf(pk(n)) === seeds[n].Hash);
-  check("C1", "他ピアの seed が署名付きで、ピア ID が公開鍵から導かれている", signedAll && derived, seen.map((p) => `${p.name}:${p.fields.PK ? "signed" : "UNSIGNED"}:${p.fields.PK && hashOf(p.fields.PK) === p.hash ? "hash=H(PK)" : "HASH MISMATCH"}`).join(" "));
+  check("C1", "他ピアの seed が署名付きで、ピア ID が公開鍵から導かれている", signedAll && derived, seen.map((p) => `${p.name}:${p.fields.PK ? (verifies(p.fields) ? "signature ok" : "BAD SIGNATURE") : "UNSIGNED"}:${p.fields.PK && hashOf(p.fields.PK) === p.hash ? "hash=H(PK)" : "HASH MISMATCH"}`).join(" "));
 
   // C2 一覧の取り込み
   const b1 = await until("fork-1 has the trust list", 180_000, async () => {

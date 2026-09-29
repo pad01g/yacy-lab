@@ -17,13 +17,19 @@ P2P 網で効いているかを、docker compose だけで再現して確かめ�
 
 必要なもの: Docker（メモリ 8GB 程度。YaCy 1 ノードあたり上限 1.1GB）。
 
+yacy-lab の隣（中ではなく）にフォークを clone してビルドする（yacy-lab には `yacy/` という設定のディレクトリがある）:
+
 ```sh
-git clone https://github.com/pad01g/yacy_search_server.git yacy && cd yacy
+# yacy-lab を clone した場所の親ディレクトリで
+git clone https://github.com/pad01g/yacy_search_server.git yacy_search_server && cd yacy_search_server
 git checkout baseline        && docker build -t yacy-lab/upstream:baseline -f docker/Dockerfile .   # upstream b50b76b + ビルド修正のみ
 git checkout improved-search && docker build -t yacy-lab/fork:latest    -f docker/Dockerfile .
 docker build -t yacy-lab/sidecar:latest sidecar/                                                     # NAT 越えの sidecar（信頼の実験だけ）
-cd ..
+cd ../yacy-lab
 ```
+
+ビルドせずに GHCR のイメージ（`ghcr.io/pad01g/yacy-improved-search`, `ghcr.io/pad01g/yacy-sidecar`）を使うなら、
+`FORK_IMAGE=ghcr.io/pad01g/yacy-improved-search:latest SIDECAR_IMAGE=ghcr.io/pad01g/yacy-sidecar:latest` を付けて compose を動かす。
 
 `baseline` タグは upstream `b50b76b` に `.dockerignore` の修正（`docker build` が `test/jetty` を見つけられず失敗する問題）
 だけを足したもの。検索の挙動は upstream と同じ。
@@ -50,8 +56,16 @@ YaCy 本家 3 ノード（up-1..3）と改善版 6 ノード（実験 2 と同�
   - 鍵と一覧の状態は volume `demo_state` に保存され、デモを再起動しても同じコーディネータのまま（`down -v` で消える）。
 - 結果はまず届いた順に出て、待ち時間（既定 5 秒）の後に順位どおりに並べ直す。
 - 結果のリンクは lab サーバーの頁を画面経由で開く（`*.lab` はホストから名前解決できないため）。
-- 各ノードの YaCy 管理画面: 改善版 http://localhost:8811 〜 8815（fork-1..3, ads-1, evil-1）、本家 http://localhost:8821 〜 8823（admin / yacy）。
-  nat-1 は NAT の内側なので外から開けない。
+- 各ノードの YaCy 管理画面は既定では公開しない（既定のパスワード admin / yacy のままで、ほかの Web ページから DNS rebinding で
+  操作されうるため）。開くなら `compose.demo.admin.yaml` を重ねる: `docker compose -f compose.demo.yaml -f compose.demo.admin.yaml -p yacydemo up -d`
+  で、改善版 http://localhost:8811 〜 8815（fork-1..3, ads-1, evil-1）、本家 http://localhost:8821 〜 8823。nat-1 は NAT の内側なので開けない。
+- デモのサーバーは Host が `localhost:8800` / `127.0.0.1:8800` の要求だけに答え、設定を変える要求（検索・信頼の設定）は同じ
+  オリジンの POST だけを受け付ける。結果の頁は corpus の頁だけを、スクリプトを動かさない形で表示する。
+  ポートを変えて公開する（`ports: ["127.0.0.1:9000:8800"]`）なら `DEMO_PUBLIC_PORT=9000`、別の名前で開くなら
+  `DEMO_HOSTS=demo.example:443` のように demo サービスの環境変数で足す。
+- サイドカー（`*-p2p`）は YaCy のコンテナとネットワーク名前空間を共有する。YaCy のコンテナを作り直した
+  （`up -d` で設定が変わった、`rm` した）ときは、サイドカーも `docker compose ... up -d --force-recreate fork-1-p2p` のように
+  作り直す。YaCy の再起動だけなら、サイドカーは YaCy に届かなくなって 3 分で終了し、再起動の方針で入り直す。
 
 必要なメモリは 7GB ほど（YaCy 9 ノード、ヒープは各 500MB）。実験 2 と同じサブネットを使うので、実験 2 と同時には動かせない。
 
@@ -118,20 +132,21 @@ YaCy は同じクエリの結果を 10 分キャッシュするので、どの U
 |---|---|
 | R-prec | 上位 R 件のうち正解の割合。並びの良さ |
 | recall@10 | 上位 10 件に入った正解の割合。他ピアの頁を集められたか |
-| decoy@R | 上位 R 件に入った罠頁（詰め込み頁・タグ一覧頁）の割合（低いほど良い） |
-| allTerms@10 | 上位 10 件のうち、クエリの全語を title / snippet / url に含む割合（公開網を測ったときの評価スクリプトと同じ定義） |
+| decoy@R | 上位 R 件に入った罠頁（詰め込み頁・タグ一覧頁）の割合（低いほど良い）。このコーパスでは一致する頁が正解か罠のどちらかなので、ほぼ 1 − R-prec になる |
+| allTerms@10 | 上位 10 件のうち、クエリの全語を title / URL に含む割合。検索は `verify=false` で snippet が返らないので、実際にはタイトルと URL だけで判定している（全語をタイトルに持つタグ一覧頁は「含む」、タイトルにクエリ語の無い正解頁は「含まない」になる）。公開網の評価（snippet あり）とは同じ値にならない |
 | remote@10 | 上位 10 件のうち、問い合わせ元以外のノードが crawl したサイトの頁の割合 |
 
 ## 結果
 
-`results/latest.md` が最新の全結果（クエリごとの上位 10 件の判定を含む）。以下は 2026-09-27 の 2 回の実行
-（`results/2026-09-27T09-32-00-946Z.md`, `results/2026-09-27T10-32-29-982Z.md`、全 11 クエリの平均）。
-2 回の差は fork / default の R-prec（0.88 と 0.84）と upstream / solr-only（1 回目は 0.48、2 回目は default と同じ 0.52）だけ。表は 2 回目。
+`results/latest.md` が最新の全結果（クエリごとの上位 10 件の判定を含む）。以下は 2026-09-29 の 2 回の実行
+（`results/2026-09-29T02-47-37-519Z.md`, `results/2026-09-29T03-06-15-861Z.md`、全 11 クエリの平均。2 回目のレビューの修正を含む版）。
+2 回の差は fork / default の R-prec（0.86 と 0.79）だけ。default は他ピアの答えが届く順に左右されるので、範囲で示す。
+タグ一覧頁の平均順位は 2026-09-27 の実行から数えたもの。
 
 | クラスタ / シナリオ | R-prec ↑ | recall@10 ↑ | decoy@R ↓ | allTerms@10 ↑ | remote@10 |
 |---|---:|---:|---:|---:|---:|
 | upstream / default | 0.52 | 0.96 | 0.48 | 0.42 | 0.82 |
-| **fork / default** | **0.84** | **1.00** | **0.16** | **0.75** | 0.98 |
+| **fork / default** | **0.79–0.86** | **1.00** | **0.14–0.21** | **0.75** | 0.98 |
 | upstream / solr-only | 0.52 | 0.96 | 0.48 | 0.42 | 0.82 |
 | **fork / solr-only** | **0.77** | **1.00** | **0.23** | **0.75** | 0.98 |
 | upstream / rwi-only | 0.02 | 0.02 | 0.00 | 0.09 | 0.00 |
@@ -143,7 +158,7 @@ YaCy は同じクエリの結果を 10 分キャッシュするので、どの U
   upstream では問い合わせ元ノード自身が持つ詰め込み頁が上位に入る。自ノードの Solr には罠しか一致しないので、
   ピアごとの正規化でそれが 1.0 になるため。フォークは mm と被覆率の重みでこれを除く。
 - **タグ一覧頁は本文の薄さの重み（`search.ranking.thin.words`）で下がる。** 全語をタイトルに持つので mm も被覆率も通り抜け、
-  title^15・h1^11 の重みで本文より強く一致する。タグ一覧頁の平均順位（11 クエリ）:
+  title^5・h1^5 の重みで本文より強く一致する。タグ一覧頁の平均順位（11 クエリ）:
 
   | シナリオ | 重みなし（`thin.words=0`） | 重みあり（既定） |
   |---|---:|---:|
@@ -228,7 +243,7 @@ fork-1 の管理画面は http://127.0.0.1:8390 （admin / yacy）。NAT の判�
 
 ## 結果（信頼と NAT 越え）
 
-`results/trust-latest.md` が最新の全結果。2026-09-27 の実行で **26 / 26 の検査がすべて通った**（`results/trust-2026-09-27T11-28-17-448Z.md`）。
+`results/trust-latest.md` が最新の全結果。2026-09-29 の実行（2 回目のレビューの修正を含む版）でも **26 / 26 の検査がすべて通った**（`results/trust-2026-09-29T02-28-37-120Z.md`。前回は `results/trust-2026-09-27T11-28-17-448Z.md`）。
 
 - 既定の検索（fork-1）では spam.lab の頁が 0 件。信頼ピア fork-2 の索引に入れた evil-1 作者の文書も出ない（作者の署名で落とす）。
   開放モードでは spam.lab の 6 件が「未検証」として検証済み 5 件の後ろに並ぶ。fork-2 の署名を流用した偽の文書は開放モードでも出ない。

@@ -23,13 +23,23 @@ const ROLES: Record<string, string> = {
   "up-2": "upstream（beta.lab, ads.lab）",
   "up-3": "upstream（gamma.lab, spam.lab）",
 };
-// ホストから開ける管理画面（compose.demo.yaml の ports）
+// ホストから開ける管理画面（compose.demo.admin.yaml を重ねたときだけ公開される）
 const UI_PORTS: Record<string, number> = { "fork-1": 8811, "fork-2": 8812, "fork-3": 8813, "ads-1": 8814, "evil-1": 8815, "up-1": 8821, "up-2": 8822, "up-3": 8823 };
+const ADMIN_PORTS = process.env.DEMO_ADMIN_PORTS === "1";
+/** the names under which the browser reaches this page; other Host headers are DNS rebinding */
+// DEMO_PUBLIC_PORT: the port the browser sees when compose maps another one; DEMO_HOSTS: more names (comma separated),
+// for a demo behind a reverse proxy
+const PUBLIC_PORT = Number(process.env.DEMO_PUBLIC_PORT) || PORT;
+const HOSTS = new Set([
+  ...[PORT, PUBLIC_PORT].flatMap((p) => [`localhost:${p}`, `127.0.0.1:${p}`, `[::1]:${p}`]),
+  `demo:${PORT}` /* the compose service name, for tests inside the Docker network */,
+  ...(process.env.DEMO_HOSTS ?? "").split(",").map((h) => h.trim().toLowerCase()).filter(Boolean),
+]);
 
 // ---- 状態
 type NodeState = { name: string; side: "fork" | "upstream"; role: string; up: boolean; docs: number; seniors: number; reach: string; type: string; ui: string | null; trust: string };
 const state = {
-  phase: "starting" as "starting" | "ready" | "error",
+  phase: "starting" as "starting" | "ready" | "degraded" | "error",
   message: "ノードの起動を待っています",
   fork: "待機中",
   upstream: "待機中",
@@ -65,6 +75,8 @@ async function setupFork(): Promise<void> {
   const real = (await (
     await fetchAdmin(`${base("fork-2")}/solr/select?q=*:*&fq=host_s:beta.lab&fq=provenance_s:*&fl=provenance_s&rows=1&wt=json`)
   ).json()) as { response: { docs: { provenance_s: string }[] } };
+  // without a real signature the "forged" document would only be an unsigned one, and the demo would show the wrong thing
+  if (!real.response.docs[0]?.provenance_s) throw new Error("fork-2 has no signed document to borrow a signature from");
   const docs = [
     { sku: "http://spam.lab/forged.html", title: ["Bitcoin lightning channel (forged author)"], text_t: "bitcoin lightning channel forged page claiming fork-2 as author", provenance_s: real.response.docs[0]?.provenance_s ?? "" },
     { sku: "http://spam.lab/unsigned.html", title: ["Bitcoin lightning channel (unsigned)"], text_t: "bitcoin lightning channel page without author signature" },
@@ -104,7 +116,7 @@ async function pollNodes(): Promise<void> {
   for (;;) {
     await Promise.all(
       [...FORK_NODES.map((n) => [n, "fork"] as const), ...UP_NODES.map((n) => [n, "upstream"] as const)].map(async ([name, side]) => {
-        const s: NodeState = { name, side, role: ROLES[name], up: false, docs: 0, seniors: 0, reach: "-", type: "-", ui: UI_PORTS[name] ? `http://localhost:${UI_PORTS[name]}/` : null, trust: "" };
+        const s: NodeState = { name, side, role: ROLES[name], up: false, docs: 0, seniors: 0, reach: "-", type: "-", ui: ADMIN_PORTS && UI_PORTS[name] ? `http://localhost:${UI_PORTS[name]}/` : null, trust: "" };
         try {
           const st = await status(name);
           s.up = true;
@@ -129,6 +141,12 @@ async function pollNodes(): Promise<void> {
         state.nodes.set(name, s);
       }),
     );
+    // a node that stopped (e.g. out of memory) after the setup: say so instead of failing searches silently
+    if (state.phase === "ready" || state.phase === "degraded") {
+      const down = [...state.nodes.values()].filter((n) => !n.up).map((n) => n.name);
+      state.phase = down.length ? "degraded" : "ready";
+      state.message = down.length ? `停止しているノード: ${down.join(", ")}（docker compose -f compose.demo.yaml -p yacydemo up -d で起こし直せる）` : "準備完了。検索できます";
+    }
     await sleep(5000);
   }
 }
@@ -176,7 +194,9 @@ async function ensureConfig(node: string, cfg: Record<string, string>): Promise<
 }
 
 let round = 0;
-async function streamSearch(res: ServerResponse, p: URLSearchParams): Promise<void> {
+const MAX_WAITING = 8;
+let waiting = 0;
+async function streamSearch(req: IncomingMessage, res: ServerResponse, p: URLSearchParams): Promise<void> {
   const side = p.get("side") === "upstream" ? "upstream" : "fork";
   const nodes = side === "fork" ? ["fork-1", "fork-2", "fork-3"] : UP_NODES;
   const origin = nodes.includes(p.get("origin") ?? "") ? p.get("origin")! : nodes[0];
@@ -186,14 +206,22 @@ async function streamSearch(res: ServerResponse, p: URLSearchParams): Promise<vo
   const wait = Math.min(10000, Math.max(1000, Number(p.get("wait") ?? 5000) || 5000));
   res.writeHead(200, { "content-type": "application/x-ndjson; charset=utf-8", "cache-control": "no-store" });
   if (!query) return void res.end(JSON.stringify({ error: "クエリが空です" }) + "\n");
+  if (waiting >= MAX_WAITING) return void res.end(JSON.stringify({ error: "検索が混んでいます。少し待ってからもう一度" }) + "\n");
+  // the response closes when the browser goes away (the request's own close fires as soon as its body was read)
+  let gone = false;
+  res.on("close", () => (gone = !res.writableFinished));
   const key = `demo${++round}`; // 毎回新しい検索にする（YaCy は同じ検索を 10 分キャッシュする）
+  waiting++;
   try {
     await withLock(origin, async () => {
+      waiting = Math.max(0, waiting - 1);
+      if (gone) return; // the browser gave up while this search waited
       if (side === "fork") await ensureConfig(origin, { "trust.search.acceptUnverified": open ? "true" : "false", "trust.policy.excludeTags": noads ? "ads" : "" });
       const t0 = Date.now();
       const first = await search(origin, query, "global", 20, key);
       res.write(JSON.stringify({ pass: 1, ms: Date.now() - t0, origin, hits: enrich(side, query, first.hits) }) + "\n");
       await sleep(Math.max(0, wait - (Date.now() - t0)));
+      if (gone) return;
       let final = await search(origin, query, "global", 20, key, true);
       // YaCy can briefly list nothing while results that arrived late are still being moved into the result list
       if (final.hits.length === 0 && first.hits.length === 0) {
@@ -203,7 +231,7 @@ async function streamSearch(res: ServerResponse, p: URLSearchParams): Promise<vo
       res.write(JSON.stringify({ pass: 2, ms: Date.now() - t0, origin, hits: enrich(side, query, final.hits) }) + "\n");
     });
   } catch (e) {
-    res.write(JSON.stringify({ error: (e as Error).message }) + "\n");
+    if (!gone) res.write(JSON.stringify({ error: (e as Error).message }) + "\n");
   }
   res.end();
 }
@@ -216,14 +244,26 @@ function proxyPage(res: ServerResponse, target: string): void {
   } catch {
     return void res.writeHead(400).end("bad url");
   }
-  if (u.protocol !== "http:" || !u.hostname.endsWith(".lab")) return void res.writeHead(400).end("only http://*.lab/ pages");
-  const req = request({ host: "seed.lab", port: 80, path: u.pathname + u.search, headers: { host: u.hostname } }, (up) => {
-    res.writeHead(up.statusCode ?? 502, { "content-type": up.headers["content-type"] ?? "text/html" });
+  // only the corpus pages: the lab server also has /probe, /seed and /files, which a web page must not reach through here
+  if (u.protocol !== "http:" || !CORPUS_HOSTS.has(u.hostname) || !/^\/([a-z0-9_-]+\/)*[a-z0-9_-]*(\.html)?$/.test(u.pathname) || u.search) return void res.writeHead(400).end("only corpus pages");
+  const req = request({ host: "seed.lab", port: 80, path: u.pathname, headers: { host: u.hostname }, timeout: 10000 }, (up) => {
+    res.writeHead(up.statusCode ?? 502, {
+      "content-type": "text/html; charset=utf-8",
+      // shown on the origin of the demo: no scripts, no access to the demo's API
+      "content-security-policy": "sandbox; default-src 'none'; style-src 'unsafe-inline'",
+      "x-content-type-options": "nosniff",
+    });
     up.pipe(res);
   });
-  req.on("error", (e) => res.writeHead(502).end(e.message));
+  req.on("timeout", () => req.destroy(new Error("timeout")));
+  req.on("error", (e) => {
+    if (!res.headersSent) res.writeHead(502);
+    res.end(e.message);
+  });
   req.end();
 }
+
+const CORPUS_HOSTS = new Set(["alpha.lab", "beta.lab", "gamma.lab", "spam.lab", "ads.lab", "delta.lab"]);
 
 const PRESETS: { q: string; hint: string }[] = [
   { q: TRUST_QUERIES.spam, hint: "スパム頁。本家は網の誰かが持てば出る。改善版は既定で出さず、開放モードでも「未検証」として下に置く。偽の作者の文書は開放モードでも出ない" },
@@ -248,11 +288,16 @@ const readJson = (req: IncomingMessage): Promise<Record<string, unknown>> =>
     let body = "";
     req.on("data", (c: Buffer) => {
       body += c.toString("utf8");
-      if (body.length > 65536) req.destroy();
+      if (body.length > 65536) {
+        reject(new Error("body too large"));
+        req.destroy();
+      }
     });
     req.on("end", () => {
       try {
-        resolve(body ? JSON.parse(body) : {});
+        const v: unknown = body ? JSON.parse(body) : {};
+        if (!v || typeof v !== "object" || Array.isArray(v)) throw new Error("a JSON object is expected");
+        resolve(v as Record<string, unknown>);
       } catch (e) {
         reject(e);
       }
@@ -264,7 +309,7 @@ let trustQueue: Promise<unknown> = Promise.resolve();
 async function trustAction(req: IncomingMessage, res: ServerResponse, action: string): Promise<void> {
   // other web pages must not drive the demo: only same-origin JSON requests
   if (!(req.headers["content-type"] ?? "").startsWith("application/json")) return json(res, 415, { error: "JSON only" });
-  if (phaseOf() !== "ready") return json(res, 409, { error: "準備が終わってから操作してください" });
+  if (phaseOf() !== "ready" && phaseOf() !== "degraded") return json(res, 409, { error: "準備が終わってから操作してください" });
   let body: Record<string, unknown>;
   try {
     body = await readJson(req);
@@ -294,18 +339,41 @@ const phaseOf = (): string => state.phase;
 
 const page = (): string => readFileSync(new URL("./demo/index.html", import.meta.url), "utf8");
 
+/** requests from other sites: a foreign Host (DNS rebinding) or, for requests that change something, a foreign Origin */
+function foreign(req: IncomingMessage): boolean {
+  if (!HOSTS.has(req.headers.host ?? "")) return true;
+  if (req.method === "GET") return false;
+  const origin = req.headers.origin;
+  return !origin || !HOSTS.has(origin.replace(/^https?:\/\//, ""));
+}
+
 createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
-  if (url.pathname === "/") return void res.writeHead(200, { "content-type": "text/html; charset=utf-8" }).end(page());
+  if (foreign(req)) return void res.writeHead(403, { "content-type": "text/plain" }).end("forbidden: open the demo as http://localhost:8800/\n");
+  if (url.pathname === "/") return void res.writeHead(200, { "content-type": "text/html; charset=utf-8", "x-frame-options": "DENY" }).end(page());
   if (url.pathname === "/api/state") {
     const nodes = [...FORK_NODES, ...UP_NODES].map((n) => state.nodes.get(n)).filter(Boolean);
     return void res
       .writeHead(200, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" })
       .end(JSON.stringify({ phase: state.phase, message: state.message, fork: state.fork, upstream: state.upstream, log: state.log.slice(-12), nodes, presets: PRESETS }));
   }
-  if (url.pathname === "/api/search") return void streamSearch(res, url.searchParams);
+  // a search changes the settings of the searching node (open mode, excluded tags): POST only, so that other sites
+  // cannot trigger it with a link or an image
+  if (url.pathname === "/api/search" && req.method === "POST")
+    return void readJson(req).then(
+      (b) =>
+        streamSearch(req, res, new URLSearchParams(Object.entries(b).map(([k, v]) => [k, String(v)]))).catch((e) => {
+          note(`search failed: ${(e as Error).message}`);
+          if (!res.headersSent) json(res, 500, { error: (e as Error).message });
+          else res.end();
+        }),
+      () => json(res, 400, { error: "bad JSON" }),
+    );
   if (url.pathname === "/api/trust" && req.method === "GET") return void json(res, 200, view());
-  if (url.pathname.startsWith("/api/trust/") && req.method === "POST") return void trustAction(req, res, url.pathname.slice("/api/trust/".length));
+  if (url.pathname.startsWith("/api/trust/") && req.method === "POST")
+    return void trustAction(req, res, url.pathname.slice("/api/trust/".length)).catch((e) => {
+      if (!res.headersSent) json(res, 500, { error: (e as Error).message });
+    });
   if (url.pathname === "/page") return proxyPage(res, url.searchParams.get("url") ?? "");
   res.writeHead(404).end("not found");
 }).listen(PORT, () => note(`demo on :${PORT}`));

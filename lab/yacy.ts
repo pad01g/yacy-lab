@@ -5,11 +5,14 @@ const USER = process.env.YACY_ADMIN_USER ?? "admin";
 const PASSWORD = process.env.YACY_ADMIN_PASSWORD ?? "yacy"; // docker/Dockerfile が初期値として焼き込む
 
 const md5 = (s: string): string => createHash("md5").update(s).digest("hex");
+/** a node that hangs must not hold a caller (e.g. the demo's per-node lock) for minutes */
+const TIMEOUT_MS = 30000;
+const timeout = (): AbortSignal => AbortSignal.timeout(TIMEOUT_MS);
 
 // Node の fetch は Digest を持たないので、1 往復目の challenge から Authorization を組み立てる
 export async function fetchAdmin(url: string, init: { method?: "GET" | "POST"; body?: URLSearchParams } = {}): Promise<Response> {
   const method = init.method ?? "GET";
-  const first = await fetch(url, { method, body: init.body });
+  const first = await fetch(url, { method, body: init.body, signal: timeout() });
   if (first.status !== 401) return first;
   await first.arrayBuffer();
   const challenge = first.headers.get("www-authenticate") ?? "";
@@ -27,7 +30,7 @@ export async function fetchAdmin(url: string, init: { method?: "GET" | "POST"; b
   const header =
     `Digest username="${USER}", realm="${realm}", nonce="${nonce}", uri="${uri}", response="${response}"` +
     (qop ? `, qop=auth, nc=${nc}, cnonce="${cnonce}"` : "");
-  return fetch(url, { method, body: init.body, headers: { Authorization: header } });
+  return fetch(url, { method, body: init.body, headers: { Authorization: header }, signal: timeout() });
 }
 
 // 設定値を実行中のノードへ書き込む。ConfigProperties_p は POST と transactionToken（CSRF 対策）を要求する。
@@ -79,13 +82,13 @@ export type Peer = { hash: string; name: string; type: string; ip: string; field
 
 // 自ピアから見えている他ピア（自分を除く）。fields は seed の全項目
 export async function peers(node: string): Promise<Peer[]> {
-  const json = (await (await fetch(`${base(node)}/yacy/seedlist.json?me=false`)).json()) as { peers: Record<string, string>[] };
+  const json = (await (await fetch(`${base(node)}/yacy/seedlist.json?me=false`, { signal: timeout() })).json()) as { peers: Record<string, string>[] };
   return json.peers.map((p) => ({ hash: p.Hash, name: p.Name, type: p.PeerType, ip: p.IP, fields: p }));
 }
 
 // 自ピアの seed
 export async function mySeed(node: string): Promise<Record<string, string>> {
-  const json = (await (await fetch(`${base(node)}/yacy/seedlist.json?my=`)).json()) as { peers: Record<string, string>[] };
+  const json = (await (await fetch(`${base(node)}/yacy/seedlist.json?my=`, { signal: timeout() })).json()) as { peers: Record<string, string>[] };
   return json.peers[0];
 }
 
@@ -98,7 +101,7 @@ export async function search(node: string, query: string, resource: "global" | "
   const params = new URLSearchParams({ query, resource, maximumRecords: String(rows), verify: "false", timezoneOffset: "0", nav: "none" });
   if (resort) params.set("resortCachedResults", "true");
   if (cacheKey) params.set("prefermaskfilter", `\\Qnever-matches-${cacheKey}\\E`);
-  const res = await fetch(`${base(node)}/yacysearch.json?${params}`);
+  const res = await fetch(`${base(node)}/yacysearch.json?${params}`, { signal: timeout() });
   if (!res.ok) throw new Error(`search ${node} ${query}: HTTP ${res.status}`);
   type Item = { title: string; link: string; description: string; verified?: string; trust?: string; trustTags?: string };
   const channel = ((await res.json()) as { channels: { totalResults: string; items: Item[] }[] }).channels[0];

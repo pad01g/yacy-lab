@@ -82,11 +82,18 @@ If you find a change that helps, share it: issues and pull requests at https://g
   Documents you crawled yourself are `self`.
 - By default a peer trusts only its own documents. To trust a community of peers, set the coordinator of the
   public registry: `trust.coordinators=tQyLZkWjlTupmUCxU7WcXfYG9eDjfmJbOWzMOWQcVEc` and
-  `trust.bundle.urls=https://pad01g.github.io/yacy-trust/bundle.json` (admin page `ConfigProperties_p.html`).
+  `trust.bundle.urls=https://pad01g.github.io/yacy-trust/bundle.json` (admin page `ConfigProperties_p.html`, or at
+  start `-e YACY_TRUST_COORDINATORS=... -e YACY_TRUST_BUNDLE_URLS=...`: `YACY_<KEY>` sets the lower-case key with `_`
+  read as `.`).
 - To have your peer's documents trusted by others, or to become an operator who vouches for peers, open a pull
   request at https://github.com/pad01g/yacy-trust (a merged pull request is the approval).
 - This fork does not accept the unsigned peers of the public YaCy network (freeworld). A new peer therefore starts
-  alone; other fork peers find it once it has a public address and knows one of them.
+  alone. To join a network, give it the URL of one member at start: `-e YACY_P2P_BOOTSTRAP_PEERS=http://<member>:8090`
+  (comma separated; used while fewer than 3 peers are connected). The member must be able to reach your peer back
+  (a public address, the same Tailscale network, or the libp2p relay). You may join, publish your own pages and
+  services (declare ads with the tag `ads`) and run your own coordinator without asking anyone:
+  https://pad01g.github.io/yacy_search_server/join.html. Do not list peers or keys that are not yours.
+- Pull requests are welcome (https://github.com/pad01g/yacy-lab, https://github.com/pad01g/yacy_search_server).
 
 ## Pitfalls
 

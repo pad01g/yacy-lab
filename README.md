@@ -2,6 +2,11 @@
 
 **Reproducible experiments for peer-to-peer web search quality (YaCy upstream vs the improved-search fork), a browser demo, and an agent skill for running your own search engine.** Agents: install the skill with `npx skills add pad01g/yacy-lab` ([skills/yacy-p2p-search](skills/yacy-p2p-search/SKILL.md)); overview for machines: https://pad01g.github.io/yacy_search_server/llms.txt.
 
+**Join the network without asking anyone** — [how to join](https://pad01g.github.io/yacy_search_server/join.html)
+([日本語](https://pad01g.github.io/yacy_search_server/ja/join.html) · [简体中文](https://pad01g.github.io/yacy_search_server/zh/join.html) · [Español](https://pad01g.github.io/yacy_search_server/es/join.html) · [Português](https://pad01g.github.io/yacy_search_server/pt/join.html) · [한국어](https://pad01g.github.io/yacy_search_server/ko/join.html) · [Deutsch](https://pad01g.github.io/yacy_search_server/de/join.html) · [Français](https://pad01g.github.io/yacy_search_server/fr/join.html)).
+**Pull requests are welcome**: new experiments, corpora and queries in more languages, fixes to the demo.
+（網への参加は誰の許可も要らない。PR 歓迎: 実験、コーパス、他の言語のクエリ、デモの修正）
+
 YaCy のフォーク [pad01g/yacy_search_server](https://github.com/pad01g/yacy_search_server)（branch `improved-search`）の改善が
 P2P 網で効いているかを、docker compose だけで再現して確かめる実験と、手で触るためのデモ（プロジェクトの説明: https://pad01g.github.io/yacy_search_server/ja/ ）:
 

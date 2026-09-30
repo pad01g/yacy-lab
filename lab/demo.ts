@@ -1,7 +1,7 @@
 // デモ用のフロントエンド（compose.demo.yaml）。http://localhost:8800 で開く。
 //   起動すると裏で網を組む: フォーク側は信頼と NAT 越えの試験と同じ構成（trustlib.ts）、upstream 側は 3 ノード。
 //   どちらにも同じサイトを crawl させ、同じクエリを両方の網に global で投げて並べて見せる。
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createServer, request, type IncomingMessage, type ServerResponse } from "node:http";
 import { judgements, TRUST_QUERIES, TOPICS } from "./corpus.ts";
 import { ALL as FORK_NODES, CRAWL as FORK_CRAWL, crawlSite, LAB, log, putFile, setupTrustNetwork, sleep, until } from "./trustlib.ts";
@@ -351,6 +351,13 @@ createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
   if (foreign(req)) return void res.writeHead(403, { "content-type": "text/plain" }).end("forbidden: open the demo as http://localhost:8800/\n");
   if (url.pathname === "/") return void res.writeHead(200, { "content-type": "text/html; charset=utf-8", "x-frame-options": "DENY" }).end(page());
+  // the mock mode of the page (the same files are published on GitHub Pages)
+  if (url.pathname === "/mock.js" || url.pathname === "/mock-data.json") {
+    const file = new URL("./demo" + url.pathname, import.meta.url);
+    if (!existsSync(file)) return void res.writeHead(404).end("not found");
+    const type = url.pathname.endsWith(".js") ? "text/javascript; charset=utf-8" : "application/json; charset=utf-8";
+    return void res.writeHead(200, { "content-type": type, "cache-control": "no-store" }).end(readFileSync(file));
+  }
   if (url.pathname === "/api/state") {
     const nodes = [...FORK_NODES, ...UP_NODES].map((n) => state.nodes.get(n)).filter(Boolean);
     return void res

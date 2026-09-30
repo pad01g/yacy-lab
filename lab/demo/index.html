@@ -79,6 +79,10 @@ p.small { font-size: 13px; color: var(--muted); margin: 4px 0; }
 .trust button.ghost { background: var(--chip); color: var(--text); }
 .trust .msg { font-size: 13px; min-height: 1.2em; margin-top: 6px; }
 .trust .msg.err { color: var(--bad); }
+.mockbar { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--info-soft); color: var(--info); font-size: 13px; }
+dialog { max-width: min(760px, 92vw); border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); }
+dialog::backdrop { background: rgba(0,0,0,.4); }
+dialog .pagetext { white-space: pre-wrap; font-size: 14px; max-height: 60vh; overflow: auto; }
 .trust .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4px 24px; }
 </style>
 </head>
@@ -86,6 +90,8 @@ p.small { font-size: 13px; color: var(--muted); margin: 4px 0; }
 <header>
   <h1>YaCy 複数ノード検索デモ <span id="phase" class="pill starting">起動中</span></h1>
   <p class="sub">同じサイトを crawl した 2 つの閉じた P2P 網（YaCy 本家 3 ノード / 改善版 6 ノード + リレー）に、同じクエリを global 検索で投げて並べる</p>
+  <p class="sub"><label title="docker compose を動かさずに、記録した本物の応答を画面の中で再生する"><input type="checkbox" id="mockToggle"> モック（サーバー無しで動かす）</label></p>
+  <div class="mockbar" id="mockBar" hidden></div>
 </header>
 <main>
   <section class="panel" id="setup">
@@ -187,6 +193,8 @@ p.small { font-size: 13px; color: var(--muted); margin: 4px 0; }
     · ノード名は、その頁のサイトを crawl したノード。結果の 1 回目は届いた順、最後に順位どおりに並べ直す
   </section>
 </main>
+<dialog id="pageDialog"><h3 id="pageTitle"></h3><p class="small" id="pageUrl"></p><div class="pagetext" id="pageText"></div><form method="dialog"><button>閉じる</button></form></dialog>
+<script src="mock.js"></script>
 <script>
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -224,8 +232,18 @@ async function refresh() {
     $("message").textContent = "デモのサーバーに接続できません";
   }
 }
-setInterval(refresh, 4000);
+setInterval(refresh, window.MOCK ? 15000 : 4000);
 refresh();
+for (const side of ["up", "fork"]) $(side + "Results").addEventListener("click", (e) => {
+  const a = e.target.closest("a[data-url]");
+  if (!a || !window.MOCK) return;
+  e.preventDefault();
+  const pg = window.MOCK.page(a.dataset.url);
+  $("pageTitle").textContent = pg.title || a.dataset.url;
+  $("pageUrl").textContent = a.dataset.url + "（モック: 記録した頁の本文）";
+  $("pageText").textContent = pg.text || "この頁は記録していません";
+  $("pageDialog").showModal();
+});
 
 $("presets").addEventListener("click", (e) => {
   const q = e.target.closest("button")?.dataset.q;
@@ -250,7 +268,7 @@ function render(side, data, final) {
     if (side === "fork" && h.verified) chips.push(h.verified === "true" ? `<span class="chip verified">検証済み (${esc(h.trust)})</span>` : `<span class="chip unverified">未検証 (${esc(h.trust)})</span>`);
     if (h.tags) chips.push(`<span class="chip ads">タグ: ${esc(h.tags)}</span>`);
     return `<li><span class="rank">${h.rank}</span><div>
-      <div class="title"><a href="/page?url=${encodeURIComponent(h.url)}" target="_blank" rel="noopener">${esc(h.title || h.url)}</a></div>
+      <div class="title"><a href="${window.MOCK ? "#" : "/page?url=" + encodeURIComponent(h.url)}" data-url="${esc(h.url)}" ${window.MOCK ? "" : 'target="_blank" rel="noopener"'}>${esc(h.title || h.url)}</a></div>
       <div class="url">${esc(h.url)}</div>
       ${h.snippet ? `<div class="snippet">${esc(h.snippet)}</div>` : ""}
       <div class="chips">${chips.join("")}</div></div></li>`;
@@ -341,7 +359,7 @@ async function trustPost(action, body, label) {
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || r.status);
     trust = d;
-    trustMsg(label + ": 済み。各ノードに届くまで数十秒かかる。上の「網の状態」の表で確かめてから検索すると確実");
+    trustMsg(label + (window.MOCK ? ": 済み（モックなのですぐ反映される）" : ": 済み。各ノードに届くまで数十秒かかる。上の「網の状態」の表で確かめてから検索すると確実"));
     await loadTrust(true);
   } catch (e) {
     trustMsg(label + ": 失敗 " + e.message, true);

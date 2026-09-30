@@ -352,10 +352,10 @@ createServer((req, res) => {
   if (foreign(req)) return void res.writeHead(403, { "content-type": "text/plain" }).end("forbidden: open the demo as http://localhost:8800/\n");
   if (url.pathname === "/") return void res.writeHead(200, { "content-type": "text/html; charset=utf-8", "x-frame-options": "DENY" }).end(page());
   // the mock mode of the page (the same files are published on GitHub Pages)
-  if (url.pathname === "/mock.js" || url.pathname === "/mock-data.json") {
+  if (url.pathname === "/mock.js" || url.pathname === "/mock-data.json" || url.pathname === "/i18n.js" || url.pathname === "/peer.html") {
     const file = new URL("./demo" + url.pathname, import.meta.url);
     if (!existsSync(file)) return void res.writeHead(404).end("not found");
-    const type = url.pathname.endsWith(".js") ? "text/javascript; charset=utf-8" : "application/json; charset=utf-8";
+    const type = url.pathname.endsWith(".js") ? "text/javascript; charset=utf-8" : url.pathname.endsWith(".html") ? "text/html; charset=utf-8" : "application/json; charset=utf-8";
     return void res.writeHead(200, { "content-type": type, "cache-control": "no-store" }).end(readFileSync(file));
   }
   if (url.pathname === "/api/state") {

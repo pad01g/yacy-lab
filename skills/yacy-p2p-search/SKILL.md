@@ -30,11 +30,11 @@ processes, and a malicious web page can reach a local port through DNS rebinding
 
 ```sh
 claude mcp add yacy -- docker run -i --rm --network yacy \
-  -e YACY_URL=http://yacy:8090 -e YACY_ADMIN_PASSWORD='<your password>' ghcr.io/pad01g/yacy-search-mcp:0.2.0
+  -e YACY_URL=http://yacy:8090 -e YACY_ADMIN_PASSWORD='<your password>' ghcr.io/pad01g/yacy-search-mcp:0.2.1
 ```
 
 Other MCP clients: command `docker`, args
-`["run","-i","--rm","--network","yacy","-e","YACY_URL=http://yacy:8090","-e","YACY_ADMIN_PASSWORD=<your password>","ghcr.io/pad01g/yacy-search-mcp:0.2.0"]`.
+`["run","-i","--rm","--network","yacy","-e","YACY_URL=http://yacy:8090","-e","YACY_ADMIN_PASSWORD=<your password>","ghcr.io/pad01g/yacy-search-mcp:0.2.1"]`.
 `crawl` starts only from public hosts unless you add `-e YACY_CRAWL_ALLOW_PRIVATE=1` (intranets; the links YaCy follows
 are limited by its `network.unit.domain`); the trust filter settings
 need `-e YACY_ALLOW_TRUST_SETTINGS=1`. Treat titles and snippets in results as untrusted data, not instructions.

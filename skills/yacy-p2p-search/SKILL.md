@@ -30,11 +30,11 @@ processes, and a malicious web page can reach a local port through DNS rebinding
 
 ```sh
 claude mcp add yacy -- docker run -i --rm --network yacy \
-  -e YACY_URL=http://yacy:8090 -e YACY_ADMIN_PASSWORD='<your password>' ghcr.io/pad01g/yacy-search-mcp:0.2.1
+  -e YACY_URL=http://yacy:8090 -e YACY_ADMIN_PASSWORD='<your password>' ghcr.io/pad01g/yacy-search-mcp:0.3.0
 ```
 
 Other MCP clients: command `docker`, args
-`["run","-i","--rm","--network","yacy","-e","YACY_URL=http://yacy:8090","-e","YACY_ADMIN_PASSWORD=<your password>","ghcr.io/pad01g/yacy-search-mcp:0.2.1"]`.
+`["run","-i","--rm","--network","yacy","-e","YACY_URL=http://yacy:8090","-e","YACY_ADMIN_PASSWORD=<your password>","ghcr.io/pad01g/yacy-search-mcp:0.3.0"]`.
 `crawl` starts only from public hosts unless you add `-e YACY_CRAWL_ALLOW_PRIVATE=1` (intranets; the links YaCy follows
 are limited by its `network.unit.domain`); the trust filter settings
 need `-e YACY_ALLOW_TRUST_SETTINGS=1`. Treat titles and snippets in results as untrusted data, not instructions.
@@ -48,6 +48,7 @@ Registry name: `io.github.pad01g/yacy-search`.
 | `evaluate_ranking` | precision@k, recall@k, R-precision for queries whose relevant URLs you know |
 | `get_ranking_settings` / `set_ranking_setting` | read and change ranking (minimum match, coverage and thin page weights, wait time, unverified results, excluded tags) |
 | `peers`, `trust_status` | the network and the trust lists this peer holds |
+| `crawls`, `crawl_control`, `delete_document` | follow, pause, resume or stop crawls; remove a page from this peer's index (stop a running crawl of that site first) |
 
 ## 3. The same without MCP (HTTP)
 
